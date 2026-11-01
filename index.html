@@ -127,7 +127,7 @@
             }
         }
 
-        // Procesador principal con diccionario y soporte universal
+        // Procesador principal
         function processText() {
             const rawText = document.getElementById('manualText').value;
             const upperText = rawText.toUpperCase();
@@ -154,4 +154,73 @@
                 'LENTO': '🐢', 'LENTA': '🐢', 'LLENO': '🫙', 'VACIO': '⭕', 'VACÍO': '⭕', 'BONITO': '🌸', 'HERMOSO': '✨',
 
                 'FELIZ': '😊', 'CONTENTO': '😊', 'CONTENTA': '😊', 'TRISTE': '😢', 'ENOJADO': '😡', 'ENOJADA': '😡',
-                'CANSADO': '🥱', 'CANSADA': '🥱', 'ENFERMO': '🤒', 'ENFERMA
+                'CANSADO': '🥱', 'CANSADA': '🥱', 'ENFERMO': '🤒', 'ENFERMA': '🤒', 'ASUSTADO': '😨',
+
+                'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'MADRE': '👩', 'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦', 'PADRE': '👨',
+                'HERMANO': '👦', 'HERMANA': '👧', 'HIJO': '👦', 'HIJA': '👧', 'BEBE': '👶', 'BEBÉ': '👶',
+                'NENE': '👦', 'NENA': '👧', 'NIÑO': '👦', 'NIÑA': '👧', 'ABUELA': '👵', 'ABUELO': '👴',
+                'AMIGO': '🤝', 'AMIGOS': '👥', 'MAESTRA': '👩‍🏫', 'MAESTRO': '🧑‍🏫', 'PROFE': '🧑‍🏫',
+
+                'CASA': '🏠', 'ROPA': '👕', 'JARDIN': '🌳', 'JARDÍN': '🌳', 'PATIO': '🏡', 'PUERTA': '🚪',
+                'VENTANA': '🪟', 'MESA': '🪵', 'SILLA': '🪑', 'CAMA': '🛏️', 'COCINA': '🍳', 'BAÑO': '🚽',
+
+                'TIENDE': '🧺', 'AYUDA': '🤝', 'JUEGA': '⚽', 'CORRE': '🏃‍♂️', 'COME': '🍽️', 'BEBE': '🥤',
+                'DUERME': '😴', 'LEE': '📖', 'ESCRIBE': '✏️', 'CANTA': '🎤', 'ESTUDIA': '📚', 'TRABAJA': '💻',
+
+                'ESCUELA': '🏫', 'COLEGIO': '🏫', 'LIBRO': '📖', 'CUADERNO': '📓', 'LAPIZ': '✏️', 'LÁPIZ': '✏️',
+                'MOCHILA': '🎒', 'PAPEL': '📄', 'TIJERA': '✂️', 'COMPU': '💻', 'PELOTA': '⚽', 'AUTO': '🚗'
+            };
+
+            const fallbackEmojis = ['🌟', '💡', '🎯', '🎨', '🧩', '🎈', '📦', '📌', '📘', '⭐', '🍀', '🚀', '🔮', '⚡', '💡', '🪄'];
+
+            const words = rawText.trim().split(/\s+/);
+
+            for (let word of words) {
+                const cleanWord = word.replace(/[.,\/#$%\^&\*;:{}=\-_`~()?¿¡]/g, "").toUpperCase();
+                if (!cleanWord) continue;
+
+                const card = document.createElement('div');
+                card.className = "flex flex-col items-center justify-between bg-white border border-slate-200 rounded-xl p-3 shadow-xs w-28 h-28";
+
+                const iconBox = document.createElement('div');
+                iconBox.className = "text-4xl flex items-center justify-center h-16 w-16 bg-indigo-50 rounded-xl mb-1";
+                
+                let selectedIcon = iconMap[cleanWord];
+                
+                if (!selectedIcon) {
+                    if (['EL', 'LA', 'LOS', 'LAS', 'UN', 'UNA', 'UNOS', 'UNAS', 'DE', 'DEL', 'EN', 'Y', 'A', 'SU', 'SUS', 'CON', 'PARA', 'ES', 'SON', 'ESTA', 'ESTÁ'].includes(cleanWord)) {
+                        selectedIcon = '🔹';
+                    } else {
+                        let charCodeSum = 0;
+                        for (let i = 0; i < cleanWord.length; i++) {
+                            charCodeSum += cleanWord.charCodeAt(i);
+                        }
+                        selectedIcon = fallbackEmojis[charCodeSum % fallbackEmojis.length];
+                    }
+                }
+
+                iconBox.innerText = selectedIcon;
+
+                const label = document.createElement('span');
+                label.className = "text-xs font-bold text-slate-700 text-center truncate w-full uppercase";
+                label.innerText = cleanWord;
+
+                card.appendChild(iconBox);
+                card.appendChild(label);
+                container.appendChild(card);
+            }
+        }
+
+        // Síntesis de voz (Text-to-Speech)
+        function speakText() {
+            const text = document.getElementById('uppercaseOutput').innerText;
+            if (!text || text === "-") return;
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'es-AR';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+    </script>
+</body>
+</html>
