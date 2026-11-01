@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PictoScan - Escáner y Traductor a Pictogramas</title>
-    <!-- Tailwind CSS para un diseño limpio, accesible y responsivo -->
+    <!-- Tailwind CSS para diseño accesible y responsivo -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Tesseract.js para el reconocimiento óptico de caracteres (OCR) -->
     <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
@@ -23,7 +22,7 @@
                 <span class="text-3xl">🧩</span>
                 <div>
                     <h1 class="text-2xl font-extrabold tracking-tight">PictoScan</h1>
-                    <p class="text-indigo-100 text-xs sm:text-sm">Escaneo inclusivo, mayúsculas y pictogramas</p>
+                    <p class="text-indigo-100 text-xs sm:text-sm">Escaneo inclusivo, mayúsculas y apoyos visuales</p>
                 </div>
             </div>
             <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Web MVP</span>
@@ -33,7 +32,7 @@
     <!-- Contenido Principal -->
     <main class="max-w-4xl w-full mx-auto p-4 sm:p-6 flex-grow flex flex-col gap-6">
 
-        <!-- Panel de Entrada (Cámara / Subida / Texto) -->
+        <!-- Panel de Entrada -->
         <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col gap-4">
             <h2 class="text-lg font-bold text-slate-700 flex items-center gap-2">
                 <span>📸</span> 1. Ingresá el texto a procesar
@@ -55,7 +54,7 @@
                 </div>
             </div>
 
-            <!-- Vista previa de la imagen cargada y estado de OCR -->
+            <!-- Vista previa de la imagen y carga de OCR -->
             <div id="statusContainer" class="hidden flex flex-col items-center gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
                 <img id="imagePreview" class="max-h-40 rounded-lg shadow-sm object-contain" alt="Vista previa">
                 <div id="ocrLoading" class="flex items-center gap-2 text-indigo-600 font-semibold text-sm">
@@ -68,7 +67,7 @@
             </div>
         </section>
 
-        <!-- Panel de Resultado (Mayúsculas e Iconos Visuales) -->
+        <!-- Panel de Resultado -->
         <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col gap-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                 <h2 class="text-lg font-bold text-slate-700 flex items-center gap-2">
@@ -79,13 +78,13 @@
                 </button>
             </div>
 
-            <!-- Texto convertido a Mayúsculas -->
+            <!-- Texto en Mayúsculas -->
             <div class="bg-slate-100 rounded-xl p-4 border border-slate-200">
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Texto en Mayúsculas:</span>
                 <p id="uppercaseOutput" class="text-lg font-bold text-indigo-900 tracking-wide min-h-[1.75rem]">-</p>
             </div>
 
-            <!-- Contenedor de Pictogramas / Iconos -->
+            <!-- Contenedor de Pictogramas con Emojis -->
             <div class="flex flex-col gap-2">
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Secuencia visual:</span>
                 <div id="pictogramsContainer" class="flex flex-wrap gap-3 min-h-[100px] items-center p-4 bg-indigo-50/30 rounded-xl border border-indigo-100">
@@ -103,7 +102,7 @@
 
     <!-- Lógica de la Aplicación -->
     <script>
-        // Manejo de imagen y OCR con Tesseract.js
+        // OCR con Tesseract.js
         async function handleImage(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -128,8 +127,8 @@
             }
         }
 
-        // Procesador de texto con iconos limpios y accesibles
-        async function processText() {
+        // Procesador de texto con Diccionario Ampliado de Emojis
+        function processText() {
             const rawText = document.getElementById('manualText').value;
             const upperText = rawText.toUpperCase();
             
@@ -143,13 +142,44 @@
                 return;
             }
 
-            // Diccionario de iconos ilustrativos pedagógicos
+            // Diccionario amplio de emojis pedagógicos
             const iconMap = {
-                'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦',
-                'CASA': '🏠', 'ROPA': '👕', 'JARDIN': '🌳', 'JARDÍN': '🌳',
-                'AYUDA': '🤝', 'AGUA': '💧', 'COMIDA': '🍲', 'ESCUELA': '🏫',
-                'LIBRO': '📖', 'SOL': '☀️', 'FELIZ': '😊', 'NENE': '👦',
-                'NENA': '👧', 'PERRO': '🐶', 'GATO': '🐱', 'PELOTA': '⚽'
+                // Familia y Personas
+                'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'MADRE': '👩', 'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦', 'PADRE': '👨',
+                'HERMANO': '👦', 'HERMANA': '👧', 'HIJO': '👦', 'HIJA': '👧', 'BEBE': '👶', 'BEBÉ': '👶',
+                'NENE': '👦', 'NENA': '👧', 'NIÑO': '👦', 'NIÑA': '👧', 'ABUELA': '👵', 'ABUELO': '👴',
+                'AMIGO': '🤝', 'AMIGOS': '👥', 'MAESTRA': '👩‍🏫', 'MAESTRO': '🧑‍🏫', 'PROFE': '🧑‍🏫',
+
+                // Casa y Rutina
+                'CASA': '🏠', 'ROPA': '👕', 'JARDIN': '🌳', 'JARDÍN': '🌳', 'PATIO': '🏡', 'PUERTA': '🚪',
+                'VENTANA': '🪟', 'MESA': '🪵', 'SILLA': '🪑', 'CAMA': '🛏️', 'COCINA': '🍳', 'BAÑO': '🚽',
+                'JABON': '🧼', 'JABÓN': '🧼', 'AGUA': '💧', 'DIENTES': '🪥', 'CEPILLO': '🪥',
+
+                // Acciones y Verbos
+                'TIENDE': '🧺', 'AYUDA': '🤝', 'JUEGA': '⚽', 'CORRE': '🏃‍♂️', 'COME': '🍽️', 'BEBE': '🥤',
+                'DUERME': '😴', 'LEE': '📖', 'ESCRIBE': '✏️', 'CANTA': '🎤', 'ESTUDIA': '📚', 'TRABAJA': '💻',
+                'CAMINA': '🚶‍♂️', 'SALTA': '🤸‍♂️', 'PINTA': '🎨', 'DIBUJA': '✏️', 'LAVA': '🧼', 'LAVAR': '🧼',
+
+                // Escuela y Materiales
+                'ESCUELA': '🏫', 'COLEGIO': '🏫', 'AULA': '🏫', 'LIBRO': '📖', 'CUADERNO': '📓', 'LAPIZ': '✏️',
+                'LÁPIZ': '✏️', 'MOCHILA': '🎒', 'PAPEL': '📄', 'TIJERA': '✂️', 'PEGAMENTO': '🧴', 'COMPU': '💻',
+                'MUSICA': '🎵', 'MÚSICA': '🎵', 'PINCEL': '🖌️', 'HOJA': '🍃',
+
+                // Alimentos
+                'MANZANA': '🍎', 'BANANA': '🍌', 'PAN': '🍞', 'LECHE': '🥛', 'GALLETA': '🍪', 'GALLETITA': '🍪',
+                'FRUTA': '🍉', 'COMIDA': '🍲', 'ALMUERZO': '🍱', 'CENA': '🍽️', 'TÉ': '🍵', 'AGUA': '💧',
+
+                // Animales
+                'PERRO': '🐶', 'GATO': '🐱', 'PAJARO': '🐦', 'PÁJARO': '🐦', 'PEZ': '🐟', 'CABALLO': '🐴',
+                'VACA': '🐮', 'MARIPOSA': '🦋',
+
+                // Naturaleza y Clima
+                'SOL': '☀️', 'LUNA': '🌙', 'NUBE': '☁️', 'LLUVIA': '🌧️', 'ARBOL': '🌳', 'ÁRBOL': '🌳',
+                'FLOR': '🌸', 'PLANTA': '🌱', 'DIA': '☀️', 'DÍA': '☀️', 'NOCHE': '🌙',
+
+                // Emociones y Objetos varios
+                'FELIZ': '😊', 'TRISTE': '😢', 'ENOJADO': '😡', 'CANSADO': '😴', 'BIEN': '👍', 'MAL': '👎',
+                'AUTO': '🚗', 'COLECTIVO': '🚌', 'BICI': '🚲', 'PELOTA': '⚽', 'JUGUETE': '🧸', 'RELOJ': '⏰'
             };
 
             const words = rawText.trim().split(/\s+/);
@@ -162,10 +192,21 @@
                 card.className = "flex flex-col items-center justify-between bg-white border border-slate-200 rounded-xl p-3 shadow-xs w-28 h-28";
 
                 const iconBox = document.createElement('div');
-                iconBox.className = "text-3xl flex items-center justify-center h-16 w-16 bg-indigo-50 rounded-xl mb-1";
+                iconBox.className = "text-4xl flex items-center justify-center h-16 w-16 bg-indigo-50 rounded-xl mb-1";
                 
-                // Muestra el icono asignado o un bloque pedagógico por defecto
-                iconBox.innerText = iconMap[cleanWord] || '🧩';
+                let selectedIcon = iconMap[cleanWord];
+                
+                if (!selectedIcon) {
+                    // Artículos, preposiciones y conectores
+                    if (['EL', 'LA', 'LOS', 'LAS', 'UN', 'UNA', 'UNOS', 'UNAS', 'DE', 'DEL', 'EN', 'Y', 'A', 'SU', 'SUS', 'CON', 'PARA', 'POR', 'O'].includes(cleanWord)) {
+                        selectedIcon = '🔹';
+                    } else {
+                        // Icono comodín para cualquier otra palabra no mapeada
+                        selectedIcon = '📌'; 
+                    }
+                }
+
+                iconBox.innerText = selectedIcon;
 
                 const label = document.createElement('span');
                 label.className = "text-xs font-bold text-slate-700 text-center truncate w-full uppercase";
