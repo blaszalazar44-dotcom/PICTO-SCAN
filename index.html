@@ -127,7 +127,7 @@
             }
         }
 
-        // Procesador con Diccionario Pedagógico Corregido (Adjetivos basados en escala y cualidad directa)
+        // Procesador principal con diccionario y soporte universal
         function processText() {
             const rawText = document.getElementById('manualText').value;
             const upperText = rawText.toUpperCase();
@@ -142,30 +142,16 @@
                 return;
             }
 
-            // Diccionario con conceptos claros y directos para evitar confusiones cognitivas
             const iconMap = {
-                // ANIMALES REALES
                 'OSO': '🐻', 'OSOS': '🐻', 'PERRO': '🐶', 'GATO': '🐱', 'PAJARO': '🐦', 'PÁJARO': '🐦',
                 'LEON': '🦁', 'LEÓN': '🦁', 'ELEFANTE': '🐘', 'MONO': '🐒', 'VACA': '🐮', 'CABALLO': '🐴',
                 'PEZ': '🐟', 'TIBURON': '🦈', 'MARIPOSA': '🦋', 'PATO': '🦆',
 
-                // ADJETIVOS Y CUALIDADES (Corregidos a símbolos de escala y estado puro)
                 'GRANDE': '🔲', 'GRANDES': '🔲', 'CHICO': '▪️', 'CHICA': '▪️', 'PEQUEÑO': '▫️', 'PEQUEÑA': '▫️',
                 'ALTO': '📶', 'ALTA': '📶', 'BAJO': '📉', 'BAJA': '📉', 'LARGO': '📏', 'CORTO': '✂️',
                 'CALIENTE': '♨️', 'FRIO': '❄️', 'FRÍO': '❄️', 'LIMPIO': '✨', 'LIMPIA': '✨', 'SUCIO': '🟤', 'SUCIA': '🟤',
                 'NUEVO': '🆕', 'NUEVA': '🆕', 'VIEJO': '📦', 'VIEJA': '📦', 'RAPIDO': '⚡', 'RÁPIDO': '⚡',
                 'LENTO': '🐢', 'LENTA': '🐢', 'LLENO': '🫙', 'VACIO': '⭕', 'VACÍO': '⭕', 'BONITO': '🌸', 'HERMOSO': '✨',
 
-                // EMOCIONES Y ESTADOS ANÍMICOS
                 'FELIZ': '😊', 'CONTENTO': '😊', 'CONTENTA': '😊', 'TRISTE': '😢', 'ENOJADO': '😡', 'ENOJADA': '😡',
-                'CANSADO': '🥱', 'CANSADA': '🥱', 'ENFERMO': '🤒', 'ENFERMA': '🤒', 'ASUSTADO': '😨',
-
-                // FAMILIA Y PERSONAS
-                'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'MADRE': '👩', 'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦', 'PADRE': '👨',
-                'HERMANO': '👦', 'HERMANA': '👧', 'HIJO': '👦', 'HIJA': '👧', 'BEBE': '👶', 'BEBÉ': '👶',
-                'NENE': '👦', 'NENA': '👧', 'NIÑO': '👦', 'NIÑA': '👧', 'ABUELA': '👵', 'ABUELO': '👴',
-                'AMIGO': '🤝', 'AMIGOS': '👥', 'MAESTRA': '👩‍🏫', 'MAESTRO': '🧑‍🏫', 'PROFE': '🧑‍🏫',
-
-                // CASA Y ENTORNOS
-                'CASA': '🏠', 'ROPA': '👕', 'JARDIN': '🌳', 'JARDÍN': '🌳', 'PATIO': '🏡', 'PUERTA': '🚪',
-                'VENTANA': '🪟', 'MESA': '🪵', 'SILLA': '🪑', 'CAMA
+                'CANSADO': '🥱', 'CANSADA': '🥱', 'ENFERMO': '🤒', 'ENFERMA
