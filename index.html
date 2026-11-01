@@ -84,7 +84,7 @@
                 <p id="uppercaseOutput" class="text-lg font-bold text-indigo-900 tracking-wide min-h-[1.75rem]">-</p>
             </div>
 
-            <!-- Contenedor de Pictogramas con Emojis -->
+            <!-- Contenedor de Pictogramas -->
             <div class="flex flex-col gap-2">
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Secuencia visual:</span>
                 <div id="pictogramsContainer" class="flex flex-wrap gap-3 min-h-[100px] items-center p-4 bg-indigo-50/30 rounded-xl border border-indigo-100">
@@ -127,7 +127,7 @@
             }
         }
 
-        // Procesador de texto con Diccionario Ampliado de Emojis
+        // Procesador con Soporte Extendido de Adjetivos y Cualidades
         function processText() {
             const rawText = document.getElementById('manualText').value;
             const upperText = rawText.toUpperCase();
@@ -142,44 +142,36 @@
                 return;
             }
 
-            // Diccionario amplio de emojis pedagógicos
+            // Diccionario con Adjetivos, Tamaños, Estados y Conceptos Abstractos
             const iconMap = {
-                // Familia y Personas
+                // ADJETIVOS Y CUALIDADES (Dimensión, Estado y Propiedad)
+                'GRANDE': '🐘', 'GRANDES': '🐘', 'CHICO': '🐜', 'CHICA': '🐜', 'PEQUEÑO': '🔹', 'PEQUEÑA': '🔹',
+                'ALTO': '⬆️', 'ALTA': '⬆️', 'BAJO': '⬇️', 'BAJA': '⬇️', 'LARGO': '📏', 'CORTO': '✂️',
+                'CALIENTE': '🔥', 'FRIO': '❄️', 'FRÍO': '❄️', 'LIMPIO': '✨', 'LIMPIA': '✨', 'SUCIO': '🟤', 'SUCIA': '🟤',
+                'NUEVO': '🆕', 'NUEVA': '🆕', 'VIEJO': '📦', 'VIEJA': '📦', 'RAPIDO': '⚡', 'RÁPIDO': '⚡',
+                'LENTO': '🐢', 'LENTA': '🐢', 'LLENO': '🫙', 'VACIO': '⭕', 'VACÍO': '⭕', 'BONITO': '🌸', 'HERMOSO': '✨',
+
+                // EMOCIONES Y ESTADOS ANÍMICOS
+                'FELIZ': '😊', 'CONTENTO': '😊', 'CONTENTA': '😊', 'TRISTE': '😢', 'ENOJADO': '😡', 'ENOJADA': '😡',
+                'CANSADO': '🥱', 'CANSADA': '🥱', 'ENFERMO': '🤒', 'ENFERMA': '🤒', 'ASUSTADO': '😨',
+
+                // FAMILIA Y PERSONAS
                 'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'MADRE': '👩', 'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦', 'PADRE': '👨',
                 'HERMANO': '👦', 'HERMANA': '👧', 'HIJO': '👦', 'HIJA': '👧', 'BEBE': '👶', 'BEBÉ': '👶',
                 'NENE': '👦', 'NENA': '👧', 'NIÑO': '👦', 'NIÑA': '👧', 'ABUELA': '👵', 'ABUELO': '👴',
                 'AMIGO': '🤝', 'AMIGOS': '👥', 'MAESTRA': '👩‍🏫', 'MAESTRO': '🧑‍🏫', 'PROFE': '🧑‍🏫',
 
-                // Casa y Rutina
+                // CASA Y ENTORNOS
                 'CASA': '🏠', 'ROPA': '👕', 'JARDIN': '🌳', 'JARDÍN': '🌳', 'PATIO': '🏡', 'PUERTA': '🚪',
                 'VENTANA': '🪟', 'MESA': '🪵', 'SILLA': '🪑', 'CAMA': '🛏️', 'COCINA': '🍳', 'BAÑO': '🚽',
-                'JABON': '🧼', 'JABÓN': '🧼', 'AGUA': '💧', 'DIENTES': '🪥', 'CEPILLO': '🪥',
 
-                // Acciones y Verbos
+                // ACCIONES Y VERBOS
                 'TIENDE': '🧺', 'AYUDA': '🤝', 'JUEGA': '⚽', 'CORRE': '🏃‍♂️', 'COME': '🍽️', 'BEBE': '🥤',
                 'DUERME': '😴', 'LEE': '📖', 'ESCRIBE': '✏️', 'CANTA': '🎤', 'ESTUDIA': '📚', 'TRABAJA': '💻',
-                'CAMINA': '🚶‍♂️', 'SALTA': '🤸‍♂️', 'PINTA': '🎨', 'DIBUJA': '✏️', 'LAVA': '🧼', 'LAVAR': '🧼',
 
-                // Escuela y Materiales
-                'ESCUELA': '🏫', 'COLEGIO': '🏫', 'AULA': '🏫', 'LIBRO': '📖', 'CUADERNO': '📓', 'LAPIZ': '✏️',
-                'LÁPIZ': '✏️', 'MOCHILA': '🎒', 'PAPEL': '📄', 'TIJERA': '✂️', 'PEGAMENTO': '🧴', 'COMPU': '💻',
-                'MUSICA': '🎵', 'MÚSICA': '🎵', 'PINCEL': '🖌️', 'HOJA': '🍃',
-
-                // Alimentos
-                'MANZANA': '🍎', 'BANANA': '🍌', 'PAN': '🍞', 'LECHE': '🥛', 'GALLETA': '🍪', 'GALLETITA': '🍪',
-                'FRUTA': '🍉', 'COMIDA': '🍲', 'ALMUERZO': '🍱', 'CENA': '🍽️', 'TÉ': '🍵', 'AGUA': '💧',
-
-                // Animales
-                'PERRO': '🐶', 'GATO': '🐱', 'PAJARO': '🐦', 'PÁJARO': '🐦', 'PEZ': '🐟', 'CABALLO': '🐴',
-                'VACA': '🐮', 'MARIPOSA': '🦋',
-
-                // Naturaleza y Clima
-                'SOL': '☀️', 'LUNA': '🌙', 'NUBE': '☁️', 'LLUVIA': '🌧️', 'ARBOL': '🌳', 'ÁRBOL': '🌳',
-                'FLOR': '🌸', 'PLANTA': '🌱', 'DIA': '☀️', 'DÍA': '☀️', 'NOCHE': '🌙',
-
-                // Emociones y Objetos varios
-                'FELIZ': '😊', 'TRISTE': '😢', 'ENOJADO': '😡', 'CANSADO': '😴', 'BIEN': '👍', 'MAL': '👎',
-                'AUTO': '🚗', 'COLECTIVO': '🚌', 'BICI': '🚲', 'PELOTA': '⚽', 'JUGUETE': '🧸', 'RELOJ': '⏰'
+                // OBJETOS Y UTAS ESCOLARES
+                'ESCUELA': '🏫', 'COLEGIO': '🏫', 'LIBRO': '📖', 'CUADERNO': '📓', 'LAPIZ': '✏️', 'LÁPIZ': '✏️',
+                'MOCHILA': '🎒', 'PAPEL': '📄', 'TIJERA': '✂️', 'COMPU': '💻', 'PELOTA': '⚽', 'AUTO': '🚗'
             };
 
             const words = rawText.trim().split(/\s+/);
@@ -197,11 +189,9 @@
                 let selectedIcon = iconMap[cleanWord];
                 
                 if (!selectedIcon) {
-                    // Artículos, preposiciones y conectores
-                    if (['EL', 'LA', 'LOS', 'LAS', 'UN', 'UNA', 'UNOS', 'UNAS', 'DE', 'DEL', 'EN', 'Y', 'A', 'SU', 'SUS', 'CON', 'PARA', 'POR', 'O'].includes(cleanWord)) {
+                    if (['EL', 'LA', 'LOS', 'LAS', 'UN', 'UNA', 'UNOS', 'UNAS', 'DE', 'DEL', 'EN', 'Y', 'A', 'SU', 'SUS', 'CON', 'PARA', 'ES', 'SON', 'ESTA', 'ESTÁ'].includes(cleanWord)) {
                         selectedIcon = '🔹';
                     } else {
-                        // Icono comodín para cualquier otra palabra no mapeada
                         selectedIcon = '📌'; 
                     }
                 }
