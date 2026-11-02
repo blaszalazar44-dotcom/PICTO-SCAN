@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PictoScan - Escáner y Traductor a Pictogramas</title>
+    <title>PictoScan - Traductor a Pictogramas ARASAAC</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Tesseract.js para OCR -->
@@ -22,10 +22,10 @@
                 <span class="text-3xl">🧩</span>
                 <div>
                     <h1 class="text-2xl font-extrabold tracking-tight">PictoScan</h1>
-                    <p class="text-indigo-100 text-xs sm:text-sm">Escaneo inclusivo, mayúsculas y apoyos visuales</p>
+                    <p class="text-indigo-100 text-xs sm:text-sm">Traductor oficial con Pictogramas ARASAAC</p>
                 </div>
             </div>
-            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Web MVP</span>
+            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión ARASAAC</span>
         </div>
     </header>
 
@@ -47,7 +47,7 @@
                     <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="handleImage(event)">
                 </label>
 
-                <!-- Área de texto manual (CONECTADA CORRECTAMENTE A oninput) -->
+                <!-- Área de texto manual -->
                 <div class="flex flex-col gap-2">
                     <label for="manualText" class="text-xs font-semibold text-slate-600 uppercase tracking-wider">O escribí/pegá el texto acá:</label>
                     <textarea id="manualText" rows="3" class="w-full border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Escribí una oración..." oninput="processText()"></textarea>
@@ -71,7 +71,7 @@
         <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col gap-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                 <h2 class="text-lg font-bold text-slate-700 flex items-center gap-2">
-                    <span>🖼️</span> 2. Traducción Visual y Mayúsculas
+                    <span>🖼️</span> 2. Traducción a Pictogramas ARASAAC
                 </h2>
                 <button onclick="speakText()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition shadow-sm cursor-pointer">
                     <span>🔊</span> Escuchar oración
@@ -84,11 +84,11 @@
                 <p id="uppercaseOutput" class="text-lg font-bold text-indigo-900 tracking-wide min-h-[1.75rem]">-</p>
             </div>
 
-            <!-- Contenedor de Pictogramas -->
+            <!-- Contenedor de Pictogramas ARASAAC -->
             <div class="flex flex-col gap-2">
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Secuencia visual:</span>
-                <div id="pictogramsContainer" class="flex flex-wrap gap-3 min-h-[100px] items-center p-4 bg-indigo-50/30 rounded-xl border border-indigo-100">
-                    <p class="text-slate-400 text-sm italic w-full text-center">Los pictogramas aparecerán aquí al ingresar o escanear texto...</p>
+                <div id="pictogramsContainer" class="flex flex-wrap gap-3 min-h-[120px] items-center p-4 bg-indigo-50/30 rounded-xl border border-indigo-100">
+                    <p class="text-slate-400 text-sm italic w-full text-center">Los pictogramas de ARASAAC aparecerán aquí...</p>
                 </div>
             </div>
         </section>
@@ -97,7 +97,7 @@
 
     <!-- Pie de página -->
     <footer class="bg-white border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-500">
-        PictoScan • Diseñado para la inclusión educativa y el apoyo visual abierto y accesible.
+        PictoScan • Con tecnología de pictogramas ARASAAC (CC BY-NC-SA).
     </footer>
 
     <!-- Lógica de la Aplicación -->
@@ -127,8 +127,16 @@
             }
         }
 
-        // Procesador principal con diccionario pedagógico robusto
-        function processText() {
+        // Diccionario de IDs oficiales directos de ARASAAC para máxima velocidad y precisión
+        const arasaacDirectMap = {
+            'OSO': 2645, 'PERRO': 2690, 'GATO': 2631, 'CASA': 2452,
+            'CAFE': 2915, 'CAFÉ': 2915, 'AGUA': 2471, 'MAMA': 2503, 'MAMÁ': 2503,
+            'PAPA': 2479, 'PAPÁ': 2479, 'ESCUELA': 2492, 'COLEGIO': 2492,
+            'FELIZ': 2824, 'CONTENTO': 2824, 'TRISTE': 2826, 'GRANDE': 3424, 'CHICO': 3719
+        };
+
+        // Procesador principal con ARASAAC
+        async function processText() {
             const rawText = document.getElementById('manualText').value;
             const upperText = rawText.toUpperCase();
             
@@ -138,49 +146,9 @@
             container.innerHTML = "";
 
             if (!rawText.trim()) {
-                container.innerHTML = '<p class="text-slate-400 text-sm italic w-full text-center">Los pictogramas aparecerán aquí al ingresar o escanear texto...</p>';
+                container.innerHTML = '<p class="text-slate-400 text-sm italic w-full text-center">Los pictogramas de ARASAAC aparecerán aquí...</p>';
                 return;
             }
-
-            const iconMap = {
-                // ANIMALES
-                'OSO': '🐻', 'OSOS': '🐻', 'PERRO': '🐶', 'GATO': '🐱', 'PAJARO': '🐦', 'PÁJARO': '🐦',
-                'LEON': '🦁', 'LEÓN': '🦁', 'ELEFANTE': '🐘', 'MONO': '🐒', 'VACA': '🐮', 'CABALLO': '🐴',
-                'PEZ': '🐟', 'TIBURON': '🦈', 'MARIPOSA': '🦋', 'PATO': '🦆',
-
-                // ALIMENTOS Y BEBIDAS
-                'CAFE': '☕', 'CAFÉ': '☕', 'AGUA': '💧', 'LECHE': '🥛', 'MATE': '🧉', 'JUGO': '🧃',
-                'PAN': '🍞', 'MANZANA': '🍎', 'BANANA': '🍌', 'GALLETA': '🍪', 'GALLETITA': '🍪', 'COMIDA': '🍲',
-
-                // ADJETIVOS Y CUALIDADES
-                'GRANDE': '🔲', 'GRANDES': '🔲', 'CHICO': '▪️', 'CHICA': '▪️', 'PEQUEÑO': '▫️', 'PEQUEÑA': '▫️',
-                'ALTO': '📶', 'ALTA': '📶', 'BAJO': '📉', 'BAJA': '📉', 'LARGO': '📏', 'CORTO': '✂️',
-                'CALIENTE': '♨️', 'FRIO': '❄️', 'FRÍO': '❄️', 'LIMPIO': '✨', 'LIMPIA': '✨', 'SUCIO': '🟤', 'SUCIA': '🟤',
-                'NUEVO': '🆕', 'NUEVA': '🆕', 'VIEJO': '📦', 'VIEJA': '📦', 'RAPIDO': '⚡', 'RÁPIDO': '⚡',
-                'LENTO': '🐢', 'LENTA': '🐢', 'LLENO': '🫙', 'VACIO': '⭕', 'VACÍO': '⭕', 'BONITO': '🌸', 'HERMOSO': '✨',
-
-                // EMOCIONES Y ESTADOS
-                'FELIZ': '😊', 'CONTENTO': '😊', 'CONTENTA': '😊', 'TRISTE': '😢', 'ENOJADO': '😡', 'ENOJADA': '😡',
-                'CANSADO': '🥱', 'CANSADA': '🥱', 'ENFERMO': '🤒', 'ENFERMA': '🤒', 'ASUSTADO': '😨',
-
-                // FAMILIA Y PERSONAS
-                'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'MADRE': '👩', 'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦', 'PADRE': '👨',
-                'HERMANO': '👦', 'HERMANA': '👧', 'HIJO': '👦', 'HIJA': '👧', 'BEBE': '👶', 'BEBÉ': '👶',
-                'NENE': '👦', 'NENA': '👧', 'NIÑO': '👦', 'NIÑA': '👧', 'ABUELA': '👵', 'ABUELO': '👴',
-                'AMIGO': '🤝', 'AMIGOS': '👥', 'MAESTRA': '👩‍🏫', 'MAESTRO': '🧑‍🏫', 'PROFE': '🧑‍🏫',
-
-                // CASA Y ENTORNOS
-                'CASA': '🏠', 'ROPA': '👕', 'JARDIN': '🌳', 'JARDÍN': '🌳', 'PATIO': '🏡', 'PUERTA': '🚪',
-                'VENTANA': '🪟', 'MESA': '🪵', 'SILLA': '🪑', 'CAMA': '🛏️', 'COCINA': '🍳', 'BAÑO': '🚽',
-
-                // ACCIONES Y VERBOS
-                'GUSTA': '❤️', 'GUSTAN': '❤️', 'TIENDE': '🧺', 'AYUDA': '🤝', 'JUEGA': '⚽', 'CORRE': '🏃‍♂️', 'COME': '🍽️', 'BEBE': '🥤',
-                'DUERME': '😴', 'LEE': '📖', 'ESCRIBE': '✏️', 'CANTA': '🎤', 'ESTUDIA': '📚', 'TRABAJA': '💻',
-
-                // OBJETOS Y ÚTILES ESCOLARES
-                'ESCUELA': '🏫', 'COLEGIO': '🏫', 'LIBRO': '📖', 'CUADERNO': '📓', 'LAPIZ': '✏️', 'LÁPIZ': '✏️',
-                'MOCHILA': '🎒', 'PAPEL': '📄', 'TIJERA': '✂️', 'COMPU': '💻', 'PELOTA': '⚽', 'AUTO': '🚗'
-            };
 
             const words = rawText.trim().split(/\s+/);
 
@@ -188,29 +156,44 @@
                 const cleanWord = word.replace(/[.,\/#$%\^&\*;:{}=\-_`~()?¿¡]/g, "").toUpperCase();
                 if (!cleanWord) continue;
 
+                // Crear tarjeta visual para el pictograma
                 const card = document.createElement('div');
-                card.className = "flex flex-col items-center justify-between bg-white border border-slate-200 rounded-xl p-3 shadow-xs w-28 h-28";
+                card.className = "flex flex-col items-center justify-between bg-white border border-slate-200 rounded-xl p-3 shadow-xs w-28 h-32";
 
-                const iconBox = document.createElement('div');
-                iconBox.className = "text-4xl flex items-center justify-center h-16 w-16 bg-indigo-50 rounded-xl mb-1";
-                
-                let selectedIcon = iconMap[cleanWord];
-                
-                if (!selectedIcon) {
-                    if (['ME', 'TE', 'LE', 'NOS', 'LES', 'EL', 'LA', 'LOS', 'LAS', 'UN', 'UNA', 'UNOS', 'UNAS', 'DE', 'DEL', 'EN', 'Y', 'A', 'SU', 'SUS', 'CON', 'PARA', 'ES', 'SON', 'ESTA', 'ESTÁ'].includes(cleanWord)) {
-                        selectedIcon = '🔹';
+                const imgBox = document.createElement('div');
+                imgBox.className = "flex items-center justify-center h-20 w-20 bg-indigo-50/50 rounded-xl mb-1 p-1";
+
+                // Si es un conector o artículo común, ponemos un indicador sutil
+                if (['ME', 'TE', 'LE', 'NOS', 'EL', 'LA', 'LOS', 'LAS', 'UN', 'UNA', 'DE', 'DEL', 'EN', 'Y', 'A', 'CON', 'PARA', 'ES', 'SON'].includes(cleanWord)) {
+                    imgBox.innerHTML = '<span class="text-2xl font-bold text-indigo-400">▪️</span>';
+                } else {
+                    // Verificamos si tenemos un ID directo o consultamos la API de ARASAAC
+                    let pictoId = arasaacDirectMap[cleanWord];
+
+                    const img = document.createElement('img');
+                    img.className = "max-h-full max-w-full object-contain";
+                    img.alt = cleanWord;
+
+                    if (pictoId) {
+                        img.src = `https://api.arasaac.org/api/pictograms/${pictoId}`;
+                        imgBox.appendChild(img);
                     } else {
-                        selectedIcon = '🧩'; 
+                        // Búsqueda dinámica en la API de ARASAAC en español
+                        img.src = `https://api.arasaac.org/api/pictograms/es/search/${encodeURIComponent(cleanWord.toLowerCase())}`;
+                        
+                        // Manejo por si la API tarda o no encuentra el término exacto
+                        img.onerror = () => {
+                            imgBox.innerHTML = '<span class="text-2xl">🧩</span>';
+                        };
+                        imgBox.appendChild(img);
                     }
                 }
 
-                iconBox.innerText = selectedIcon;
-
                 const label = document.createElement('span');
-                label.className = "text-xs font-bold text-slate-700 text-center truncate w-full uppercase";
+                label.className = "text-xs font-bold text-slate-700 text-center truncate w-full uppercase mt-1";
                 label.innerText = cleanWord;
 
-                card.appendChild(iconBox);
+                card.appendChild(imgBox);
                 card.appendChild(label);
                 container.appendChild(card);
             }
