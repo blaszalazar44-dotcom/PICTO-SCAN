@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PictoScan - Escáner y Traductor a Pictogramas</title>
-    <!-- Tailwind CSS para diseño accesible y responsivo -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- Tesseract.js para el reconocimiento óptico de caracteres (OCR) -->
+    <!-- Tesseract.js para OCR -->
     <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+    <!-- Emoji Picker Component para acceso universal a emojis -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1/index.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
         body { font-family: 'Montserrat', sans-serif; }
@@ -22,7 +24,7 @@
                 <span class="text-3xl">🧩</span>
                 <div>
                     <h1 class="text-2xl font-extrabold tracking-tight">PictoScan</h1>
-                    <p class="text-indigo-100 text-xs sm:text-sm">Escaneo inclusivo, mayúsculas y apoyos visuales</p>
+                    <p class="text-indigo-100 text-xs sm:text-sm">Escaneo inclusivo, mayúsculas y apoyo visual</p>
                 </div>
             </div>
             <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Web MVP</span>
@@ -54,7 +56,7 @@
                 </div>
             </div>
 
-            <!-- Vista previa de la imagen y carga de OCR -->
+            <!-- Vista previa de OCR -->
             <div id="statusContainer" class="hidden flex flex-col items-center gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
                 <img id="imagePreview" class="max-h-40 rounded-lg shadow-sm object-contain" alt="Vista previa">
                 <div id="ocrLoading" class="flex items-center gap-2 text-indigo-600 font-semibold text-sm">
@@ -68,14 +70,24 @@
         </section>
 
         <!-- Panel de Resultado -->
-        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col gap-4">
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col gap-4 relative">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                 <h2 class="text-lg font-bold text-slate-700 flex items-center gap-2">
                     <span>🖼️</span> 2. Traducción Visual y Mayúsculas
                 </h2>
-                <button onclick="speakText()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition shadow-sm cursor-pointer">
-                    <span>🔊</span> Escuchar oración
-                </button>
+                <div class="flex gap-2">
+                    <button onclick="toggleEmojiPicker()" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1 transition shadow-xs cursor-pointer">
+                        <span>🔍</span> Buscar Emojis
+                    </button>
+                    <button onclick="speakText()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition shadow-sm cursor-pointer">
+                        <span>🔊</span> Escuchar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Desplegable del Buscador Universal de Emojis -->
+            <div id="emojiPickerContainer" class="hidden absolute right-5 top-16 z-50 shadow-2xl rounded-2xl overflow-hidden border border-slate-200">
+                <emoji-picker id="picker" class="light"></emoji-picker>
             </div>
 
             <!-- Texto en Mayúsculas -->
@@ -97,11 +109,13 @@
 
     <!-- Pie de página -->
     <footer class="bg-white border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-500">
-        PictoScan • Diseñado para la inclusión educativa y el apoyo visual abierto y accesible.
+        PictoScan • Diseñado para la inclusión educativa y el apoyo visual accesible.
     </footer>
 
     <!-- Lógica de la Aplicación -->
     <script>
+        let selectedBoxForManualEmoji = null;
+
         // OCR con Tesseract.js
         async function handleImage(event) {
             const file = event.target.files[0];
@@ -120,115 +134,20 @@
                 document.getElementById('manualText').value = text.trim();
                 processText();
             } catch (error) {
-                alert("Hubo un error al leer la imagen. Intentá con otra foto más clara.");
+                alert("Hubo un error al leer la imagen.");
                 console.error(error);
             } finally {
                 document.getElementById('ocrLoading').style.display = 'none';
             }
         }
 
-        // Procesador principal con categorías ampliadas
-        function processText() {
-            const rawText = document.getElementById('manualText').value;
-            const upperText = rawText.toUpperCase();
-            
-            document.getElementById('uppercaseOutput').innerText = upperText || "-";
-
-            const container = document.getElementById('pictogramsContainer');
-            container.innerHTML = "";
-
-            if (!rawText.trim()) {
-                container.innerHTML = '<p class="text-slate-400 text-sm italic w-full text-center">Los pictogramas aparecerán aquí al ingresar o escanear texto...</p>';
-                return;
-            }
-
-            // Diccionario ampliado y categorizado pedagógicamente
-            const iconMap = {
-                // ANIMALES
-                'OSO': '🐻', 'OSOS': '🐻', 'PERRO': '🐶', 'GATO': '🐱', 'PAJARO': '🐦', 'PÁJARO': '🐦',
-                'LEON': '🦁', 'LEÓN': '🦁', 'ELEFANTE': '🐘', 'MONO': '🐒', 'VACA': '🐮', 'CABALLO': '🐴',
-                'PEZ': '🐟', 'TIBURON': '🦈', 'MARIPOSA': '🦋', 'PATO': '🦆',
-
-                // ALIMENTOS Y BEBIDAS (Incluyendo Café)
-                'CAFE': '☕', 'CAFÉ': '☕', 'AGUA': '💧', 'LECHE': '🥛', 'MATE': '🧉', 'JUGO': '🧃',
-                'PAN': '🍞', 'MANZANA': '🍎', 'BANANA': '🍌', 'GALLETA': '🍪', 'GALLETITA': '🍪', 'COMIDA': '🍲',
-
-                // ADJETIVOS Y CUALIDADES (Escalas y símbolos limpios)
-                'GRANDE': '🔲', 'GRANDES': '🔲', 'CHICO': '▪️', 'CHICA': '▪️', 'PEQUEÑO': '▫️', 'PEQUEÑA': '▫️',
-                'ALTO': '📶', 'ALTA': '📶', 'BAJO': '📉', 'BAJA': '📉', 'LARGO': '📏', 'CORTO': '✂️',
-                'CALIENTE': '♨️', 'FRIO': '❄️', 'FRÍO': '❄️', 'LIMPIO': '✨', 'LIMPIA': '✨', 'SUCIO': '🟤', 'SUCIA': '🟤',
-                'NUEVO': '🆕', 'NUEVA': '🆕', 'VIEJO': '📦', 'VIEJA': '📦', 'RAPIDO': '⚡', 'RÁPIDO': '⚡',
-                'LENTO': '🐢', 'LENTA': '🐢', 'LLENO': '🫙', 'VACIO': '⭕', 'VACÍO': '⭕', 'BONITO': '🌸', 'HERMOSO': '✨',
-
-                // EMOCIONES Y ESTADOS
-                'FELIZ': '😊', 'CONTENTO': '😊', 'CONTENTA': '😊', 'TRISTE': '😢', 'ENOJADO': '😡', 'ENOJADA': '😡',
-                'CANSADO': '🥱', 'CANSADA': '🥱', 'ENFERMO': '🤒', 'ENFERMA': '🤒', 'ASUSTADO': '😨',
-
-                // FAMILIA Y PERSONAS
-                'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'MADRE': '👩', 'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦', 'PADRE': '👨',
-                'HERMANO': '👦', 'HERMANA': '👧', 'HIJO': '👦', 'HIJA': '👧', 'BEBE': '👶', 'BEBÉ': '👶',
-                'NENE': '👦', 'NENA': '👧', 'NIÑO': '👦', 'NIÑA': '👧', 'ABUELA': '👵', 'ABUELO': '👴',
-                'AMIGO': '🤝', 'AMIGOS': '👥', 'MAESTRA': '👩‍🏫', 'MAESTRO': '🧑‍🏫', 'PROFE': '🧑‍🏫',
-
-                // CASA Y ENTORNOS
-                'CASA': '🏠', 'ROPA': '👕', 'JARDIN': '🌳', 'JARDÍN': '🌳', 'PATIO': '🏡', 'PUERTA': '🚪',
-                'VENTANA': '🪟', 'MESA': '🪵', 'SILLA': '🪑', 'CAMA': '🛏️', 'COCINA': '🍳', 'BAÑO': '🚽',
-
-                // ACCIONES Y VERBOS
-                'TIENDE': '🧺', 'AYUDA': '🤝', 'JUEGA': '⚽', 'CORRE': '🏃‍♂️', 'COME': '🍽️', 'BEBE': '🥤',
-                'DUERME': '😴', 'LEE': '📖', 'ESCRIBE': '✏️', 'CANTA': '🎤', 'ESTUDIA': '📚', 'TRABAJA': '💻',
-
-                // OBJETOS Y ÚTILES ESCOLARES
-                'ESCUELA': '🏫', 'COLEGIO': '🏫', 'LIBRO': '📖', 'CUADERNO': '📓', 'LAPIZ': '✏️', 'LÁPIZ': '✏️',
-                'MOCHILA': '🎒', 'PAPEL': '📄', 'TIJERA': '✂️', 'COMPU': '💻', 'PELOTA': '⚽', 'AUTO': '🚗'
-            };
-
-            const words = rawText.trim().split(/\s+/);
-
-            for (let word of words) {
-                const cleanWord = word.replace(/[.,\/#$%\^&\*;:{}=\-_`~()?¿¡]/g, "").toUpperCase();
-                if (!cleanWord) continue;
-
-                const card = document.createElement('div');
-                card.className = "flex flex-col items-center justify-between bg-white border border-slate-200 rounded-xl p-3 shadow-xs w-28 h-28";
-
-                const iconBox = document.createElement('div');
-                iconBox.className = "text-4xl flex items-center justify-center h-16 w-16 bg-indigo-50 rounded-xl mb-1";
-                
-                let selectedIcon = iconMap[cleanWord];
-                
-                if (!selectedIcon) {
-                    // Si son artículos o conectores, usamos el conector visual neutro
-                    if (['EL', 'LA', 'LOS', 'LAS', 'UN', 'UNA', 'UNOS', 'UNAS', 'DE', 'DEL', 'EN', 'Y', 'A', 'SU', 'SUS', 'CON', 'PARA', 'ES', 'SON', 'ESTA', 'ESTÁ'].includes(cleanWord)) {
-                        selectedIcon = '🔹';
-                    } else {
-                        // En lugar de una varita u objetos raros, si no se encuentra la palabra usamos un bloque de texto claro o signo neutro
-                        selectedIcon = '🧩'; 
-                    }
-                }
-
-                iconBox.innerText = selectedIcon;
-
-                const label = document.createElement('span');
-                label.className = "text-xs font-bold text-slate-700 text-center truncate w-full uppercase";
-                label.innerText = cleanWord;
-
-                card.appendChild(iconBox);
-                card.appendChild(label);
-                container.appendChild(card);
-            }
+        // Mostrar / Ocultar buscador de emojis
+        function toggleEmojiPicker() {
+            const picker = document.getElementById('emojiPickerContainer');
+            picker.classList.toggle('hidden');
         }
 
-        // Síntesis de voz (Text-to-Speech)
-        function speakText() {
-            const text = document.getElementById('uppercaseOutput').innerText;
-            if (!text || text === "-") return;
-
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'es-AR';
-            utterance.rate = 0.9;
-            window.speechSynthesis.speak(utterance);
-        }
-    </script>
-</body>
-</html>
+        // Event listener para cuando elegís un emoji del buscador universal
+        document.addEventListener('DOMContentLoaded', () => {
+            const picker = document.getElementById('picker');
+            if
