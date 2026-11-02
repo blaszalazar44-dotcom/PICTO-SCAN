@@ -47,7 +47,7 @@
                     <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="handleImage(event)">
                 </label>
 
-                <!-- Área de texto manual -->
+                <!-- Área de texto manual (CONECTADA CORRECTAMENTE A oninput) -->
                 <div class="flex flex-col gap-2">
                     <label for="manualText" class="text-xs font-semibold text-slate-600 uppercase tracking-wider">O escribí/pegá el texto acá:</label>
                     <textarea id="manualText" rows="3" class="w-full border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Escribí una oración..." oninput="processText()"></textarea>
@@ -102,7 +102,7 @@
 
     <!-- Lógica de la Aplicación -->
     <script>
-        // OCR con Tesseract.js (Optimizado y directo)
+        // OCR con Tesseract.js
         async function handleImage(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -113,4 +113,119 @@
             document.getElementById('ocrLoading').style.display = 'flex';
 
             try {
-                const { data: { text } } = await T
+                const { data: { text } } = await Tesseract.recognize(file, 'spa', {
+                    logger: m => console.log(m)
+                });
+
+                document.getElementById('manualText').value = text.trim();
+                processText();
+            } catch (error) {
+                alert("Hubo un error al leer la imagen. Intentá con otra foto más clara.");
+                console.error(error);
+            } finally {
+                document.getElementById('ocrLoading').style.display = 'none';
+            }
+        }
+
+        // Procesador principal con diccionario pedagógico robusto
+        function processText() {
+            const rawText = document.getElementById('manualText').value;
+            const upperText = rawText.toUpperCase();
+            
+            document.getElementById('uppercaseOutput').innerText = upperText || "-";
+
+            const container = document.getElementById('pictogramsContainer');
+            container.innerHTML = "";
+
+            if (!rawText.trim()) {
+                container.innerHTML = '<p class="text-slate-400 text-sm italic w-full text-center">Los pictogramas aparecerán aquí al ingresar o escanear texto...</p>';
+                return;
+            }
+
+            const iconMap = {
+                // ANIMALES
+                'OSO': '🐻', 'OSOS': '🐻', 'PERRO': '🐶', 'GATO': '🐱', 'PAJARO': '🐦', 'PÁJARO': '🐦',
+                'LEON': '🦁', 'LEÓN': '🦁', 'ELEFANTE': '🐘', 'MONO': '🐒', 'VACA': '🐮', 'CABALLO': '🐴',
+                'PEZ': '🐟', 'TIBURON': '🦈', 'MARIPOSA': '🦋', 'PATO': '🦆',
+
+                // ALIMENTOS Y BEBIDAS
+                'CAFE': '☕', 'CAFÉ': '☕', 'AGUA': '💧', 'LECHE': '🥛', 'MATE': '🧉', 'JUGO': '🧃',
+                'PAN': '🍞', 'MANZANA': '🍎', 'BANANA': '🍌', 'GALLETA': '🍪', 'GALLETITA': '🍪', 'COMIDA': '🍲',
+
+                // ADJETIVOS Y CUALIDADES
+                'GRANDE': '🔲', 'GRANDES': '🔲', 'CHICO': '▪️', 'CHICA': '▪️', 'PEQUEÑO': '▫️', 'PEQUEÑA': '▫️',
+                'ALTO': '📶', 'ALTA': '📶', 'BAJO': '📉', 'BAJA': '📉', 'LARGO': '📏', 'CORTO': '✂️',
+                'CALIENTE': '♨️', 'FRIO': '❄️', 'FRÍO': '❄️', 'LIMPIO': '✨', 'LIMPIA': '✨', 'SUCIO': '🟤', 'SUCIA': '🟤',
+                'NUEVO': '🆕', 'NUEVA': '🆕', 'VIEJO': '📦', 'VIEJA': '📦', 'RAPIDO': '⚡', 'RÁPIDO': '⚡',
+                'LENTO': '🐢', 'LENTA': '🐢', 'LLENO': '🫙', 'VACIO': '⭕', 'VACÍO': '⭕', 'BONITO': '🌸', 'HERMOSO': '✨',
+
+                // EMOCIONES Y ESTADOS
+                'FELIZ': '😊', 'CONTENTO': '😊', 'CONTENTA': '😊', 'TRISTE': '😢', 'ENOJADO': '😡', 'ENOJADA': '😡',
+                'CANSADO': '🥱', 'CANSADA': '🥱', 'ENFERMO': '🤒', 'ENFERMA': '🤒', 'ASUSTADO': '😨',
+
+                // FAMILIA Y PERSONAS
+                'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'MADRE': '👩', 'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦', 'PADRE': '👨',
+                'HERMANO': '👦', 'HERMANA': '👧', 'HIJO': '👦', 'HIJA': '👧', 'BEBE': '👶', 'BEBÉ': '👶',
+                'NENE': '👦', 'NENA': '👧', 'NIÑO': '👦', 'NIÑA': '👧', 'ABUELA': '👵', 'ABUELO': '👴',
+                'AMIGO': '🤝', 'AMIGOS': '👥', 'MAESTRA': '👩‍🏫', 'MAESTRO': '🧑‍🏫', 'PROFE': '🧑‍🏫',
+
+                // CASA Y ENTORNOS
+                'CASA': '🏠', 'ROPA': '👕', 'JARDIN': '🌳', 'JARDÍN': '🌳', 'PATIO': '🏡', 'PUERTA': '🚪',
+                'VENTANA': '🪟', 'MESA': '🪵', 'SILLA': '🪑', 'CAMA': '🛏️', 'COCINA': '🍳', 'BAÑO': '🚽',
+
+                // ACCIONES Y VERBOS
+                'GUSTA': '❤️', 'GUSTAN': '❤️', 'TIENDE': '🧺', 'AYUDA': '🤝', 'JUEGA': '⚽', 'CORRE': '🏃‍♂️', 'COME': '🍽️', 'BEBE': '🥤',
+                'DUERME': '😴', 'LEE': '📖', 'ESCRIBE': '✏️', 'CANTA': '🎤', 'ESTUDIA': '📚', 'TRABAJA': '💻',
+
+                // OBJETOS Y ÚTILES ESCOLARES
+                'ESCUELA': '🏫', 'COLEGIO': '🏫', 'LIBRO': '📖', 'CUADERNO': '📓', 'LAPIZ': '✏️', 'LÁPIZ': '✏️',
+                'MOCHILA': '🎒', 'PAPEL': '📄', 'TIJERA': '✂️', 'COMPU': '💻', 'PELOTA': '⚽', 'AUTO': '🚗'
+            };
+
+            const words = rawText.trim().split(/\s+/);
+
+            for (let word of words) {
+                const cleanWord = word.replace(/[.,\/#$%\^&\*;:{}=\-_`~()?¿¡]/g, "").toUpperCase();
+                if (!cleanWord) continue;
+
+                const card = document.createElement('div');
+                card.className = "flex flex-col items-center justify-between bg-white border border-slate-200 rounded-xl p-3 shadow-xs w-28 h-28";
+
+                const iconBox = document.createElement('div');
+                iconBox.className = "text-4xl flex items-center justify-center h-16 w-16 bg-indigo-50 rounded-xl mb-1";
+                
+                let selectedIcon = iconMap[cleanWord];
+                
+                if (!selectedIcon) {
+                    if (['ME', 'TE', 'LE', 'NOS', 'LES', 'EL', 'LA', 'LOS', 'LAS', 'UN', 'UNA', 'UNOS', 'UNAS', 'DE', 'DEL', 'EN', 'Y', 'A', 'SU', 'SUS', 'CON', 'PARA', 'ES', 'SON', 'ESTA', 'ESTÁ'].includes(cleanWord)) {
+                        selectedIcon = '🔹';
+                    } else {
+                        selectedIcon = '🧩'; 
+                    }
+                }
+
+                iconBox.innerText = selectedIcon;
+
+                const label = document.createElement('span');
+                label.className = "text-xs font-bold text-slate-700 text-center truncate w-full uppercase";
+                label.innerText = cleanWord;
+
+                card.appendChild(iconBox);
+                card.appendChild(label);
+                container.appendChild(card);
+            }
+        }
+
+        // Síntesis de voz (Text-to-Speech)
+        function speakText() {
+            const text = document.getElementById('uppercaseOutput').innerText;
+            if (!text || text === "-") return;
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'es-AR';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+    </script>
+</body>
+</html>
