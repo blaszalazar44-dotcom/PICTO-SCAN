@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PictoScan - Traductor ARASAAC Estable</title>
+    <title>PictoScan - Traductor de Pictogramas Accesible</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Tesseract.js para OCR -->
@@ -22,10 +22,10 @@
                 <span class="text-3xl">🧩</span>
                 <div>
                     <h1 class="text-2xl font-extrabold tracking-tight">PictoScan</h1>
-                    <p class="text-indigo-100 text-xs sm:text-sm">Traductor oficial con Pictogramas ARASAAC</p>
+                    <p class="text-indigo-100 text-xs sm:text-sm">Traductor inclusivo a apoyos visuales y mayúsculas</p>
                 </div>
             </div>
-            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión ARASAAC Segura</span>
+            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Estable</span>
         </div>
     </header>
 
@@ -47,7 +47,7 @@
                     <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="handleImage(event)">
                 </label>
 
-                <!-- Área de texto manual -->
+                <!-- Área de texto manual (CONECTADA CORRECTAMENTE CON oninput) -->
                 <div class="flex flex-col gap-2">
                     <label for="manualText" class="text-xs font-semibold text-slate-600 uppercase tracking-wider">O escribí/pegá el texto acá:</label>
                     <textarea id="manualText" rows="3" class="w-full border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Escribí una oración..." oninput="processText()"></textarea>
@@ -71,7 +71,7 @@
         <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col gap-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                 <h2 class="text-lg font-bold text-slate-700 flex items-center gap-2">
-                    <span>🖼️</span> 2. Traducción a Pictogramas ARASAAC
+                    <span>🖼️</span> 2. Traducción y Apoyo Visual
                 </h2>
                 <button onclick="speakText()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition shadow-sm cursor-pointer">
                     <span>🔊</span> Escuchar oración
@@ -84,11 +84,11 @@
                 <p id="uppercaseOutput" class="text-lg font-bold text-indigo-900 tracking-wide min-h-[1.75rem]">-</p>
             </div>
 
-            <!-- Contenedor de Pictogramas ARASAAC -->
+            <!-- Contenedor de Pictogramas -->
             <div class="flex flex-col gap-2">
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Secuencia visual:</span>
                 <div id="pictogramsContainer" class="flex flex-wrap gap-3 min-h-[120px] items-center p-4 bg-indigo-50/30 rounded-xl border border-indigo-100">
-                    <p class="text-slate-400 text-sm italic w-full text-center">Los pictogramas de ARASAAC aparecerán aquí...</p>
+                    <p class="text-slate-400 text-sm italic w-full text-center">Los pictogramas aparecerán aquí al escribir o escanear...</p>
                 </div>
             </div>
         </section>
@@ -97,17 +97,11 @@
 
     <!-- Pie de página -->
     <footer class="bg-white border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-500">
-        PictoScan • Con tecnología de pictogramas ARASAAC (CC BY-NC-SA).
+        PictoScan • Diseñado para la inclusión educativa y el apoyo visual accesible.
     </footer>
 
     <!-- Lógica de la Aplicación -->
     <script>
         // OCR con Tesseract.js
         async function handleImage(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const preview = document.getElementById('imagePreview');
-            preview.src = URL.createObjectURL(file);
-            document.getElementById('statusContainer').classList.remove('hidden');
-            document.getElementById('ocrLoading').style.display = 'flex';
+            const file = event.target.
