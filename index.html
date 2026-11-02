@@ -8,8 +8,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Tesseract.js para OCR -->
     <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
-    <!-- Emoji Picker Component para acceso universal a emojis -->
-    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1/index.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
         body { font-family: 'Montserrat', sans-serif; }
@@ -24,7 +22,7 @@
                 <span class="text-3xl">🧩</span>
                 <div>
                     <h1 class="text-2xl font-extrabold tracking-tight">PictoScan</h1>
-                    <p class="text-indigo-100 text-xs sm:text-sm">Escaneo inclusivo, mayúsculas y apoyo visual</p>
+                    <p class="text-indigo-100 text-xs sm:text-sm">Escaneo inclusivo, mayúsculas y apoyos visuales</p>
                 </div>
             </div>
             <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Web MVP</span>
@@ -56,7 +54,7 @@
                 </div>
             </div>
 
-            <!-- Vista previa de OCR -->
+            <!-- Vista previa de la imagen y carga de OCR -->
             <div id="statusContainer" class="hidden flex flex-col items-center gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
                 <img id="imagePreview" class="max-h-40 rounded-lg shadow-sm object-contain" alt="Vista previa">
                 <div id="ocrLoading" class="flex items-center gap-2 text-indigo-600 font-semibold text-sm">
@@ -70,24 +68,14 @@
         </section>
 
         <!-- Panel de Resultado -->
-        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col gap-4 relative">
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col gap-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                 <h2 class="text-lg font-bold text-slate-700 flex items-center gap-2">
                     <span>🖼️</span> 2. Traducción Visual y Mayúsculas
                 </h2>
-                <div class="flex gap-2">
-                    <button onclick="toggleEmojiPicker()" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1 transition shadow-xs cursor-pointer">
-                        <span>🔍</span> Buscar Emojis
-                    </button>
-                    <button onclick="speakText()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition shadow-sm cursor-pointer">
-                        <span>🔊</span> Escuchar
-                    </button>
-                </div>
-            </div>
-
-            <!-- Desplegable del Buscador Universal de Emojis -->
-            <div id="emojiPickerContainer" class="hidden absolute right-5 top-16 z-50 shadow-2xl rounded-2xl overflow-hidden border border-slate-200">
-                <emoji-picker id="picker" class="light"></emoji-picker>
+                <button onclick="speakText()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition shadow-sm cursor-pointer">
+                    <span>🔊</span> Escuchar oración
+                </button>
             </div>
 
             <!-- Texto en Mayúsculas -->
@@ -109,14 +97,12 @@
 
     <!-- Pie de página -->
     <footer class="bg-white border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-500">
-        PictoScan • Diseñado para la inclusión educativa y el apoyo visual accesible.
+        PictoScan • Diseñado para la inclusión educativa y el apoyo visual abierto y accesible.
     </footer>
 
     <!-- Lógica de la Aplicación -->
     <script>
-        let selectedBoxForManualEmoji = null;
-
-        // OCR con Tesseract.js
+        // OCR con Tesseract.js (Optimizado y directo)
         async function handleImage(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -127,27 +113,4 @@
             document.getElementById('ocrLoading').style.display = 'flex';
 
             try {
-                const { data: { text } } = await Tesseract.recognize(file, 'spa', {
-                    logger: m => console.log(m)
-                });
-
-                document.getElementById('manualText').value = text.trim();
-                processText();
-            } catch (error) {
-                alert("Hubo un error al leer la imagen.");
-                console.error(error);
-            } finally {
-                document.getElementById('ocrLoading').style.display = 'none';
-            }
-        }
-
-        // Mostrar / Ocultar buscador de emojis
-        function toggleEmojiPicker() {
-            const picker = document.getElementById('emojiPickerContainer');
-            picker.classList.toggle('hidden');
-        }
-
-        // Event listener para cuando elegís un emoji del buscador universal
-        document.addEventListener('DOMContentLoaded', () => {
-            const picker = document.getElementById('picker');
-            if
+                const { data: { text } } = await T
