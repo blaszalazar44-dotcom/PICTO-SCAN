@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PictoScan - Traductor a Pictogramas ARASAAC</title>
+    <title>PictoScan - Traductor ARASAAC Estable</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Tesseract.js para OCR -->
@@ -25,7 +25,7 @@
                     <p class="text-indigo-100 text-xs sm:text-sm">Traductor oficial con Pictogramas ARASAAC</p>
                 </div>
             </div>
-            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión ARASAAC</span>
+            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión ARASAAC Segura</span>
         </div>
     </header>
 
@@ -127,88 +127,10 @@
             }
         }
 
-        // Diccionario de IDs oficiales directos de ARASAAC para máxima velocidad y precisión
+        // Diccionario ampliado con IDs oficiales exactos de ARASAAC
         const arasaacDirectMap = {
-            'OSO': 2645, 'PERRO': 2690, 'GATO': 2631, 'CASA': 2452,
-            'CAFE': 2915, 'CAFÉ': 2915, 'AGUA': 2471, 'MAMA': 2503, 'MAMÁ': 2503,
-            'PAPA': 2479, 'PAPÁ': 2479, 'ESCUELA': 2492, 'COLEGIO': 2492,
-            'FELIZ': 2824, 'CONTENTO': 2824, 'TRISTE': 2826, 'GRANDE': 3424, 'CHICO': 3719
-        };
-
-        // Procesador principal con ARASAAC
-        async function processText() {
-            const rawText = document.getElementById('manualText').value;
-            const upperText = rawText.toUpperCase();
+            // Animales
+            'OSO': 2645, 'PERRO': 2690, 'GATO': 2631, 'LEON': 2637, 'ELEFANTE': 2568, 'MONO': 2642,
             
-            document.getElementById('uppercaseOutput').innerText = upperText || "-";
-
-            const container = document.getElementById('pictogramsContainer');
-            container.innerHTML = "";
-
-            if (!rawText.trim()) {
-                container.innerHTML = '<p class="text-slate-400 text-sm italic w-full text-center">Los pictogramas de ARASAAC aparecerán aquí...</p>';
-                return;
-            }
-
-            const words = rawText.trim().split(/\s+/);
-
-            for (let word of words) {
-                const cleanWord = word.replace(/[.,\/#$%\^&\*;:{}=\-_`~()?¿¡]/g, "").toUpperCase();
-                if (!cleanWord) continue;
-
-                // Crear tarjeta visual para el pictograma
-                const card = document.createElement('div');
-                card.className = "flex flex-col items-center justify-between bg-white border border-slate-200 rounded-xl p-3 shadow-xs w-28 h-32";
-
-                const imgBox = document.createElement('div');
-                imgBox.className = "flex items-center justify-center h-20 w-20 bg-indigo-50/50 rounded-xl mb-1 p-1";
-
-                // Si es un conector o artículo común, ponemos un indicador sutil
-                if (['ME', 'TE', 'LE', 'NOS', 'EL', 'LA', 'LOS', 'LAS', 'UN', 'UNA', 'DE', 'DEL', 'EN', 'Y', 'A', 'CON', 'PARA', 'ES', 'SON'].includes(cleanWord)) {
-                    imgBox.innerHTML = '<span class="text-2xl font-bold text-indigo-400">▪️</span>';
-                } else {
-                    // Verificamos si tenemos un ID directo o consultamos la API de ARASAAC
-                    let pictoId = arasaacDirectMap[cleanWord];
-
-                    const img = document.createElement('img');
-                    img.className = "max-h-full max-w-full object-contain";
-                    img.alt = cleanWord;
-
-                    if (pictoId) {
-                        img.src = `https://api.arasaac.org/api/pictograms/${pictoId}`;
-                        imgBox.appendChild(img);
-                    } else {
-                        // Búsqueda dinámica en la API de ARASAAC en español
-                        img.src = `https://api.arasaac.org/api/pictograms/es/search/${encodeURIComponent(cleanWord.toLowerCase())}`;
-                        
-                        // Manejo por si la API tarda o no encuentra el término exacto
-                        img.onerror = () => {
-                            imgBox.innerHTML = '<span class="text-2xl">🧩</span>';
-                        };
-                        imgBox.appendChild(img);
-                    }
-                }
-
-                const label = document.createElement('span');
-                label.className = "text-xs font-bold text-slate-700 text-center truncate w-full uppercase mt-1";
-                label.innerText = cleanWord;
-
-                card.appendChild(imgBox);
-                card.appendChild(label);
-                container.appendChild(card);
-            }
-        }
-
-        // Síntesis de voz (Text-to-Speech)
-        function speakText() {
-            const text = document.getElementById('uppercaseOutput').innerText;
-            if (!text || text === "-") return;
-
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'es-AR';
-            utterance.rate = 0.9;
-            window.speechSynthesis.speak(utterance);
-        }
-    </script>
-</body>
-</html>
+            // Alimentos y Bebidas
+            'CAFE': 2915, 'CAFÉ': 2915, 'AGUA': 2471, 'LECHE': 2639
