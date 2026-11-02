@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PictoScan - Traductor de Pictogramas</title>
+    <title>PictoScan - Escáner y Traductor a Pictogramas</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Tesseract.js para OCR -->
@@ -22,10 +22,10 @@
                 <span class="text-3xl">🧩</span>
                 <div>
                     <h1 class="text-2xl font-extrabold tracking-tight">PictoScan</h1>
-                    <p class="text-indigo-100 text-xs sm:text-sm">Traductor inclusivo a apoyos visuales y mayúsculas</p>
+                    <p class="text-indigo-100 text-xs sm:text-sm">Escaneo inclusivo, mayúsculas y apoyos visuales</p>
                 </div>
             </div>
-            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Estable</span>
+            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Web MVP</span>
         </div>
     </header>
 
@@ -44,20 +44,20 @@
                     <span class="text-3xl mb-2 group-hover:scale-110 transition">📷</span>
                     <span class="font-semibold text-indigo-700 text-sm">Sacar foto o subir imagen</span>
                     <span class="text-xs text-slate-500 mt-1">Lee imprenta minúscula y manuscrita</span>
-                    <input type="file" id="imageInput" accept="image/*" class="hidden">
+                    <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="handleImage(event)">
                 </label>
 
-                <!-- Área de texto manual -->
+                <!-- Área de texto manual (CONECTADA CORRECTAMENTE A oninput) -->
                 <div class="flex flex-col gap-2">
                     <label for="manualText" class="text-xs font-semibold text-slate-600 uppercase tracking-wider">O escribí/pegá el texto acá:</label>
-                    <textarea id="manualText" rows="3" class="w-full border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Escribí una oración..."></textarea>
+                    <textarea id="manualText" rows="3" class="w-full border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Escribí una oración..." oninput="processText()"></textarea>
                 </div>
             </div>
 
             <!-- Vista previa de la imagen y carga de OCR -->
             <div id="statusContainer" class="hidden flex flex-col items-center gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
                 <img id="imagePreview" class="max-h-40 rounded-lg shadow-sm object-contain" alt="Vista previa">
-                <div id="ocrLoading" class="hidden items-center gap-2 text-indigo-600 font-semibold text-sm">
+                <div id="ocrLoading" class="flex items-center gap-2 text-indigo-600 font-semibold text-sm">
                     <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -71,9 +71,9 @@
         <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col gap-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                 <h2 class="text-lg font-bold text-slate-700 flex items-center gap-2">
-                    <span>🖼️</span> 2. Traducción y Apoyo Visual
+                    <span>🖼️</span> 2. Traducción Visual y Mayúsculas
                 </h2>
-                <button id="speakBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition shadow-sm cursor-pointer">
+                <button onclick="speakText()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition shadow-sm cursor-pointer">
                     <span>🔊</span> Escuchar oración
                 </button>
             </div>
@@ -87,8 +87,8 @@
             <!-- Contenedor de Pictogramas -->
             <div class="flex flex-col gap-2">
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Secuencia visual:</span>
-                <div id="pictogramsContainer" class="flex flex-wrap gap-3 min-h-[120px] items-center p-4 bg-indigo-50/30 rounded-xl border border-indigo-100">
-                    <p class="text-slate-400 text-sm italic w-full text-center">Los pictogramas aparecerán aquí al escribir o escanear...</p>
+                <div id="pictogramsContainer" class="flex flex-wrap gap-3 min-h-[100px] items-center p-4 bg-indigo-50/30 rounded-xl border border-indigo-100">
+                    <p class="text-slate-400 text-sm italic w-full text-center">Los pictogramas aparecerán aquí al ingresar o escanear texto...</p>
                 </div>
             </div>
         </section>
@@ -97,84 +97,135 @@
 
     <!-- Pie de página -->
     <footer class="bg-white border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-500">
-        PictoScan • Diseñado para la inclusión educativa y el apoyo visual accesible.
+        PictoScan • Diseñado para la inclusión educativa y el apoyo visual abierto y accesible.
     </footer>
 
     <!-- Lógica de la Aplicación -->
     <script>
-        const iconMap = {
-            // Personas y Familia
-            'ABUELA': '👵', 'ABUELO': '👴', 'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦',
-            'BEBE': '👶', 'BEBÉ': '👶', 'NENE': '👦', 'NENA': '👧', 'NIÑO': '👦', 'NIÑA': '👧',
-            'AMIGO': '🤝', 'MAESTRA': '👩‍🏫', 'MAESTRO': '🧑‍🏫',
+        // OCR con Tesseract.js
+        async function handleImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
-            // Animales
-            'OSO': '🐻', 'PERRO': '🐶', 'GATO': '🐱', 'PAJARO': '🐦', 'PÁJARO': '🐦',
-            'LEON': '🦁', 'ELEFANTE': '🐘', 'MONO': '🐒', 'VACA': '🐮', 'CABALLO': '🐴', 'PEZ': '🐟',
+            const preview = document.getElementById('imagePreview');
+            preview.src = URL.createObjectURL(file);
+            document.getElementById('statusContainer').classList.remove('hidden');
+            document.getElementById('ocrLoading').style.display = 'flex';
 
-            // Alimentos
-            'CAFE': '☕', 'CAFÉ': '☕', 'POLLO': '🍗', 'AGUA': '💧', 'LECHE': '🥛', 'MATE': '🧉',
-            'PAN': '🍞', 'MANZANA': '🍎', 'BANANA': '🍌', 'GALLETA': '🍪', 'COMIDA': '🍲', 'JUGO': '🧃',
-
-            // Verbos y Acciones
-            'COME': '🍽️', 'COMO': '🍽️', 'BEBE': '🥤', 'BEBO': '🥤',
-            'GUSTA': '❤️', 'GUSTAN': '❤️', 'JUEGA': '⚽', 'CORRE': '🏃‍♂️', 'DUERME': '😴',
-            'LEE': '📖', 'ESCRIBE': '✏️', 'CANTA': '🎤', 'ESTUDIA': '📚', 'TRABAJA': '💻', 'TIENDE': '🧺', 'AYUDA': '🤝',
-
-            // Adjetivos
-            'GRANDE': '🔲', 'GRANDES': '🔲', 'CHICO': '▪️', 'CHICA': '▪️', 'ALTO': '📶', 'BAJO': '📉',
-            'CALIENTE': '♨️', 'FRIO': '❄️', 'FRÍO': '❄️', 'LIMPIO': '✨', 'SUCIO': '🟤', 'NUEVO': '🆕', 'VIEJO': '📦',
-
-            // Emociones y Estados
-            'FELIZ': '😊', 'CONTENTO': '😊', 'TRISTE': '😢', 'ENOJADO': '😡', 'CANSADO': '🥱', 'ENFERMO': '🤒',
-
-            // Entorno escolar y hogar
-            'CASA': '🏠', 'ESCUELA': '🏫', 'COLEGIO': '🏫', 'PATIO': '🏡', 'PUERTA': '🚪', 'MESA': '🪵',
-            'SILLA': '🪑', 'CAMA': '🛏️', 'LIBRO': '📖', 'CUADERNO': '📓', 'LAPIZ': '✏️', 'LÁPIZ': '✏️', 'MOCHILA': '🎒'
-        };
-
-        // Procesador principal seguro
-        function processText() {
             try {
-                const manualText = document.getElementById('manualText');
-                const uppercaseOutput = document.getElementById('uppercaseOutput');
-                const container = document.getElementById('pictogramsContainer');
+                const { data: { text } } = await Tesseract.recognize(file, 'spa', {
+                    logger: m => console.log(m)
+                });
 
-                if (!manualText || !uppercaseOutput || !container) return;
+                document.getElementById('manualText').value = text.trim();
+                processText();
+            } catch (error) {
+                alert("Hubo un error al leer la imagen. Intentá con otra foto más clara.");
+                console.error(error);
+            } finally {
+                document.getElementById('ocrLoading').style.display = 'none';
+            }
+        }
 
-                const rawText = manualText.value;
-                const upperText = rawText.toUpperCase();
+        // Procesador principal con diccionario pedagógico robusto
+        function processText() {
+            const rawText = document.getElementById('manualText').value;
+            const upperText = rawText.toUpperCase();
+            
+            document.getElementById('uppercaseOutput').innerText = upperText || "-";
+
+            const container = document.getElementById('pictogramsContainer');
+            container.innerHTML = "";
+
+            if (!rawText.trim()) {
+                container.innerHTML = '<p class="text-slate-400 text-sm italic w-full text-center">Los pictogramas aparecerán aquí al ingresar o escanear texto...</p>';
+                return;
+            }
+
+            const iconMap = {
+                // ANIMALES
+                'OSO': '🐻', 'OSOS': '🐻', 'PERRO': '🐶', 'GATO': '🐱', 'PAJARO': '🐦', 'PÁJARO': '🐦',
+                'LEON': '🦁', 'LEÓN': '🦁', 'ELEFANTE': '🐘', 'MONO': '🐒', 'VACA': '🐮', 'CABALLO': '🐴',
+                'PEZ': '🐟', 'TIBURON': '🦈', 'MARIPOSA': '🦋', 'PATO': '🦆',
+
+                // ALIMENTOS Y BEBIDAS
+                'CAFE': '☕', 'CAFÉ': '☕', 'AGUA': '💧', 'LECHE': '🥛', 'MATE': '🧉', 'JUGO': '🧃',
+                'PAN': '🍞', 'MANZANA': '🍎', 'BANANA': '🍌', 'GALLETA': '🍪', 'GALLETITA': '🍪', 'COMIDA': '🍲',
+
+                // ADJETIVOS Y CUALIDADES
+                'GRANDE': '🔲', 'GRANDES': '🔲', 'CHICO': '▪️', 'CHICA': '▪️', 'PEQUEÑO': '▫️', 'PEQUEÑA': '▫️',
+                'ALTO': '📶', 'ALTA': '📶', 'BAJO': '📉', 'BAJA': '📉', 'LARGO': '📏', 'CORTO': '✂️',
+                'CALIENTE': '♨️', 'FRIO': '❄️', 'FRÍO': '❄️', 'LIMPIO': '✨', 'LIMPIA': '✨', 'SUCIO': '🟤', 'SUCIA': '🟤',
+                'NUEVO': '🆕', 'NUEVA': '🆕', 'VIEJO': '📦', 'VIEJA': '📦', 'RAPIDO': '⚡', 'RÁPIDO': '⚡',
+                'LENTO': '🐢', 'LENTA': '🐢', 'LLENO': '🫙', 'VACIO': '⭕', 'VACÍO': '⭕', 'BONITO': '🌸', 'HERMOSO': '✨',
+
+                // EMOCIONES Y ESTADOS
+                'FELIZ': '😊', 'CONTENTO': '😊', 'CONTENTA': '😊', 'TRISTE': '😢', 'ENOJADO': '😡', 'ENOJADA': '😡',
+                'CANSADO': '🥱', 'CANSADA': '🥱', 'ENFERMO': '🤒', 'ENFERMA': '🤒', 'ASUSTADO': '😨',
+
+                // FAMILIA Y PERSONAS
+                'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'MADRE': '👩', 'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦', 'PADRE': '👨',
+                'HERMANO': '👦', 'HERMANA': '👧', 'HIJO': '👦', 'HIJA': '👧', 'BEBE': '👶', 'BEBÉ': '👶',
+                'NENE': '👦', 'NENA': '👧', 'NIÑO': '👦', 'NIÑA': '👧', 'ABUELA': '👵', 'ABUELO': '👴',
+                'AMIGO': '🤝', 'AMIGOS': '👥', 'MAESTRA': '👩‍🏫', 'MAESTRO': '🧑‍🏫', 'PROFE': '🧑‍🏫',
+
+                // CASA Y ENTORNOS
+                'CASA': '🏠', 'ROPA': '👕', 'JARDIN': '🌳', 'JARDÍN': '🌳', 'PATIO': '🏡', 'PUERTA': '🚪',
+                'VENTANA': '🪟', 'MESA': '🪵', 'SILLA': '🪑', 'CAMA': '🛏️', 'COCINA': '🍳', 'BAÑO': '🚽',
+
+                // ACCIONES Y VERBOS
+                'GUSTA': '❤️', 'GUSTAN': '❤️', 'TIENDE': '🧺', 'AYUDA': '🤝', 'JUEGA': '⚽', 'CORRE': '🏃‍♂️', 'COME': '🍽️', 'BEBE': '🥤',
+                'DUERME': '😴', 'LEE': '📖', 'ESCRIBE': '✏️', 'CANTA': '🎤', 'ESTUDIA': '📚', 'TRABAJA': '💻',
+
+                // OBJETOS Y ÚTILES ESCOLARES
+                'ESCUELA': '🏫', 'COLEGIO': '🏫', 'LIBRO': '📖', 'CUADERNO': '📓', 'LAPIZ': '✏️', 'LÁPIZ': '✏️',
+                'MOCHILA': '🎒', 'PAPEL': '📄', 'TIJERA': '✂️', 'COMPU': '💻', 'PELOTA': '⚽', 'AUTO': '🚗'
+            };
+
+            const words = rawText.trim().split(/\s+/);
+
+            for (let word of words) {
+                const cleanWord = word.replace(/[.,\/#$%\^&\*;:{}=\-_`~()?¿¡]/g, "").toUpperCase();
+                if (!cleanWord) continue;
+
+                const card = document.createElement('div');
+                card.className = "flex flex-col items-center justify-between bg-white border border-slate-200 rounded-xl p-3 shadow-xs w-28 h-28";
+
+                const iconBox = document.createElement('div');
+                iconBox.className = "text-4xl flex items-center justify-center h-16 w-16 bg-indigo-50 rounded-xl mb-1";
                 
-                uppercaseOutput.innerText = upperText || "-";
-                container.innerHTML = "";
-
-                if (!rawText.trim()) {
-                    container.innerHTML = '<p class="text-slate-400 text-sm italic w-full text-center">Los pictogramas aparecerán aquí al escribir o escanear...</p>';
-                    return;
+                let selectedIcon = iconMap[cleanWord];
+                
+                if (!selectedIcon) {
+                    if (['ME', 'TE', 'LE', 'NOS', 'LES', 'EL', 'LA', 'LOS', 'LAS', 'UN', 'UNA', 'UNOS', 'UNAS', 'DE', 'DEL', 'EN', 'Y', 'A', 'SU', 'SUS', 'CON', 'PARA', 'ES', 'SON', 'ESTA', 'ESTÁ'].includes(cleanWord)) {
+                        selectedIcon = '🔹';
+                    } else {
+                        selectedIcon = '🧩'; 
+                    }
                 }
 
-                const words = rawText.trim().split(/\s+/);
+                iconBox.innerText = selectedIcon;
 
-                for (let word of words) {
-                    const cleanWord = word.replace(/[.,\/#$%\^&\*;:{}=\-_`~()?¿¡]/g, "").toUpperCase();
-                    if (!cleanWord) continue;
+                const label = document.createElement('span');
+                label.className = "text-xs font-bold text-slate-700 text-center truncate w-full uppercase";
+                label.innerText = cleanWord;
 
-                    const card = document.createElement('div');
-                    card.className = "flex flex-col items-center justify-between bg-white border border-slate-200 rounded-xl p-3 shadow-xs w-28 h-32";
+                card.appendChild(iconBox);
+                card.appendChild(label);
+                container.appendChild(card);
+            }
+        }
 
-                    const iconBox = document.createElement('div');
-                    iconBox.className = "text-4xl flex items-center justify-center h-16 w-16 bg-indigo-50 rounded-xl mb-1";
-                    
-                    let selectedIcon = iconMap[cleanWord];
-                    
-                    if (!selectedIcon) {
-                        if (['LA', 'EL', 'LOS', 'LAS', 'UN', 'UNA', 'DE', 'DEL', 'EN', 'Y', 'A', 'CON', 'PARA', 'ES', 'SON', 'ME', 'TE', 'LE', 'LA'].includes(cleanWord)) {
-                            selectedIcon = '🔹';
-                        } else {
-                            selectedIcon = '🧩'; 
-                        }
-                    }
+        // Síntesis de voz (Text-to-Speech)
+        function speakText() {
+            const text = document.getElementById('uppercaseOutput').innerText;
+            if (!text || text === "-") return;
 
-                    iconBox.innerText = selectedIcon;
-
-                    const label = document.createElement
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'es-AR';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+    </script>
+</body>
+</html>
