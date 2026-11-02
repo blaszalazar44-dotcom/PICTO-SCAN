@@ -111,26 +111,3 @@
             preview.src = URL.createObjectURL(file);
             document.getElementById('statusContainer').classList.remove('hidden');
             document.getElementById('ocrLoading').style.display = 'flex';
-
-            try {
-                const { data: { text } } = await Tesseract.recognize(file, 'spa', {
-                    logger: m => console.log(m)
-                });
-
-                document.getElementById('manualText').value = text.trim();
-                processText();
-            } catch (error) {
-                alert("Hubo un error al leer la imagen. Intentá con otra foto más clara.");
-                console.error(error);
-            } finally {
-                document.getElementById('ocrLoading').style.display = 'none';
-            }
-        }
-
-        // Diccionario ampliado con IDs oficiales exactos de ARASAAC
-        const arasaacDirectMap = {
-            // Animales
-            'OSO': 2645, 'PERRO': 2690, 'GATO': 2631, 'LEON': 2637, 'ELEFANTE': 2568, 'MONO': 2642,
-            
-            // Alimentos y Bebidas
-            'CAFE': 2915, 'CAFÉ': 2915, 'AGUA': 2471, 'LECHE': 2639
