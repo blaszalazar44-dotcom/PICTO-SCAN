@@ -127,7 +127,7 @@
             }
         }
 
-        // Procesador principal
+        // Procesador principal con categorías ampliadas
         function processText() {
             const rawText = document.getElementById('manualText').value;
             const upperText = rawText.toUpperCase();
@@ -142,36 +142,46 @@
                 return;
             }
 
+            // Diccionario ampliado y categorizado pedagógicamente
             const iconMap = {
+                // ANIMALES
                 'OSO': '🐻', 'OSOS': '🐻', 'PERRO': '🐶', 'GATO': '🐱', 'PAJARO': '🐦', 'PÁJARO': '🐦',
                 'LEON': '🦁', 'LEÓN': '🦁', 'ELEFANTE': '🐘', 'MONO': '🐒', 'VACA': '🐮', 'CABALLO': '🐴',
                 'PEZ': '🐟', 'TIBURON': '🦈', 'MARIPOSA': '🦋', 'PATO': '🦆',
 
+                // ALIMENTOS Y BEBIDAS (Incluyendo Café)
+                'CAFE': '☕', 'CAFÉ': '☕', 'AGUA': '💧', 'LECHE': '🥛', 'MATE': '🧉', 'JUGO': '🧃',
+                'PAN': '🍞', 'MANZANA': '🍎', 'BANANA': '🍌', 'GALLETA': '🍪', 'GALLETITA': '🍪', 'COMIDA': '🍲',
+
+                // ADJETIVOS Y CUALIDADES (Escalas y símbolos limpios)
                 'GRANDE': '🔲', 'GRANDES': '🔲', 'CHICO': '▪️', 'CHICA': '▪️', 'PEQUEÑO': '▫️', 'PEQUEÑA': '▫️',
                 'ALTO': '📶', 'ALTA': '📶', 'BAJO': '📉', 'BAJA': '📉', 'LARGO': '📏', 'CORTO': '✂️',
                 'CALIENTE': '♨️', 'FRIO': '❄️', 'FRÍO': '❄️', 'LIMPIO': '✨', 'LIMPIA': '✨', 'SUCIO': '🟤', 'SUCIA': '🟤',
                 'NUEVO': '🆕', 'NUEVA': '🆕', 'VIEJO': '📦', 'VIEJA': '📦', 'RAPIDO': '⚡', 'RÁPIDO': '⚡',
                 'LENTO': '🐢', 'LENTA': '🐢', 'LLENO': '🫙', 'VACIO': '⭕', 'VACÍO': '⭕', 'BONITO': '🌸', 'HERMOSO': '✨',
 
+                // EMOCIONES Y ESTADOS
                 'FELIZ': '😊', 'CONTENTO': '😊', 'CONTENTA': '😊', 'TRISTE': '😢', 'ENOJADO': '😡', 'ENOJADA': '😡',
                 'CANSADO': '🥱', 'CANSADA': '🥱', 'ENFERMO': '🤒', 'ENFERMA': '🤒', 'ASUSTADO': '😨',
 
+                // FAMILIA Y PERSONAS
                 'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'MADRE': '👩', 'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦', 'PADRE': '👨',
                 'HERMANO': '👦', 'HERMANA': '👧', 'HIJO': '👦', 'HIJA': '👧', 'BEBE': '👶', 'BEBÉ': '👶',
                 'NENE': '👦', 'NENA': '👧', 'NIÑO': '👦', 'NIÑA': '👧', 'ABUELA': '👵', 'ABUELO': '👴',
                 'AMIGO': '🤝', 'AMIGOS': '👥', 'MAESTRA': '👩‍🏫', 'MAESTRO': '🧑‍🏫', 'PROFE': '🧑‍🏫',
 
+                // CASA Y ENTORNOS
                 'CASA': '🏠', 'ROPA': '👕', 'JARDIN': '🌳', 'JARDÍN': '🌳', 'PATIO': '🏡', 'PUERTA': '🚪',
                 'VENTANA': '🪟', 'MESA': '🪵', 'SILLA': '🪑', 'CAMA': '🛏️', 'COCINA': '🍳', 'BAÑO': '🚽',
 
+                // ACCIONES Y VERBOS
                 'TIENDE': '🧺', 'AYUDA': '🤝', 'JUEGA': '⚽', 'CORRE': '🏃‍♂️', 'COME': '🍽️', 'BEBE': '🥤',
                 'DUERME': '😴', 'LEE': '📖', 'ESCRIBE': '✏️', 'CANTA': '🎤', 'ESTUDIA': '📚', 'TRABAJA': '💻',
 
+                // OBJETOS Y ÚTILES ESCOLARES
                 'ESCUELA': '🏫', 'COLEGIO': '🏫', 'LIBRO': '📖', 'CUADERNO': '📓', 'LAPIZ': '✏️', 'LÁPIZ': '✏️',
                 'MOCHILA': '🎒', 'PAPEL': '📄', 'TIJERA': '✂️', 'COMPU': '💻', 'PELOTA': '⚽', 'AUTO': '🚗'
             };
-
-            const fallbackEmojis = ['🌟', '💡', '🎯', '🎨', '🧩', '🎈', '📦', '📌', '📘', '⭐', '🍀', '🚀', '🔮', '⚡', '💡', '🪄'];
 
             const words = rawText.trim().split(/\s+/);
 
@@ -188,14 +198,12 @@
                 let selectedIcon = iconMap[cleanWord];
                 
                 if (!selectedIcon) {
+                    // Si son artículos o conectores, usamos el conector visual neutro
                     if (['EL', 'LA', 'LOS', 'LAS', 'UN', 'UNA', 'UNOS', 'UNAS', 'DE', 'DEL', 'EN', 'Y', 'A', 'SU', 'SUS', 'CON', 'PARA', 'ES', 'SON', 'ESTA', 'ESTÁ'].includes(cleanWord)) {
                         selectedIcon = '🔹';
                     } else {
-                        let charCodeSum = 0;
-                        for (let i = 0; i < cleanWord.length; i++) {
-                            charCodeSum += cleanWord.charCodeAt(i);
-                        }
-                        selectedIcon = fallbackEmojis[charCodeSum % fallbackEmojis.length];
+                        // En lugar de una varita u objetos raros, si no se encuentra la palabra usamos un bloque de texto claro o signo neutro
+                        selectedIcon = '🧩'; 
                     }
                 }
 
