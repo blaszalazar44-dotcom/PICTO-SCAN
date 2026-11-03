@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PictoScan - Traductor Visual Inclusivo</title>
+    <title>PictoScan - Traductor Inclusivo Ampliado</title>
     <!-- Tailwind CSS CDN Estable -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Tesseract.js para OCR -->
@@ -22,10 +22,10 @@
                 <span class="text-3xl">🧩</span>
                 <div>
                     <h1 class="text-2xl font-extrabold tracking-tight">PictoScan</h1>
-                    <p class="text-indigo-100 text-xs sm:text-sm">Traductor visual inmediato, mayúsculas y voz argentina</p>
+                    <p class="text-indigo-100 text-xs sm:text-sm">Traductor visual ampliado, mayúsculas y voz argentina</p>
                 </div>
             </div>
-            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Visual Ultra-Estable</span>
+            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Ampliada v4.0</span>
         </div>
     </header>
 
@@ -102,28 +102,51 @@
 
     <!-- Lógica de la Aplicación -->
     <script>
-        // Diccionario visual limpio, coherente y garantizado
+        // DICCIONARIO AMPLIADO DE SUSTANTIVOS, VERBOS, ADJETIVOS Y EXpresiones
         const visualMap = {
             // Animales
             'PERRO': '🐕', 'PERROS': '🐕', 'GATO': '🐈', 'GATOS': '🐈', 'OSO': '🐻', 'OSOS': '🐻',
             'LEON': '🦁', 'ELEFANTE': '🐘', 'MONO': '🐒', 'VACA': '🐄', 'CABALLO': '🐎', 'PEZ': '🐟',
-            
-            // Alimentos
+            'PAJARO': '🐦', 'PÁJARO': '🐦', 'TIBURON': '🦈', 'MARIPOSA': '🦋', 'PATO': '🦆', 'CONEJO': '🐇',
+            'GALLINA': '🐔', 'TIGRE': '🐅', 'JIRAFA': '🦒', 'OVEJA': '🐑', 'CERDO': '🐖', 'RATON': '🐁',
+
+            // Alimentos y Bebidas
             'CARNE': '🥩', 'POLLO': '🍗', 'AGUA': '💧', 'CAFE': '☕', 'CAFÉ': '☕', 'LECHE': '🥛',
             'MATE': '🧉', 'PAN': '🍞', 'MANZANA': '🍎', 'BANANA': '🍌', 'JUGO': '🧃', 'COMIDA': '🍲',
+            'GALLETA': '🍪', 'GALLETITA': '🍪', 'CHOCOLATE': '🍫', 'QUESO': '🧀', 'HUEVO': '🥚', 'FRUTA': '🍓',
+            'HELADO': '🍦', 'NARANJA': '🍊', 'PIZZA': '🍕', 'ARROZ': '🍚', 'FIDEOS': '🍝', 'TORTA': '🎂',
 
             // Verbos y Acciones
             'SALTA': '🦘', 'SALTAN': '🦘', 'SALTAR': '🦘', 'COME': '🍽️', 'COMEN': '🍽️', 'COMER': '🍽️',
-            'CORRE': '🏃‍♂️', 'CORREN': '🏃‍♂️', 'BEBE': '🥤', 'BEBEN': '🥤', 'GUSTA': '❤️', 'GUSTAN': '❤️',
-            'JUEGA': '⚽', 'DUERME': '😴', 'LEE': '📖', 'ESCRIBE': '✏️', 'CANTA': '🎤', 'ESTUDIA': '📚',
+            'CORRE': '🏃‍♂️', 'CORREN': '🏃‍♂️', 'CORRER': '🏃‍♂️', 'BEBE': '🥤', 'BEBEN': '🥤', 'BEBER': '🥤',
+            'GUSTA': '❤️', 'GUSTAN': '❤️', 'JUEGA': '⚽', 'JUEGAN': '⚽', 'JUGAR': '⚽', 'DUERME': '😴', 
+            'DORMIR': '😴', 'LEE': '📖', 'LEER': '📖', 'ESCRIBE': '✏️', 'ESCRIBIR': '✏️', 'CANTA': '🎤', 
+            'CANTAR': '🎤', 'ESTUDIA': '📚', 'ESTUDIAR': '📚', 'TRABAJA': '💻', 'TRABAJAR': '💻', 
+            'AYUDA': '🤝', 'AYUDAR': '🤝', 'CAMINA': '🚶‍♂️', 'CAMINAR': '🚶‍♂️', 'HABLA': '🗣️', 'HABLAR': '🗣️',
+            'ESCUCHA': '👂', 'ESCUCHAR': '👂', 'MIRA': '👀', 'MIRAR': '👀', 'LLORA': '😢', 'LLORAR': '😢',
+            'RIBUJA': '🎨', 'DIBUJAR': '🎨', 'PINTA': '🖌️', 'PINTAR': '🖌️', 'COCINA': '🍳', 'COCINAR': '🍳',
 
             // Personas y Familia
             'ABUELA': '👵', 'ABUELO': '👴', 'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦',
-            'BEBE': '👶', 'BEBÉ': '👶', 'NENE': '👦', 'NENA': '👧', 'AMIGO': '🤝', 'MAESTRA': '👩‍🏫', 'MAESTRO': '👨‍🏫',
+            'BEBE': '👶', 'BEBÉ': '👶', 'NENE': '👦', 'NENA': '👧', 'NIÑO': '👦', 'NIÑA': '👧',
+            'AMIGO': '🤝', 'AMIGOS': '👥', 'MAESTRA': '👩‍🏫', 'MAESTRO': '👨‍🏫', 'PROFESORA': '👩‍🏫', 'PROFESOR': '👨‍🏫',
+            'HERMANO': '👦', 'HERMANA': '👧', 'DOCTOR': '👨‍⚕️', 'DOCTORA': '👩‍⚕️', 'POLICIA': '👮‍♂️', 'BOMBERO': '👨‍🚒',
 
-            // Entorno y Objetos
-            'CASA': '🏠', 'ESCUELA': '🏫', 'COLEGIO': '🏫', 'PATIO': '🏡', 'PUERTA': '🚪',
-            'MESA': '🪵', 'SILLA': '🪑', 'CAMA': '🛏️', 'LIBRO': '📖', 'CUADERNO': '📓', 'LAPIZ': '✏️', 'LÁPIZ': '✏️'
+            // Entorno, Lugares y Objetos
+            'CASA': '🏠', 'ESCUELA': '🏫', 'COLEGIO': '🏫', 'PATIO': '🏡', 'PUERTA': '🚪', 'VENTANA': '🪟',
+            'MESA': '🪵', 'SILLA': '🪑', 'CAMA': '🛏️', 'LIBRO': '📖', 'CUADERNO': '📓', 'LAPIZ': '✏️', 
+            'LÁPIZ': '✏️', 'MOCHILA': '🎒', 'AUTO': '🚗', 'COCHE': '🚗', 'COLECTIVO': '🚌', 'BICICLETA': '🚲',
+            'TREN': '🚂', 'AVION': '✈️', 'AVIÓN': '✈️', 'PELOTA': '⚽', 'COMPU': '💻', 'TELE': '📺',
+            'RELOJ': '⏰', 'TELEFONO': '📱', 'TELÉFONO': '📱', 'TIJERA': '✂️', 'PAPEL': '📄', 'ROPA': '👕',
+
+            // Emociones y Estados
+            'FELIZ': '😊', 'CONTENTO': '😊', 'CONTENTA': '😊', 'TRISTE': '😢', 'ENOJADO': '😡', 'ENOJADA': '😡',
+            'CANSADO': '🥱', 'CANSADA': '🥱', 'ENFERMO': '🤒', 'ENFERMA': '🤒', 'ASUSTADO': '😨', 'MIEDO': '😱',
+
+            // Adjetivos
+            'GRANDE': '🔲', 'GRANDES': '🔲', 'CHICO': '▪️', 'CHICA': '▪️', 'PEQUEÑO': '▫️', 'PEQUEÑA': '▫️',
+            'ALTO': '📶', 'BAJO': '📉', 'CALIENTE': '♨️', 'FRIO': '❄️', 'FRÍO': '❄️', 'LIMPIO': '✨', 'SUCIO': '🟤',
+            'NUEVO': '🆕', 'VIEJO': '📦', 'RAPIDO': '⚡', 'RÁPIDO': '⚡', 'LENTO': '🐢', 'BUENO': '👍', 'MALO': '👎'
         };
 
         function processText() {
@@ -156,15 +179,15 @@
                 const iconBox = document.createElement('div');
                 iconBox.className = "text-4xl flex items-center justify-center h-16 w-16 bg-indigo-50 rounded-xl mb-1";
 
-                // Artículos y conectores
-                if (['LA', 'EL', 'LOS', 'LAS', 'UN', 'UNA', 'DE', 'DEL', 'EN', 'Y', 'A', 'CON', 'PARA', 'ES', 'SON', 'ME', 'TE', 'LE'].includes(cleanWord)) {
+                // Artículos, preposiciones y pronombres
+                if (['LA', 'EL', 'LOS', 'LAS', 'UN', 'UNA', 'UNOS', 'UNAS', 'DE', 'DEL', 'EN', 'Y', 'A', 'CON', 'PARA', 'ES', 'SON', 'ME', 'TE', 'LE', 'QUE', 'POR', 'ESTA', 'ESTÁ', 'ESTE'].includes(cleanWord)) {
                     iconBox.innerText = '🔹';
                 } else {
                     let symbol = visualMap[cleanWord];
                     if (symbol) {
                         iconBox.innerText = symbol;
                     } else {
-                        iconBox.innerText = '🧩'; // Comodín limpio si no está en el diccionario
+                        iconBox.innerText = '🧩'; // Comodín claro si falta alguna palabra poco frecuente
                     }
                 }
 
@@ -204,7 +227,7 @@
             }
         }
 
-        // Síntesis de voz forzada en acento argentino (es-AR)
+        // SÍNTESIS DE VOZ: FORZADO ESTRICTO EN ESPAÑOL ARGENTINO (es-AR)
         function speakText() {
             const text = document.getElementById('uppercaseOutput').innerText;
             if (!text || text === "-") return;
@@ -213,18 +236,19 @@
             const utterance = new SpeechSynthesisUtterance(text);
             const voices = window.speechSynthesis.getVoices();
 
-            // Buscar voz argentina o latinoamericana de forma específica
-            const argVoice = voices.find(v => 
-                v.lang === 'es-AR' || v.lang.includes('es_AR') || 
-                v.name.includes('Argentina') || v.name.includes('Spanish (Latin America)')
-            );
+            // Búsqueda inteligente priorizando la voz nativa de Argentina o latinoamericana
+            let targetVoice = voices.find(v => v.lang === 'es-AR' || v.lang.includes('es_AR') || v.name.includes('Argentina'));
+            
+            if (!targetVoice) {
+                targetVoice = voices.find(v => v.lang.startsWith('es-') || v.lang.includes('es_'));
+            }
 
-            if (argVoice) {
-                utterance.voice = argVoice;
+            if (targetVoice) {
+                utterance.voice = targetVoice;
             }
             
             utterance.lang = 'es-AR';
-            utterance.rate = 0.85; // Velocidad pausada ideal para apoyo pedagógico
+            utterance.rate = 0.85; // Velocidad pausada, excelente para estimulación y lectura
             utterance.pitch = 1.0;
             
             window.speechSynthesis.speak(utterance);
