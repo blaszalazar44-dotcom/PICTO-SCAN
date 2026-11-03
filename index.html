@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PictoScan - Traductor Visual Masivo</title>
+    <title>PictoScan - Traductor Visual Masivo v6</title>
     <!-- Tailwind CSS CDN Estable -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Tesseract.js para OCR -->
@@ -11,7 +11,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
         body { font-family: 'Montserrat', sans-serif; }
-        /* Forzar renderizado correcto de Emojis a color en todos los sistemas */
         .emoji-render {
             font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
         }
@@ -29,7 +28,7 @@
                     <p class="text-indigo-100 text-xs sm:text-sm">Traductor visual ampliado, mayúsculas y voz argentina</p>
                 </div>
             </div>
-            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Masiva v5.0</span>
+            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Masiva v6.0</span>
         </div>
     </header>
 
@@ -106,8 +105,44 @@
 
     <!-- Lógica de la Aplicación -->
     <script>
-        // DICCIONARIO MASIVO AMPLIADO (Sustantivos, Verbos, Adjetivos, Emociones, Lugares)
+        // DICCIONARIO MASIVO SUPER AMPLIADO
         const visualMap = {
+            // NOMBRES PROPIOS COMUNES
+            'JUAN': '👦', 'MARIA': '👧', 'MARÍA': '👧', 'MATEO': '👦', 'LUCAS': '👦', 'SOFIA': '👧', 'SOFÍA': '👧',
+            'VALENTIN': '👦', 'VALENTÍN': '👦', 'GERONIMO': '👦', 'GERÓNIMO': '👦', 'GENARO': '👦', 'HECTOR': '👦',
+            'HÉCTOR': '👦', 'DYLAN': '👦', 'XIOMARA': '👧', 'ADRIAN': '👦', 'ADRIÁN': '👦', 'ARIAN': '👦',
+            'IVO': '👦', 'MARIANO': '👦', 'MELODY': '👧', 'TAIS': '👧', 'RAUL': '👦', 'RAÚL': '👦', 'EMANUEL': '👦',
+            'JOSE': '👦', 'JOSÉ': '👦', 'LAUTARO': '👦', 'BRAIAN': '👦',
+
+            // COLORES
+            'AZUL': '🔵', 'ROJO': '🔴', 'VERDE': '🟢', 'AMARILLO': '🟡', 'NEGRO': '⚫', 'BLANCO': '⚪',
+            'NARANJA': '🟠', 'ROSA': '🩷', 'VIOLETA': '🟣', 'MARRON': '🟤', 'MARRÓN': '🟤', 'GRIS': '🔘',
+
+            // ACCIONES Y VERBOS (Incluyendo pasado, presente y infinitivo)
+            'COMPRA': '🛒', 'COMPRAS': '🛒', 'COMPRO': '🛍️', 'COMPRÓ': '🛍️', 'COMPRAR': '🛒', 'COMPRANDO': '🛒',
+            'SALTA': '🦘', 'SALTAN': '🦘', 'SALTAR': '🦘', 'SALTANDO': '🦘', 'SALTÓ': '🦘',
+            'COME': '🍽️', 'COMEN': '🍽️', 'COMER': '🍽️', 'COMIENDO': '🍽️', 'COMO': '🍽️', 'COMIÓ': '🍽️',
+            'CORRE': '🏃‍♂️', 'CORREN': '🏃‍♂️', 'CORRER': '🏃‍♂️', 'CORRIENDO': '🏃‍♂️', 'CORRIÓ': '🏃‍♂️',
+            'BEBE': '🥤', 'BEBEN': '🥤', 'BEBER': '🥤', 'TOMA': '🥤', 'TOMAN': '🥤', 'TOMAR': '🥤', 'TOMÓ': '🥤',
+            'GUSTA': '❤️', 'GUSTAN': '❤️', 'ENCANTA': '💖', 'QUIERE': '🤲', 'QUIEREN': '🤲', 'QUERER': '🤲',
+            'JUEGA': '⚽', 'JUEGAN': '⚽', 'JUGAR': '⚽', 'JUGANDO': '⚽', 'JUGÓ': '⚽',
+            'DUERME': '😴', 'DUERMEN': '😴', 'DORMIR': '😴', 'DURMIÓ': '😴',
+            'LEE': '📖', 'LEEN': '📖', 'LEER': '📖', 'LEYENDO': '📖', 'LEYÓ': '📖',
+            'ESCRIBE': '✏️', 'ESCRIBEN': '✏️', 'ESCRIBIR': '✏️', 'ESCRIBIÓ': '✏️',
+            'CANTA': '🎤', 'CANTAN': '🎤', 'CANTAR': '🎤', 'CANTÓ': '🎤',
+            'ESTUDIA': '📚', 'ESTUDIAN': '📚', 'ESTUDIAR': '📚', 'ESTUDIÓ': '📚',
+            'TRABAJA': '💻', 'TRABAJAN': '💻', 'TRABAJAR': '💻', 'TRABAJÓ': '💻',
+            'AYUDA': '🤝', 'AYUDAN': '🤝', 'AYUDAR': '🤝', 'AYUDÓ': '🤝',
+            'CAMINA': '🚶‍♂️', 'CAMINAN': '🚶‍♂️', 'CAMINAR': '🚶‍♂️', 'CAMINÓ': '🚶‍♂️',
+            'HABLA': '🗣️', 'HABLAN': '🗣️', 'HABLAR': '🗣️', 'HABLÓ': '🗣️',
+            'ESCUCHA': '👂', 'ESCUCHAN': '👂', 'ESCUCHAR': '👂', 'ESCUCHÓ': '👂',
+            'MIRA': '👀', 'MIRAN': '👀', 'MIRAR': '👀', 'MIRÓ': '👀',
+            'LLORA': '😢', 'LLORAN': '😢', 'LLORAR': '😢', 'LLORÓ': '😢',
+            'DIBUJA': '🎨', 'DIBUJAN': '🎨', 'DIBUJAR': '🎨', 'DIBUJÓ': '🎨',
+            'PINTA': '🖌️', 'PINTAN': '🖌️', 'PINTAR': '🖌️', 'PINTÓ': '🖌️',
+            'COCINA': '🍳', 'COCINAN': '🍳', 'COCINAR': '🍳', 'COCINÓ': '🍳',
+            'TIENE': '🤲', 'TIENEN': '🤲', 'TENER': '🤲', 'ES': '✨', 'SON': '✨', 'ESTA': '📍', 'ESTÁ': '📍',
+
             // ANIMALES
             'PERRO': '🐕', 'PERROS': '🐕', 'GATO': '🐈', 'GATOS': '🐈', 'OSO': '🐻', 'OSOS': '🐻',
             'LEON': '🦁', 'LEÓN': '🦁', 'ELEFANTE': '🐘', 'MONO': '🐒', 'VACA': '🐄', 'CABALLO': '🐎', 
@@ -119,41 +154,17 @@
             'CARNE': '🥩', 'POLLO': '🍗', 'AGUA': '💧', 'CAFE': '☕', 'CAFÉ': '☕', 'LECHE': '🥛',
             'MATE': '🧉', 'PAN': '🍞', 'MANZANA': '🍎', 'BANANA': '🍌', 'JUGO': '🧃', 'COMIDA': '🍲',
             'GALLETA': '🍪', 'GALLETITA': '🍪', 'CHOCOLATE': '🍫', 'QUESO': '🧀', 'HUEVO': '🥚', 'FRUTA': '🍓',
-            'HELADO': '🍦', 'NARANJA': '🍊', 'PIZZA': '🍕', 'ARROZ': '🍚', 'FIDEOS': '🍝', 'TORTA': '🎂',
+            'HELADO': '🍦', 'PIZZA': '🍕', 'ARROZ': '🍚', 'FIDEOS': '🍝', 'TORTA': '🎂',
             'ASADO': '🍖', 'YERBA': '🌿', 'AZUCAR': '🧂', 'AZÚCAR': '🧂', 'MERIENDA': '🧃', 'DESAYUNO': '☕',
-
-            // VERBOS Y ACCIONES (Conjugaciones comunes)
-            'SALTA': '🦘', 'SALTAN': '🦘', 'SALTAR': '🦘', 'SALTANDO': '🦘', 
-            'COME': '🍽️', 'COMEN': '🍽️', 'COMER': '🍽️', 'COMIENDO': '🍽️', 'COMO': '🍽️',
-            'CORRE': '🏃‍♂️', 'CORREN': '🏃‍♂️', 'CORRER': '🏃‍♂️', 'CORRIENDO': '🏃‍♂️',
-            'BEBE': '🥤', 'BEBEN': '🥤', 'BEBER': '🥤', 'TOMA': '🥤', 'TOMAN': '🥤', 'TOMAR': '🥤',
-            'GUSTA': '❤️', 'GUSTAN': '❤️', 'ENCANTA': '💖',
-            'JUEGA': '⚽', 'JUEGAN': '⚽', 'JUGAR': '⚽', 'JUGANDO': '⚽', 
-            'DUERME': '😴', 'DUERMEN': '😴', 'DORMIR': '😴', 
-            'LEE': '📖', 'LEEN': '📖', 'LEER': '📖', 'LEYENDO': '📖', 
-            'ESCRIBE': '✏️', 'ESCRIBEN': '✏️', 'ESCRIBIR': '✏️', 
-            'CANTA': '🎤', 'CANTAN': '🎤', 'CANTAR': '🎤', 
-            'ESTUDIA': '📚', 'ESTUDIAN': '📚', 'ESTUDIAR': '📚', 
-            'TRABAJA': '💻', 'TRABAJAN': '💻', 'TRABAJAR': '💻', 
-            'AYUDA': '🤝', 'AYUDAN': '🤝', 'AYUDAR': '🤝', 
-            'CAMINA': '🚶‍♂️', 'CAMINAN': '🚶‍♂️', 'CAMINAR': '🚶‍♂️', 
-            'HABLA': '🗣️', 'HABLAN': '🗣️', 'HABLAR': '🗣️', 
-            'ESCUCHA': '👂', 'ESCUCHAN': '👂', 'ESCUCHAR': '👂', 
-            'MIRA': '👀', 'MIRAN': '👀', 'MIRAR': '👀', 
-            'LLORA': '😢', 'LLORAN': '😢', 'LLORAR': '😢', 
-            'DIBUJA': '🎨', 'DIBUJAN': '🎨', 'DIBUJAR': '🎨', 
-            'PINTA': '🖌️', 'PINTAN': '🖌️', 'PINTAR': '🖌️', 
-            'COCINA': '🍳', 'COCINAN': '🍳', 'COCINAR': '🍳',
-            'CANJEAN': '🔄', 'BUSCA': '🔍', 'BUSCAR': '🔍', 'VA': '🚀', 'VAN': '🚀', 'IR': '🚀',
 
             // PERSONAS Y FAMILIA
             'ABUELA': '👵', 'ABUELO': '👴', 'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦',
             'BEBE': '👶', 'BEBÉ': '👶', 'NENE': '👦', 'NENA': '👧', 'NIÑO': '👦', 'NIÑA': '👧',
             'AMIGO': '🤝', 'AMIGOS': '👥', 'MAESTRA': '👩‍🏫', 'MAESTRO': '👨‍🏫', 'PROFESORA': '👩‍🏫', 'PROFESOR': '👨‍🏫',
             'HERMANO': '👦', 'HERMANA': '👧', 'DOCTOR': '👨‍⚕️', 'DOCTORA': '👩‍⚕️', 'POLICIA': '👮‍♂️', 'BOMBERO': '👨‍🚒',
-            'FAMILIA': ' család', 'COMPAÑERO': '🧑‍🤝‍🧑', 'COMPAÑEROS': '🧑‍🤝‍🧑', 'GENTE': '👥', 'PERSONA': '🧍',
+            'COMPAÑERO': '🧑‍🤝‍🧑', 'COMPAÑEROS': '🧑‍🤝‍🧑', 'GENTE': '👥', 'PERSONA': '🧍',
 
-            // ENTORNO, LUGARES Y OBJETOS ESCOLARES / HOGAR
+            // ENTORNO, LUGARES Y OBJETOS
             'CASA': '🏠', 'ESCUELA': '🏫', 'COLEGIO': '🏫', 'PATIO': '🏡', 'PUERTA': '🚪', 'VENTANA': '🪟',
             'MESA': '🪵', 'SILLA': '🪑', 'CAMA': '🛏️', 'LIBRO': '📖', 'CUADERNO': '📓', 'LAPIZ': '✏️', 
             'LÁPIZ': '✏️', 'MOCHILA': '🎒', 'AUTO': '🚗', 'COCHE': '🚗', 'COLECTIVO': '🚌', 'BICICLETA': '🚲',
@@ -167,7 +178,7 @@
             'ENOJADO': '😡', 'ENOJADA': '😡', 'CANSADO': '🥱', 'CANSADA': '🥱', 'ENFERMO': '🤒', 'ENFERMA': '🤒', 
             'ASUSTADO': '😨', 'MIEDO': '😱', 'NERVIOSO': '🫨', 'TRANQUILO': '😌', 'SORPRENDIDO': '😲',
 
-            // ADJETIVOS Y CUALIDADES
+            // ADJETIVOS
             'GRANDE': '🔲', 'GRANDES': '🔲', 'CHICO': '▪️', 'CHICA': '▪️', 'PEQUEÑO': '▫️', 'PEQUEÑA': '▫️',
             'ALTO': '📶', 'BAJO': '📉', 'CALIENTE': '♨️', 'FRIO': '❄️', 'FRÍO': '❄️', 'LIMPIO': '✨', 'SUCIO': '🟤',
             'NUEVO': '🆕', 'VIEJO': '📦', 'RAPIDO': '⚡', 'RÁPIDO': '⚡', 'LENTO': '🐢', 'BUENO': '👍', 'MALO': '👎',
