@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PictoScan - Traductor Visual Maestro Unificado</title>
+    <title>PictoScan - Traductor Visual Maestro Ampliado</title>
     <!-- Tailwind CSS CDN Estable -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Tesseract.js para OCR -->
@@ -28,7 +28,7 @@
                     <p class="text-indigo-100 text-xs sm:text-sm">Traductor visual unificado, mayúsculas y voz argentina</p>
                 </div>
             </div>
-            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Maestra v9.0</span>
+            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Maestra v11.0</span>
         </div>
     </header>
 
@@ -53,7 +53,7 @@
                 <!-- Área de texto manual -->
                 <div class="flex flex-col gap-2">
                     <label for="manualText" class="text-xs font-semibold text-slate-600 uppercase tracking-wider">O escribí/pegá el texto acá:</label>
-                    <textarea id="manualText" rows="3" class="w-full border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Escribí una oración..."></textarea>
+                    <textarea id="manualText" rows="3" class="w-full border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Escribí una oración o números..."></textarea>
                 </div>
             </div>
 
@@ -107,7 +107,139 @@
     <script>
         const visualMap = {
             // ==========================================
-            // 1. GRUPO FAMILIAR Y VÍNCULOS (Ampliados)
+            // NÚMEROS (DÍGITOS Y PALABRAS DEL 0 AL 9)
+            // ==========================================
+            '0': '0️⃣', 'CERO': '0️⃣',
+            '1': '1️⃣', 'UNO': '1️⃣', 'UNA': '1️⃣',
+            '2': '2️⃣', 'DOS': '2️⃣',
+            '3': '3️⃣', 'TRES': '3️⃣',
+            '4': '4️⃣', 'CUATRO': '4️⃣',
+            '5': '5️⃣', 'CINCO': '5️⃣',
+            '6': '6️⃣', 'SEIS': '6️⃣',
+            '7': '7️⃣', 'SIETE': '7️⃣',
+            '8': '8️⃣', 'OCHO': '8️⃣',
+            '9': '9️⃣', 'NUEVE': '9️⃣',
+
+            // ==========================================
+            // 1. LUGARES, ESPACIOS Y PROFESIONES
+            // ==========================================
+            'SUPERMERCADO': '🛒', 'CINE': '🍿', 'TEATRO': '🎭', 'BIBLIOTECA': '📚', 'CAFETERIA': '☕', 'CAFETERÍA': '☕',
+            'PARQUE': '🌳', 'MUSEO': '🏛️', 'BANCO': '🏦', 'FARMACIA': '💊', 'IGLESIA': '⛪', 'AEROPUERTO': '✈️',
+            'ESTACION': '🚉', 'ESTACIÓN': '🚉', 'FABRICA': '🏭', 'FÁBRICA': '🏭', 'CASTILLO': '🏰', 'ESTADIO': '🏟️',
+            'CARPINTERO': '🪵', 'ALBAÑIL': '🧱', 'PELUQUERO': '💈', 'ABOGADO': '⚖️', 'ARQUITECTO': '📐',
+            'AGRICULTOR': '🌾', 'CIENTIFICO': '🧪', 'CIENTÍFICO': '🧪', 'FOTOGRAFO': '📸', 'FOTÓGRAFO': '📸',
+            'ESCRITOR': '✍️', 'CANTANTE': '🎤', 'BAILARIN': '🩰', 'BAILARÍN': '🩰', 'DENTISTA': '🦷',
+            'PERIODISTA': '📰', 'GERENTE': '💼', 'CONSERJE': '🧹',
+
+            // ==========================================
+            // 2. PARTES DE LA CASA Y DEL EDIFICIO
+            // ==========================================
+            'COCINA': '🍳', 'BAÑO': '🛁', 'DORMITORIO': '🛏️', 'LIVING': '🛋️', 'SALON': '🛋️', 'SALÓN': '🛋️',
+            'BALCON': '🪴', 'BALCÓN': '🪴', 'JARDIN': '🌱', 'JARDÍN': '🌱', 'GARAGE': '🚗', 'PARED': '🧱',
+            'PISO': '🪵', 'ROOF': '🏠', 'TECHO': '🏠', 'ESCALERA': '🪜', 'ESPEJO': '🪞', 'CUADRO': '🖼️',
+            'SILLON': '🛋️', 'SILLÓN': '🛋️', 'PLACARD': '🚪', 'ARMARIO': '🚪',
+
+            // ==========================================
+            // 3. TRANSPORTE Y MEDIOS
+            // ==========================================
+            'COLECTIVO': '🚌', 'AUTOBUS': '🚌', 'AUTOBÚS': '🚌', 'TREN': '🚂', 'SUBTE': '🚇', 'METRO': '🚇',
+            'AVION': '✈️', 'AVIÓN': '✈️', 'BARCO': '🚢', 'HELICOPTERO': '🚁', 'HELICÓPTERO': '🚁', 'COHETE': '🚀',
+            'TRUCK': '🚚', 'CAMION': '🚚', 'CAMIÓN': '🚚', 'TAXI': '🚕',
+
+            // ==========================================
+            // 4. TECNOLOGÍA, COMUNICACIÓN Y ARTE
+            // ==========================================
+            'MAPA': '🗺️', 'VALIJA': '🧳', 'MALETA': '🧳', 'PASAJE': '🎫', 'BOLETO': '🎫',
+            'MONITOR': '🖥️', 'PANTALLA': '🖥️', 'TECLADO': '⌨️', 'MOUSE': '🖱️', 'RATON': '🖱️', 'RATÓN': '🖱️',
+            'AURICULARES': '🎧', 'CAMARA': '📷', 'CÁMARA': '📷', 'MICROFONO': '🎙️', 'MICRÓFONO': '🎙️',
+            'IMPRESORA': '🖨️', 'INTERNET': '🌐', 'MENSAJE': '💬', 'MAIL': '📧', 'CORREO': '📧',
+            'CONSOLA': '🎮', 'PINTURA': '🎨', 'GUITARRA': '🎸', 'PIANO': '🎹', 'TROMPETA': '🎺',
+            'OBRA': '🎭', 'PELICULA': '🎬', 'PELÍCULAS': '🎬', 'PELÍCULA': '🎬', 'FOTO': '📸',
+            'PREMIO': '🏆', 'MEDAL': '🥇', 'MEDALLA': '🥇', 'BASQUET': '🏀', 'TENIS': '🎾',
+            'SKATE': '🛹', 'AJEDREZ': '♟️', 'ROMPECABEZAS': '🧩',
+
+            // ==========================================
+            // 5. ESPACIO, CIENCIA Y NATURALEZA
+            // ==========================================
+            'TIERRA': '🌍', 'COMETA': '☄️', 'GALAXIA': '🌌', 'VIENTO': '💨', 'RAYO': '⚡', 'TORNADO': '🌪️',
+            'NIEVE': '❄️', 'NIEBLA': '🌫️', 'OLA': '🌊', 'DESIERTO': '🏜️', 'BOSQUE': '🌲', 'VOLCAN': '🌋',
+            'VOLCÁN': '🌋', 'ROSA': '🌹', 'GIRASOL': '🌻', 'TULIPAN': '🌷', 'TULIPÁN': '🌷', 'JACINTO': '🪻',
+            'LOTO': '🪷', 'FLOR': '💮', 'MARGARITA': '🌼', 'HIBISCO': '🌺', 'RAMO': '💐', 'LAVANDA': '🌾',
+            'BROTE': '🌱', 'ORQUIDEA': '🌿', 'ORQUÍDEA': '🌿', 'JAZMIN': '🍂', 'JAZMÍN': '🍂', 'FLOR-MARCHITA': '🥀',
+            'CRISANTEMO': '🏵️', 'CACTUS': '🌵', 'PLANTA': '🪴', 'PINO': '🌲', 'ARBOL': '🌳', 'ÁRBOL': '🌳',
+            'PALM': '🌴', 'PALMERA': '🌴', 'HELECHO': '🌿', 'TREBOL': '🍀', 'TRÉBOL': '🍀', 'BAMBU': '🎋',
+            'BAMBÚ': '🎋', 'HOJA': '🍁', 'HIERBA': '🌱', 'PASTO': '🌱', 'TRONCO': '🪵', 'MUSGO': '🌿',
+            'RAIZ': '🪨', 'RAÍZ': '🪨', 'CAÑA': '🌾',
+
+            // ==========================================
+            // 6. FRUTAS, VERDURAS Y ALIMENTOS
+            // ==========================================
+            'PERA': '🍐', 'SANDIA': '🍉', 'SANDÍA': '🍉', 'UVA': '🍇', 'FRUTILLA': '🍓', 'CEREZA': '🍒',
+            'DURAZNO': '🍑', 'MANGO': '🥭', 'ANANA': '🍍', 'PIÑA': '🍍', 'KIWI': '🥝', 'COCO': '🥥',
+            'PALTA': '🥑', 'AGUACATE': '🥑', 'TOMATE': '🍅', 'ZANAHORIA': '🥕', 'CHOCLO': '🌽', 'MAIZ': '🌽',
+            'MAÍZ': '🌽', 'MORRON': '🌶️', 'MORRÓN': '🌶️', 'PIMIENTO': '🌶️', 'BROCOLI': '🥦', 'BRÓCOLI': '🥦',
+            'LECHUGA': '🥬', 'PEPINO': '🥒', 'AJO': '🧄', 'CEBOLLA': '🧅', 'PAPA': '🥔', 'BATATA': '🍠',
+            'HONGO': '🍄', 'CHAMPIÑON': '🍄', 'CHAMPIÑÓN': '🍄', 'MANI': '🥜', 'MANÍ': '🥜', 'CASTAÑA': '🌰',
+            'ARVEJA': '🫛', 'CHÍCHARO': '🫛', 'TRIGO': '🌾', 'GRANO': '🌽', 'SEMILLA': '🌱', 'CACAO': '🍫',
+            'AJI': '🌶️', 'AJÍ': '🌶️', 'CHILE': '🌶️', 'SAL': '🧂', 'OREGANO': '🌿', 'ORÉGANO': '🌿', 'MENTA': '🍃',
+            'MACETA': '🪴', 'TRACTOR': '🚜', 'HACHA': '🪓', 'PICO': '⛏️', 'CERCA': '🧱', 'REJA': '🧱',
+            'INVERNADERO': '🏡', 'MANGUERA': '💧', 'BALDE': '🪣', 'FERTILIZANTE': '🧴', 'LEÑA': '🪵',
+            'GUANTE': '🧤', 'FUENTE': '⛲', 'TOBOGAN': '🛝', 'TOBOGÁN': '🛝', 'HAMACA': '🪞',
+
+            // ==========================================
+            // 7. INSECTOS Y BICHITOS
+            // ==========================================
+            'ORUGA': '🐛', 'HORMIGA': '🐜', 'MARIPOSA': '🦋', 'ABEJA': '🐝', 'VAQUITA': '🐞',
+            'GRILLO': '🦗', 'ARAÑA': '🕷️', 'CARACOL': '🐌', 'LOMBRIZ': '🪱', 'MOSQUITO': '🦟',
+
+            // ==========================================
+            // 8. VERBOS Y ACCIONES
+            // ==========================================
+            'EXISTIR': '✅', 'APARECER': '👁️', 'PERMANECER': '👤', 'OCURRIR': '🎭', 'DURAR': '🕰️',
+            'SURGIR': '🌱', 'SUCEDER': '💥', 'ACONTECER': '🎭', 'ASISTIR': '👥', 'RESIDIR': '📍',
+            'CONTENER': '📦', 'POSEER': '🔐', 'PERTENECER': '🧩', 'GASTAR': '💰', 'REGALAR': '🎁',
+            'CONSERVAR': '💎', 'IMAGINAR': '💡', 'ANALIZAR': '🧐', 'EXPRESAR': '🗣️', 'ADORAR': '❤️',
+            'DUDAR': '🤔', 'CRITICAR': '🗯️', 'CALLAR': '🤐', 'NARRAR': '📖', 'FINGIR': '🎭',
+            'AGRADECER': '🤝', 'ATERRIZAR': '🛬', 'ESCALAR': '🧗', 'ENTRAR': '🚪', 'ASOMAR': '🪟',
+            'GIRAR': '🔄', 'PEDALEAR': '🚴', 'NAVEGAR': '🌊', 'DESPEGAR': '🚀', 'REPARAR': '🛠️',
+            'DISEÑAR': '📐', 'DIBUJAR': '🎨', 'TALLAR': '🪵', 'COSER': '🪡', 'CONSTRUIR': '🧱',
+            'ELIMINAR': '🗑️', 'REEMPLAZAR': '🔄', 'MEJORAR': '📈', 'ARMAR': '🧩', 'BARRER': '🧹',
+            'REFREGAR': '🧼', 'COLGAR': '🧺', 'TENDER': '🛏️', 'MIRARSE': '🪞', 'GOLPEAR': '🚪',
+            'REGAR': '🪴', 'ENCHUFAR': '🔌', 'ENCENDER': '🕯️', 'TRABAR': '🔒', 'CORTAR': '🔪',
+            'ASAR': '🥩', 'HERVIR': '🍲', 'SALAR': '🧂', 'MEZCLAR': '🥄', 'HORNEAR': '🧁',
+            'EXPRIMIR': '🍊', 'RALLAR': '🧀', 'ENFRIAR': '🧊', 'LADRAR': '🐶', 'MAULLAR': '🐱',
+            'RUGIR': '🦁', 'GALOPAR': '🐎', 'ARRASTRARSE': '🪱', 'VIGILAR': '🦉', 'ESCONDERSE': '🦊',
+            'FLORECER': '🍂', 'NEVAR': '❄️', 'ACERTAR': '🎯', 'SORTEAR': '🎲', 'COMPETIR': '🏆',
+            'MEMORIZAR': '🧠', 'ANOTAR': '📝', 'CALCULAR': '🧮', 'RESOLVER': '🧩', 'CLASIFICAR': '🏅',
+            'INVESTIGAR': '🔍', 'TERMINAR': '🏁', 'CURAR': '🩺', 'ALIVIER': '💊', 'ALIVIAR': '💊',
+            'DESCANSAR': '🛏️', 'OLER': '👃', 'SABOREAR': '👅', 'ESCUCHAR': '👂', 'OBSERVAR': '👀',
+            'PROTEGER': '🤝', 'DESINFECTAR': '🧼', 'RELAJARSE': '🧘',
+
+            // ==========================================
+            // 9. ADJETIVOS Y DESCRIPTORES
+            // ==========================================
+            'DISCRETO': '🤫', 'ENTUSIASTA': '🎉', 'CURIOSO': '🤓', 'PRUDENTE': '🦉', 'ORGULLOSO': '🦚',
+            'CREATIVO': '🎨', 'DESCONFIADO': '🦊', 'TERCO': '🐮', 'GENEROSO': '🤝', 'HONESTO': '⚖️',
+            'FIERO': '🦁', 'INOCENTE': '🧸', 'GLOTON': '🍕', 'GLOTÓN': '🍕', 'FIEL': '💎', 'REBELDE': '🌪️',
+            'VENTOSO': '🌬️', 'NUBLADO': '☁️', 'NEBLINOSO': '🌫️', 'LLUVIOSO': '☔', 'SOFOCANTE': '🥵',
+            'ARIDO': '🏜️', 'ÁRIDO': '🏜️', 'FERTIL': '🌾', 'FÉRTIL': '🌾', 'RUIDOSO': '📢', 'PACIFICO': '🧘',
+            'PACÍFICO': '🧘', 'DESPEJADO': '🌌', 'PELUDO': '🧸', 'RESBALADIZO': '🧼', 'ASPERO': '🪵',
+            'ÁSPERO': '🪵', 'PGAJOSO': '🍯', 'PEGAJOSO': '🍯', 'TRANSPARENTE': '💎', 'OPACO': '🌫️',
+            'SOLIDO': '🧊', 'SÓLIDO': '🧊', 'LIQUIDO': '💧', 'LÍQUIDO': '💧', 'GASEOSO': '💨', 'FRAGIL': '🕸️',
+            'FRÁGIL': '🕸️', 'RESISTENTE': '🔩', 'ESPONJOSO': '🧽', 'FLEXIBLE': '🪶', 'RIGIDO': '🪨', 'RÍGIDO': '🪨',
+            'ELASTICO': '⚡', 'ELÁSTICO': '⚡', 'INMENSO': '🌌', 'DIMINUTO': '🔬', 'MEDIANO': '📐', 'ABUNDANTE': '🌊',
+            'ESCASO': '🏜️', 'NUMEROSO': '🔢', 'SOLITARIO': '🧍', 'ABARROTADO': '👥', 'EXTENSO': '🗺️', 'CORTO': '📏',
+            'SALUDABLE': '🏃', 'ENERGICO': '🔋', 'ENÉRGICO': '🔋', 'AGOTADO': '🥱', 'ATLETICO': '💪', 'ATLÉTICO': '💪',
+            'RELAJADO': '🧘', 'ALTERADO': '⚡', 'HERIDO': '🤕', 'MAREADO': '🤕', 'SEDIENTO': '🛌', 'BRILLANTE': '✨',
+            'BORROSO': '🌫️', 'COLORIDO': '🌈', 'PLATEADO': '🪙', 'DORADO': '👑', 'FORMAL': '🤵', 'INFORMAL': '👕',
+            'MODERNO': '🎨', 'ANTICUADO': '🕰️', 'IMPECABLE': '✨', 'LOGICO': '🧩', 'LÓGICO': '🧩', 'ABSURDO': '🤯',
+            'UTIL': '🛠️', 'ÚTIL': '🛠️', 'INUTIL': '🪹', 'INÚTIL': '🪹', 'VALIOSO': '🌟', 'ORDINARIO': '🪵',
+            'EXTRAORDINARIO': '✨', 'EFICAZ': '📈', 'PRECISO': '🧭', 'CONFUSO': '🤷', 'PRIMERO': '🥇', 'ULTIMO': '🏁',
+            'ÚLTIMO': '🏁', 'INMEDIATO': '⚡', 'PUNTUAL': '⏰', 'ATRASADO': '⏳', 'ACTUAL': '📅', 'PASADO': '🕰️',
+            'FUTURO': '🚀', 'CONTINUO': '🔁', 'PROVISORIO': '⏳',
+
+            // ==========================================
+            // 10. GRUPO FAMILIAR Y VÍNCULOS
             // ==========================================
             'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'MADRE': '👩‍👦', 'MAMITAS': '👩‍👦',
             'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦', 'PADRE': '👨‍👦', 'PAPIS': '👨‍👧‍👦',
@@ -128,98 +260,37 @@
             'AMIGO': '🤝', 'AMIGA': '🤝', 'AMIGOS': '👥', 'COMPAÑERO': '🧑‍🤝‍🧑', 'COMPAÑERA': '🧑‍🤝‍🧑',
 
             // ==========================================
-            // 2. VERBOS Y ACCIONES
+            // 11. BASE ORIGINAL Y NOMBRES PROPIOS
             // ==========================================
-            'ACEPTAR': '🤝', 'ACEPAR': '🤝', 'AMAR': '❤️', 'CAMINAR': '🚶', 'CAMINA': '🚶', 'CAMINAN': '🚶', 'CAMINÓ': '🚶',
-            'CANTAR': '🎤', 'CANTA': '🎤', 'CANTAN': '🎤', 'CANTÓ': '🎤', 'CERRAR': '🚪',
-            'COCINAR': '🍳', 'COCINA': '🍳', 'COCINAN': '🍳', 'COCINÓ': '🍳',
-            'COMPRAR': '🛒', 'COMPRA': '🛒', 'COMPRAS': '🛒', 'COMPRO': '🛍️', 'COMPRÓ': '🛍️', 'COMPRANDO': '🛒',
-            'CONTAR': '🔢', 'CREAR': '🎨', 'DEJAR': '📦', 'BUSCAR': '🔍', 'BUSCA': '🔍',
-            'ESCUCHAR': '🎧', 'ESCUCHA': '🎧', 'ESCUCHAN': '🎧', 'ESCUCHÓ': '🎧',
-            'ESPERAR': '⏳', 'ESTUDIAR': '📚', 'ESTUDIA': '📚', 'ESTUDIAN': '📚', 'ESTUDIÓ': '📚',
-            'GANAR': '🏆', 'HABLAR': '🗣️', 'HABLA': '🗣️', 'HABLAN': '🗣️', 'HABLÓ': '🗣️',
-            'LAVAR': '🧼', 'LLAMAR': '📞', 'LLEGAR': '🏁', 'LLEVAR': '🎒',
-            'MIRAR': '👀', 'MIRA': '👀', 'MIRAN': '👀', 'MIRÓ': '👀',
-            'NADAR': '🏊', 'PENSAR': '💡', 'PREGUNTAR': '❓', 'QUEDAR': '📍',
-            'SALTAR': '🦘', 'SALTA': '🦘', 'SALTAN': '🦘', 'SALTANDO': '🦘', 'SALTÓ': '🦘',
-            'TOMAR': '🥤', 'TOMA': '🥤', 'TOMAN': '🥤', 'TOMÓ': '🥤',
-            'TRABAJAR': '💼', 'TRABAJA': '💻', 'TRABAJAN': '💻', 'TRABAJÓ': '💻',
-            'VIAJAR': '✈️', 'VOLAR': '🕊️', 'AYUDAR': '⛑️', 'AYUDA': '🤝', 'AYUDAN': '🤝', 'AYUDÓ': '🤝',
-            'BAILAR': '💃', 'CAMBIAR': '🔄', 'COMENZAR': '🚀', 'ENCONTRAR': '🧩',
-            'EXPLICAR': '🧑‍🏫', 'GIRAR': '🔄',
-            'JUGAR': '⚽', 'JUEGA': '⚽', 'JUEGAN': '⚽', 'JUGANDO': '⚽', 'JUGÓ': '⚽',
-            'LIMPIAR': '🧹', 'PAGAR': '💳', 'APRENDER': '🧠',
-            'BEBER': '🥛', 'BEBE': '🥤', 'BEBEN': '🥤',
-            'CAER': '🍂', 'COME': '🍽️', 'COMEN': '🍽️', 'COMER': '🍽️', 'COMIENDO': '🍽️', 'COMO': '🍽️', 'COMIÓ': '🍽️',
-            'COMPRENDER': '💡', 'COMPRENDRE': '💡', 'CORRER': '🏃', 'CORRE': '🏃‍♂️', 'CORREN': '🏃‍♂️', 'CORRIENDO': '🏃‍♂️', 'CORRIÓ': '🏃‍♂️',
-            'CREER': '🙏', 'DEBER': '⚠️', 'DEFENDER': '🛡️', 'ENTENDER': '🧠', 'HABER': '✅', 'HACER': '🛠️',
-            'LEER': '📖', 'LEE': '📖', 'LEEN': '📖', 'LEYENDO': '📖', 'LEYÓ': '📖',
-            'MOVER': '📦', 'NACER': '👶', 'OBTENER': '🏅', 'OLER': '👃', 'PERDER': '❌', 'PODER': '💪',
-            'PONER': '📥', 'QUERER': '💖', 'QUIERE': '🤲', 'QUIEREN': '🤲',
-            'ROMPER': '⚡', 'SABER': '🎓', 'SER': '👤', 'TENER': '🤲', 'TIENE': '🤲', 'TIENEN': '🤲',
-            'TRAER': '🧳', 'VENDER': '🏷️', 'VER': '📺', 'VOLVER': '🔄', 'ATENDER': '🛎️',
-            'COCER': '🍲', 'CRECER': '📈', 'ESCOGER': '👉', 'OFRECER': '🎁', 'PROMETER': '🤝',
-            'ABRIR': '🔓', 'ADMITIR': '🎟️', 'ASISTIR': '🙋', 'COMPARTIR': '🍕', 'CONDUCIR': '🚗',
-            'CONSEGUIR': '🎯', 'CONSTRUIR': '🧱', 'DECIR': '🗣️', 'DESCUBRIR': '🤠', 'DISCUTIR': '🗣️',
-            'DORMIR': '😴', 'DUERME': '😴', 'DUERMEN': '😴', 'DURMIÓ': '😴',
-            'ESCRIBIR': '✍️', 'ESCRIBE': '✏️', 'ESCRIBEN': '✏️', 'ESCRIBIÓ': '✏️',
-            'EXISTIR': '🌍', 'IR': '🚶', 'VA': '🚀', 'VAN': '🚀', 'MORIR': '💀', 'OIR': '👂',
+            'ACEPTAR': '🤝', 'AMAR': '❤️', 'CAMINAR': '🚶', 'CANTAR': '🎤', 'CERRAR': '🚪',
+            'COCINAR': '🍳', 'COMPRAR': '🛒', 'CONTAR': '🔢', 'CREAR': '🎨', 'DEJAR': '📦', 'BUSCAR': '🔍',
+            'ESCUCHAR': '🎧', 'ESPERAR': '⏳', 'ESTUDIAR': '📚', 'GANAR': '🏆', 'HABLAR': '🗣️', 'LAVAR': '🧼',
+            'LLAMAR': '📞', 'LLEGAR': '🏁', 'LLEVAR': '🎒', 'MIRAR': '👀', 'NADAR': '🏊', 'PENSAR': '💡',
+            'PREGUNTAR': '❓', 'QUEDAR': '📍', 'SALTAR': '🦘', 'TOMAR': '🥤', 'TRABAJAR': '💼', 'VIAJAR': '✈️',
+            'VOLAR': '🕊️', 'AYUDAR': '⛑️', 'BAILAR': '💃', 'CAMBIAR': '🔄', 'COMENZAR': '🚀', 'ENCONTRAR': '🧩',
+            'EXPLICAR': '🧑‍🏫', 'GIRAR': '🔄', 'JUGAR': '🎮', 'LIMPIAR': '🧹', 'PAGAR': '💳', 'APRENDER': '🧠',
+            'BEBER': '🥛', 'CAER': '🍂', 'COME': '🍎', 'COMEN': '🍎', 'COMER': '🍎', 'COMIENDO': '🍎',
+            'COMPRENDER': '💡', 'CORRER': '🏃', 'CREER': '🙏', 'DEBER': '⚠️', 'DEFENDER': '🛡️',
+            'ENTENDER': '🧠', 'HABER': '✅', 'HACER': '🛠️', 'LEER': '📖', 'MOVER': '📦', 'NACER': '👶',
+            'OBTENER': '🏅', 'OLER': '👃', 'PERDER': '❌', 'PODER': '💪', 'PONER': '📥', 'QUERER': '💖',
+            'ROMPER': '⚡', 'SABER': '🎓', 'SER': '👤', 'TENER': '🤲', 'TRAER': '🧳', 'VENDER': '🏷️',
+            'VER': '📺', 'VOLVER': '🔄', 'ATENDER': '🛎️', 'COCER': '🍲', 'CRECER': '📈', 'ESCOGER': '👉',
+            'OFRECER': '🎁', 'PROMETER': '🤝', 'ABRIR': '🔓', 'ADMITIR': '🎟️', 'ASISTIR': '🙋', 'COMPARTIR': '🍕',
+            'CONDUCIR': '🚗', 'CONSEGUIR': '🎯', 'CONSTRUIR': '🧱', 'DECIR': '🗣️', 'DESCUBRIR': '🤠', 'DISCUTIR': '🗣️',
+            'DORMIR': '😴', 'ESCRIBIR': '✍️', 'EXISTIR': '🌍', 'IR': '🚶', 'MORIR': '💀', 'OIR': '👂',
             'PEDIR': '🙋', 'PERMITIR': '🔓', 'PREFERIR': '⭐', 'RECIBIR': '🎁', 'REIR': '😂', 'REPETIR': '🔁',
             'SALIR': '🚪', 'SEGUIR': '🚶', 'SENTIR': '❤️', 'SERVIR': '🍽️', 'SONREIR': '😊', 'SUBIR': '🧗',
             'VENIR': '🛬', 'VIVIR': '🏡', 'CORREGIR': '📝', 'DECIDIR': '🤔', 'DEFINIR': '📖', 'DIVIDIR': '➗', 'MEDIR': '📏',
-            'ENCANTA': '💖', 'ES': '✨', 'SON': '✨', 'ESTA': '📍', 'ESTÁ': '📍',
 
-            // ==========================================
-            // 3. SUSTANTIVOS, ANIMALES Y OBJETOS
-            // ==========================================
             'NIÑO': '👦', 'NIÑA': '👧', 'HOMBRE': '👨', 'MUJER': '👩', 'ANCIANO': '🧓',
-            'PROFESOR': '🧑‍🏫', 'MEDICO': '🧑‍⚕️', 'MÉDICO': '🧑‍⚕️', 'POLICIA': '👮', 'COCINERO': '🧑‍🍳', 'MECANICO': '🧑‍🔧',
-            'ARTISTA': '🧑‍🎨', 'BOMBERO': '🧑‍🚒', 'PROGRAMADOR': '🧑‍💻', 'PILOTO': '👨‍✈️', 
-            'PERRO': '🐶', 'PERROS': '🐶', 'GATO': '🐱', 'GATOS': '🐱',
-            'PAJARO': '🐦', 'PÁJARO': '🐦', 'PEZ': '🐟', 'CABALLO': '🐴', 'LEON': '🦁', 'LEÓN': '🦁', 
-            'ELEFANTE': '🐘', 'OSO': '🐻', 'OSOS': '🐻', 'MONO': '🐒', 'TORTUGA': '🐢', 'PATO': '🦆', 
-            'ABEJA': '🐝', 'MARIPOSA': '🦋', 'TIBURON': '🦈', 'TIBURÓN': '🦈', 'CONEJO': '🐇', 'GALLINA': '🐔', 
-            'TIGRE': '🐅', 'JIRAFA': '🦒', 'OVEJA': '🐑', 'CERDO': '🐖', 'RATON': '🐁', 'RATÓN': '🐁', 
-            'LORO': '🦜', 'SERPIENTE': '🐍',
-            
-            // Alimentos y bebidas
-            'PAN': '🍞', 'MANZANA': '🍎', 'BANANA': '🍌', 'HUEVO': '🥚', 'QUESO': '🧀', 'CARNE': '🥩', 
-            'ARROZ': '🍚', 'LECHE': '🥛', 'CAFE': '☕', 'CAFÉ': '☕', 'AGUA': '💧', 'VINO': '🍷', 'PIZZA': '🍕', 
-            'CHOCOLATE': '🍫', 'HELADO': '🍦', 'POLLO': '🍗', 'MATE': '🧉', 'JUGO': '🧃', 'COMIDA': '🍲',
-            'GALLETA': '🍪', 'GALLETITA': '🍪', 'FRUTA': '🍓', 'NARANJA': '🍊', 'FIDEOS': '🍝', 'TORTA': '🎂',
-            'ASADO': '🍖', 'YERBA': '🌿', 'AZUCAR': '🧂', 'AZÚCAR': '🧂', 'MERIENDA': '🧃', 'DESAYUNO': '☕',
-            'PLATO': '🍽️', 'VASO': '🥛', 'CUCHARA': '🥄',
-
-            // Entorno, hogar y objetos
-            'MESA': '🪑', 'SILLA': '🪑', 'CAMA': '🛏️', 'PUERTA': '🚪', 'VENTANA': '🪟', 'LLAVE': '🔑',
-            'TELEFONO': '📱', 'TELÉFONO': '📱', 'COMPUTADORA': '💻', 'COMPU': '💻', 'TELEVISOR': '📺', 'TELE': '📺', 
-            'RELOJ': '⌚', 'BATERIA': '🔋', 'CARTA': '✉️', 'PAQUETE': '📦', 'BASURA': '🗑️',
-            'CASA': '🏡', 'EDIFICIO': '🏢', 'ESCUELA': '🏫', 'COLEGIO': '🏫', 'HOSPITAL': '🏥', 'ARBOL': '🌳', 'ÁRBOL': '🌳',
-            'FLOR': '🌸', 'SOL': '☀️', 'LUNA': '🌙', 'ESTRELLA': '⭐', 'NUBE': '☁️', 'LLUVIA': '🌧️',
-            'FUEGO': '🔥', 'MONTAÑA': '⛰️', 'MAR': '🌊', 'PLAYA': '🏖️', 'RIO': '🏞️', 'RÍO': '🏞️',
-            'CIUDAD': '🏙️', 'PAIS': '🗺️', 'PAÍS': '🗺️', 'PATIO': '🏡', 'JARDIN': '🌳', 'JARDÍN': '🌳', 
-            'PARQUE': '🛝', 'CALLE': '🛣️', 'FARMACIA': '💊', 'BAÑO': '🚽', 'ARMARIO': '🗄️',
-            
-            // Ropa y accesorios
-            'CAMISA': '👕', 'PANTALON': '👖', 'PANTALÓN': '👖', 'VESTIDO': '👗', 'ZAPATILLA': '👟', 'MEDIA': '🧦', 
-            'CAMPERA': '🧥', 'GORRA': '🧢', 'LENTES': '🕶️', 'ROPA': '👕',
-            
-            // Útiles y otros
-            'MOCHILA': '🎒', 'CARTERA': '👜', 'LIBRO': '📖', 'LAPIZ': '✏️', 'LÁPIZ': '✏️', 'CUADERNO': '📝',
-            'CALENDARIO': '📅', 'DINERO': '💵', 'HORA': '⏰', 'DIA': '☀️', 'DÍA': '☀️', 'NOCHE': '🌙',
-            'MUSICA': '🎶', 'MÚSICA': '🎶', 'PELOTA': '⚽', 'AUTO': '🚗', 'COCHE': '🚗', 'BICICLETA': '🚲', 
-            'COLECTIVO': '🚌', 'TREN': '🚂', 'AVION': '✈️', 'AVIÓN': '✈️', 'TIJERA': '✂️', 'PAPEL': '📄',
-            'IDEA': '🧠', 'AMOR': '❤️', 'GENTE': '👥', 'PERSONA': '🧍',
-
-            // ==========================================
-            // 4. NOMBRES PROPIOS (Mujeres y Hombres)
-            // ==========================================
+            'PERRO': '🐶', 'GATO': '🐱', 'PEZ': '🐟', 'CABALLO': '🐴', 'LEON': '🦁', 'ELEFANTE': '🐘',
+            'OSO': '🐻', 'MONO': '🐒', 'PATO': '🦆', 'ABEJA': '🐝', 'MARIPOSA': '🦋',
             'AGUSTINA': '👧', 'ALMA': '👧', 'AMPARO': '👧', 'ANA': '👧', 'ANTONELLA': '👧', 'CAMILA': '👧',
             'CATALINA': '👧', 'CLARA': '👧', 'DELFINA': '👧', 'ELENA': '👧', 'EMMA': '👧', 'EMILIA': '👧',
             'FLORENCIA': '👧', 'FRANCESCA': '👧', 'GUADALUPE': '👧', 'ISABELLA': '👧', 'JUANA': '👧', 'JULIA': '👧',
             'LARA': '👧', 'LAURA': '👧', 'LETICIA': '👧', 'LOLA': '👧', 'LUCIA': '👧', 'LUCÍA': '👧',
             'LUANA': '👧', 'LUNA': '👧', 'MALENA': '👧', 'MANUELA': '👧', 'MARIA': '👧', 'MARÍA': '👧',
-            'MARIANA': '👧', 'MARTINA': '👧', 'MÍA': '👧', 'MIA': '👧', 'MILAGROS': '👧', 'MIRANDA': '👧',
+            'MARIANA': '👧', 'MARTINA': '👧', 'MÍA': '👧', 'MILAGROS': '👧', 'MIRANDA': '👧',
             'MORENA': '👧', 'OLIVIA': '👧', 'ORNELLA': '👧', 'PAULA': '👧', 'PILAR': '👧', 'ROCIO': '👧',
             'ROCÍO': '👧', 'ROMINA': '👧', 'ROSARIO': '👧', 'SOFIA': '👧', 'SOFÍA': '👧', 'SOL': '👧',
             'VALENTINA': '👧', 'VALERIA': '👧', 'VICTORIA': '👧', 'VIOLETA': '👧', 'VIRGINIA': '👧', 'ZOE': '👧', 'ZAIRA': '👧',
@@ -237,39 +308,7 @@
             'TOMÁS': '👦', 'VALENTIN': '👦', 'VALENTÍN': '👦', 'BENICIO': '👦', 'GERONIMO': '👦', 'GERÓNIMO': '👦', 
             'GENARO': '👦', 'HECTOR': '👦', 'HÉCTOR': '👦', 'DYLAN': '👦', 'XIOMARA': '👧', 'ADRIAN': '👦', 
             'ADRIÁN': '👦', 'ARIAN': '👦', 'IVO': '👦', 'MARIANO': '👦', 'MELODY': '👧', 'TAIS': '👧', 
-            'RAUL': '👦', 'RAÚL': '👦', 'EMANUEL': '👦', 'JOSE': '👦', 'JOSÉ': '👦', 'BRAIAN': '👦',
-
-            // ==========================================
-            // 5. ADJETIVOS, ESTADOS Y COLORES
-            // ==========================================
-            'LINDO': '✨', 'FEO': '👹', 'ALTO': '📏', 'BAJO': '📉', 'FUERTE': '💪', 'DEBIL': '🍃',
-            'DÉBIL': '🍃', 'GRANDE': '🐘', 'PEQUEÑO': '🐭', 'FLACO': '🥖', 'GORDO': '🐻', 'JOVEN': '👶',
-            'VIEJO': '🧓', 'NUEVO': '🆕', 'ANTIGUO': '🏺', 'LIMPIO': '💎', 'SUCIO': '🐷', 'ELEGANTE': '🤵',
-            'PROLIJO': '🧼', 'DESPROLIJO': '🌪️', 'PELADO': '💈', 'ALEGRE': '😊', 'TRISTE': '😢', 'INTELIGENTE': '🧠',
-            'VALIENTE': '🦁', 'MIEDOSO': '🐰', 'BUENO': '😇', 'MALO': '😈', 'PEREZOSO': '😴', 'TRABAJADOR': '🐝',
-            'TRANQUILO': '🧘', 'NERVIOSO': '⚡', 'TIMIDO': '🤫', 'TÍMIDO': '🤫', 'SOCIABLE': '🗣️', 'SABIO': '🦉',
-            'ENOJADO': '😡', 'CARIÑOSO': '❤️', 'AMABLE': '🤝', 'DIVERTIDO': '🎭', 'ABURRIDO': '🥱', 'ASTUTO': '🦊',
-            'CALIENTE': '🔥', 'FRIO': '❄️', 'FRÍO': '❄️', 'CALIDO': '☀️', 'CÁLIDO': '☀️', 'HELADO': '🧊',
-            'SECO': '🥖', 'MOJADO': '🌧️', 'LLENO': '🔋', 'VACIO': '🪹', 'VACÍO': '🪹', 'SUAVE': '🧼',
-            'ASPERO': '🪨', 'ÁSPERO': '🪨', 'DURO': '💎', 'BLANDO': '🪵', 'PESADO': '🏋️', 'LIVIANO': '🪶',
-            'BRILLANTE': '☀️', 'OSCURO': '🌑', 'PELIGROSO': '☣️', 'SEGURO': '🛡️', 'BORRACHO': '🥴', 'SOBRIO': '🧘',
-            
-            // Colores
-            'ROJO': '🔴', 'AZUL': '🔵', 'VERDE': '🟢', 'AMARILLO': '🟡', 'NEGRO': '⚫', 'BLANCO': '⚪',
-            'NARANJA': '🟠', 'VIOLETA': '🟣', 'MARRON': '🟤', 'MARRÓN': '🟤', 'ROSA': '🩷', 'GRIS': '🔘',
-            
-            // Formas y propiedades
-            'REDONDO': '🏐', 'CUADRADO': '📦', 'TRIANGULAR': '📐', 'RECTO': '📏', 'CURVO': '🌀', 'AFILADO': '🔪', 
-            'RAPIDO': '🐆', 'RÁPIDO': '🐆', 'LENTO': '🐢', 'CERCANO': '📍', 'LEJANO': '🌌', 'TEMPRANO': '⏰', 
-            'TARDIO': '🌙', 'TARDÍO': '🌙', 'BREVE': '⏳', 'ETERNO': '♾️', 'FRECUENTE': '📈', 'RARO': '📉', 
-            'DULCE': '🍯', 'ACIDO': '🍋', 'ÁCIDO': '🍋', 'SALADO': '🧂', 'AMARGO': '☕', 'PICANTE': '🌶️', 
-            'RICO': '😋', 'EXCELENTE': '🥇', 'PESIMO': '👎', 'PÉSIMO': '👎', 'JUSTO': '⚖️', 'CARO': '💵', 
-            'BARATO': '🏷️', 'FACIL': '🧩', 'FÁCIL': '🧩', 'DIFICIL': '🤯', 'DIFÍCIL': '🤯', 'VERDADERO': '✅', 
-            'FALSO': '❌', 'RUIDOSO': '📢', 'SILENCIOSO': '🤫', 'ANCHO': '🗺️', 'ESTRECHO': '📏',
-            
-            // Emociones y estados adicionales
-            'CONTENTO': '😊', 'CONTENTA': '😊', 'CANSADO': '🥱', 'CANSADA': '🥱', 
-            'ENFERMO': '🤒', 'ENFERMA': '🤒', 'ASUSTADO': '😨', 'MIEDO': '😱', 'SORPRENDIDO': '😲'
+            'RAUL': '👦', 'RAÚL': '👦', 'EMANUEL': '👦', 'JOSE': '👦', 'JOSÉ': '👦', 'BRAIAN': '👦'
         };
 
         function processText() {
