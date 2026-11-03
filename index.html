@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PictoScan - Traductor Visual Masivo v6</title>
+    <title>PictoScan - Traductor Visual Masivo y Oficial</title>
     <!-- Tailwind CSS CDN Estable -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Tesseract.js para OCR -->
@@ -28,7 +28,7 @@
                     <p class="text-indigo-100 text-xs sm:text-sm">Traductor visual ampliado, mayúsculas y voz argentina</p>
                 </div>
             </div>
-            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Masiva v6.0</span>
+            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Maestra v7.0</span>
         </div>
     </header>
 
@@ -103,86 +103,95 @@
         PictoScan • Diseñado para la inclusión educativa y el apoyo visual accesible.
     </footer>
 
-    <!-- Lógica de la Aplicación -->
+    <!-- Lógica de la Aplicación con tu Diccionario Maestro -->
     <script>
-        // DICCIONARIO MASIVO SUPER AMPLIADO
         const visualMap = {
-            // NOMBRES PROPIOS COMUNES
-            'JUAN': '👦', 'MARIA': '👧', 'MARÍA': '👧', 'MATEO': '👦', 'LUCAS': '👦', 'SOFIA': '👧', 'SOFÍA': '👧',
-            'VALENTIN': '👦', 'VALENTÍN': '👦', 'GERONIMO': '👦', 'GERÓNIMO': '👦', 'GENARO': '👦', 'HECTOR': '👦',
-            'HÉCTOR': '👦', 'DYLAN': '👦', 'XIOMARA': '👧', 'ADRIAN': '👦', 'ADRIÁN': '👦', 'ARIAN': '👦',
-            'IVO': '👦', 'MARIANO': '👦', 'MELODY': '👧', 'TAIS': '👧', 'RAUL': '👦', 'RAÚL': '👦', 'EMANUEL': '👦',
-            'JOSE': '👦', 'JOSÉ': '👦', 'LAUTARO': '👦', 'BRAIAN': '👦',
+            // VERBOS
+            'ACEPAR': '🤝', 'ACEPTAR': '🤝', 'AMAR': '❤️', 'CAMINAR': '🚶', 'CANTAR': '🎤', 'CERRAR': '🚪',
+            'COCINAR': '🍳', 'COMPRAR': '🛒', 'CONTAR': '🔢', 'CREAR': '🎨', 'DEJAR': '📦', 'BUSCAR': '🔍',
+            'ESCUCHAR': '🎧', 'ESPERAR': '⏳', 'ESTUDIAR': '📚', 'GANAR': '🏆', 'HABLAR': '🗣️', 'LAVAR': '🧼',
+            'LLAMAR': '📞', 'LLEGAR': '🏁', 'LLEVAR': '🎒', 'MIRAR': '👀', 'NADAR': '🏊', 'PENSAR': '💡',
+            'PREGUNTAR': '❓', 'QUEDAR': '📍', 'SALTAR': '🦘', 'TOMAR': '🥤', 'TRABAJAR': '💼', 'VIAJAR': '✈️',
+            'VOLAR': '🕊️', 'AYUDAR': '⛑️', 'BAILAR': '💃', 'CAMBIAR': '🔄', 'COMENZAR': '🚀', 'ENCONTRAR': '🧩',
+            'EXPLICAR': '🧑‍🏫', 'GIRAR': '🔄', 'JUGAR': '🎮', 'LIMPIAR': '🧹', 'PAGAR': '💳', 'APRENDER': '🧠',
+            'BEBER': '🥛', 'CAER': '🍂', 'COME': '🍎', 'COMEN': '🍎', 'COMER': '🍎', 'COMIENDO': '🍎', 'COMPRENDRE': '💡',
+            'COMPRENSION': '💡', 'COMPRENDER': '💡', 'CORRER': '🏃', 'CREER': '🙏', 'DEBER': '⚠️', 'DEFENDER': '🛡️',
+            'ENTENDER': '🧠', 'HABER': '✅', 'HACER': '🛠️', 'LEER': '📖', 'MOVER': '📦', 'NACER': '👶',
+            'OBTENER': '🏅', 'OLER': '👃', 'PERDER': '❌', 'PODER': '💪', 'PONER': '📥', 'QUERER': '💖',
+            'ROMPER': '⚡', 'SABER': '🎓', 'SER': '👤', 'TENER': '🤲', 'TRAER': '🧳', 'VENDER': '🏷️',
+            'VER': '📺', 'VOLVER': '🔄', 'ATENDER': '🛎️', 'COCER': '🍲', 'CRECER': '📈', 'ESCOGER': '👉',
+            'OFRECER': '🎁', 'PROMETER': '🤝', 'ABRIR': '🔓', 'ADMITIR': '🎟️', 'ASISTIR': '🙋', 'COMPARTIR': '🍕',
+            'CONDUCIR': '🚗', 'CONSEGUIR': '🎯', 'CONSTRUIR': '🧱', 'DECIR': '🗣️', 'DESCUBRIR': '🤠', 'DISCUTIR': '🗣️',
+            'DORMIR': '😴', 'ESCRIBIR': '✍️', 'EXISTIR': '🌍', 'IR': '🚶', 'MORIR': '💀', 'OIR': '👂',
+            'PEDIR': '🙋', 'PERMITIR': '🔓', 'PREFERIR': '⭐', 'RECIBIR': '🎁', 'REIR': '😂', 'REPETIR': '🔁',
+            'SALIR': '🚪', 'SEGUIR': '🚶', 'SENTIR': '❤️', 'SERVIR': '🍽️', 'SONREIR': '😊', 'SUBIR': '🧗',
+            'VENIR': '🛬', 'VIVIR': '🏡', 'CORREGIR': '📝', 'DECIDIR': '🤔', 'DEFINIR': '📖', 'DIVIDIR': '➗', 'MEDIR': '📏',
 
-            // COLORES
-            'AZUL': '🔵', 'ROJO': '🔴', 'VERDE': '🟢', 'AMARILLO': '🟡', 'NEGRO': '⚫', 'BLANCO': '⚪',
-            'NARANJA': '🟠', 'ROSA': '🩷', 'VIOLETA': '🟣', 'MARRON': '🟤', 'MARRÓN': '🟤', 'GRIS': '🔘',
+            // SUSTANTIVOS Y OBJETOS
+            'BEBE': '👶', 'BEBÉ': '👶', 'NIÑO': '👦', 'NIÑA': '👧', 'HOMBRE': '👨', 'MUJER': '👩', 'ANCIANO': '🧓',
+            'PROFESOR': '🧑‍🏫', 'MEDICO': '🧑‍⚕️', 'MÉDICO': '🧑‍⚕️', 'POLICIA': '👮', 'COCINERO': '🧑‍🍳', 'MECANICO': '🧑‍🔧',
+            'ARTISTA': '🧑‍🎨', 'BOMBERO': '🧑‍🚒', 'PROGRAMADOR': '🧑‍💻', 'PILOTO': '👨‍✈️', 'PERRO': '🐶', 'GATO': '🐱',
+            'PAJARO': '🐦', 'PÁJARO': '🐦', 'PEZ': '🐟', 'CABALLO': '🐴', 'LEON': '🦁', 'ELEFANTE': '🐘',
+            'OSO': '🐻', 'MONO': '🐒', 'TORTUGA': '🐢', 'PATO': '🦆', 'ABEJA': '🐝', 'MARIPOSA': '🦋',
+            'MESA': '🪑', 'SILLA': '🪑', 'CAMA': '🛏️', 'PUERTA': '🚪', 'VENTANA': '🪟', 'LLAVE': '🔑',
+            'TELEFONO': '📱', 'TELÉFONO': '📱', 'COMPUTADORA': '💻', 'TELEVISOR': '📺', 'RELOJ': '⌚', 'BATERIA': '🔋',
+            'CARTA': '✉️', 'PAQUETE': '📦', 'BASURA': '🗑️', 'PAN': '🍞', 'MANZANA': '🍎', 'BANANA': '🍌',
+            'HUEVO': '🥚', 'QUESO': '🧀', 'CARNE': '🥩', 'ARROZ': '🍚', 'LECHE': '🥛', 'CAFE': '☕',
+            'CAFÉ': '☕', 'AGUA': '💧', 'VINO': '🍷', 'PIZZA': '🍕', 'CHOCOLATE': '🍫', 'HELADO': '🍦',
+            'CASA': '🏡', 'EDIFICIO': '🏢', 'ESCUELA': '🏫', 'HOSPITAL': '🏥', 'ARBOL': '🌳', 'ÁRBOL': '🌳',
+            'FLOR': '🌸', 'SOL': '☀️', 'LUNA': '🌙', 'ESTRELLA': '⭐', 'NUBE': '☁️', 'LLUVIA': '🌧️',
+            'FUEGO': '🔥', 'MONTAÑA': '⛰️', 'MAR': '🌊', 'PLAYA': '🏖️', 'RIO': '🏞️', 'RÍO': '🏞️',
+            'CIUDAD': '🏙️', 'PAIS': '🗺️', 'PAÍS': '🗺️', 'CAMISA': '👕', 'PANTALON': '👖', 'PANTALÓN': '👖',
+            'VESTIDO': '👗', 'ZAPATILLA': '👟', 'MEDIA': '🧦', 'CAMPERA': '🧥', 'GORRA': '🧢', 'LENTES': '🕶️',
+            'MOCHILA': '🎒', 'CARTERA': '👜', 'LIBRO': '📖', 'LAPIZ': '✏️', 'LÁPIZ': '✏️', 'CUADERNO': '📝',
+            'CALENDARIO': '📅', 'DINERO': '💵', 'HORA': '⏰', 'DIA': '☀️', 'DÍA': '☀️', 'NOCHE': '🌙',
+            'MUSICA': '🎶', 'MÚSICA': '🎶', 'PELOTA': '⚽', 'AUTO': '🚗', 'BICICLETA': '🚲', 'IDEA': '🧠', 'AMOR': '❤️',
 
-            // ACCIONES Y VERBOS (Incluyendo pasado, presente y infinitivo)
-            'COMPRA': '🛒', 'COMPRAS': '🛒', 'COMPRO': '🛍️', 'COMPRÓ': '🛍️', 'COMPRAR': '🛒', 'COMPRANDO': '🛒',
-            'SALTA': '🦘', 'SALTAN': '🦘', 'SALTAR': '🦘', 'SALTANDO': '🦘', 'SALTÓ': '🦘',
-            'COME': '🍽️', 'COMEN': '🍽️', 'COMER': '🍽️', 'COMIENDO': '🍽️', 'COMO': '🍽️', 'COMIÓ': '🍽️',
-            'CORRE': '🏃‍♂️', 'CORREN': '🏃‍♂️', 'CORRER': '🏃‍♂️', 'CORRIENDO': '🏃‍♂️', 'CORRIÓ': '🏃‍♂️',
-            'BEBE': '🥤', 'BEBEN': '🥤', 'BEBER': '🥤', 'TOMA': '🥤', 'TOMAN': '🥤', 'TOMAR': '🥤', 'TOMÓ': '🥤',
-            'GUSTA': '❤️', 'GUSTAN': '❤️', 'ENCANTA': '💖', 'QUIERE': '🤲', 'QUIEREN': '🤲', 'QUERER': '🤲',
-            'JUEGA': '⚽', 'JUEGAN': '⚽', 'JUGAR': '⚽', 'JUGANDO': '⚽', 'JUGÓ': '⚽',
-            'DUERME': '😴', 'DUERMEN': '😴', 'DORMIR': '😴', 'DURMIÓ': '😴',
-            'LEE': '📖', 'LEEN': '📖', 'LEER': '📖', 'LEYENDO': '📖', 'LEYÓ': '📖',
-            'ESCRIBE': '✏️', 'ESCRIBEN': '✏️', 'ESCRIBIR': '✏️', 'ESCRIBIÓ': '✏️',
-            'CANTA': '🎤', 'CANTAN': '🎤', 'CANTAR': '🎤', 'CANTÓ': '🎤',
-            'ESTUDIA': '📚', 'ESTUDIAN': '📚', 'ESTUDIAR': '📚', 'ESTUDIÓ': '📚',
-            'TRABAJA': '💻', 'TRABAJAN': '💻', 'TRABAJAR': '💻', 'TRABAJÓ': '💻',
-            'AYUDA': '🤝', 'AYUDAN': '🤝', 'AYUDAR': '🤝', 'AYUDÓ': '🤝',
-            'CAMINA': '🚶‍♂️', 'CAMINAN': '🚶‍♂️', 'CAMINAR': '🚶‍♂️', 'CAMINÓ': '🚶‍♂️',
-            'HABLA': '🗣️', 'HABLAN': '🗣️', 'HABLAR': '🗣️', 'HABLÓ': '🗣️',
-            'ESCUCHA': '👂', 'ESCUCHAN': '👂', 'ESCUCHAR': '👂', 'ESCUCHÓ': '👂',
-            'MIRA': '👀', 'MIRAN': '👀', 'MIRAR': '👀', 'MIRÓ': '👀',
-            'LLORA': '😢', 'LLORAN': '😢', 'LLORAR': '😢', 'LLORÓ': '😢',
-            'DIBUJA': '🎨', 'DIBUJAN': '🎨', 'DIBUJAR': '🎨', 'DIBUJÓ': '🎨',
-            'PINTA': '🖌️', 'PINTAN': '🖌️', 'PINTAR': '🖌️', 'PINTÓ': '🖌️',
-            'COCINA': '🍳', 'COCINAN': '🍳', 'COCINAR': '🍳', 'COCINÓ': '🍳',
-            'TIENE': '🤲', 'TIENEN': '🤲', 'TENER': '🤲', 'ES': '✨', 'SON': '✨', 'ESTA': '📍', 'ESTÁ': '📍',
+            // NOMBRES PROPIOS - MUJERES
+            'AGUSTINA': '👧', 'ALMA': '👧', 'AMPARO': '👧', 'ANA': '👧', 'ANTONELLA': '👧', 'CAMILA': '👧',
+            'CATALINA': '👧', 'CLARA': '👧', 'DELFINA': '👧', 'ELENA': '👧', 'EMMA': '👧', 'EMILIA': '👧',
+            'FLORENCIA': '👧', 'FRANCESCA': '👧', 'GUADALUPE': '👧', 'ISABELLA': '👧', 'JUANA': '👧', 'JULIA': '👧',
+            'LARA': '👧', 'LAURA': '👧', 'LETICIA': '👧', 'LOLA': '👧', 'LUCIA': '👧', 'LUCÍA': '👧',
+            'LUANA': '👧', 'LUNA': '👧', 'MALENA': '👧', 'MANUELA': '👧', 'MARIA': '👧', 'MARÍA': '👧',
+            'MARIANA': '👧', 'MARTINA': '👧', 'MÍA': 'MÍA', 'MIA': '👧', 'MILAGROS': '👧', 'MIRANDA': '👧',
+            'MORENA': '👧', 'OLIVIA': '👧', 'ORNELLA': '👧', 'PAULA': '👧', 'PILAR': '👧', 'ROCIO': '👧',
+            'ROCÍO': '👧', 'ROMINA': '👧', 'ROSARIO': '👧', 'SOFIA': '👧', 'SOFÍA': '👧', 'SOL': '👧',
+            'VALENTINA': '👧', 'VALERIA': '👧', 'VICTORIA': '👧', 'VIOLETA': '👧', 'VIRGINIA': '👧', 'ZOE': '👧', 'ZAIRA': '👧',
 
-            // ANIMALES
-            'PERRO': '🐕', 'PERROS': '🐕', 'GATO': '🐈', 'GATOS': '🐈', 'OSO': '🐻', 'OSOS': '🐻',
-            'LEON': '🦁', 'LEÓN': '🦁', 'ELEFANTE': '🐘', 'MONO': '🐒', 'VACA': '🐄', 'CABALLO': '🐎', 
-            'PEZ': '🐟', 'PAJARO': '🐦', 'PÁJARO': '🐦', 'TIBURON': '🦈', 'TIBURÓN': '🦈', 'MARIPOSA': '🦋', 
-            'PATO': '🦆', 'CONEJO': '🐇', 'GALLINA': '🐔', 'TIGRE': '🐅', 'JIRAFA': '🦒', 'OVEJA': '🐑', 
-            'CERDO': '🐖', 'RATON': '🐁', 'RATÓN': '🐁', 'LORO': '🦜', 'TORTUGA': '🐢', 'SERPIENTE': '🐍',
+            // NOMBRES PROPIOS - HOMBRES
+            'AGUSTIN': '👦', 'AGUSTÍN': '👦', 'ALAN': '👦', 'ALEJO': '👦', 'ALEXANDER': '👦', 'BAUTISTA': '👦',
+            'BENJAMIN': '👦', 'BENJAMÍN': '👦', 'BRUNO': '👦', 'CIRO': '👦', 'DANTE': '👦', 'DIEGO': '👦',
+            'ENZO': '👦', 'FACUNDO': '👦', 'FELIPE': '👦', 'FERMIN': '👦', 'FERMÍN': '👦', 'FERNANDO': '👦',
+            'FRANCISCO': '👦', 'FRANCO': '👦', 'GAEL': '👦', 'GASPAR': '👦', 'GONZALO': '👦', 'IGNACIO': '👦',
+            'IAN': '👦', 'IÁN': '👦', 'JAVIER': '👦', 'JERONIMO': '👦', 'JERÓNIMO': '👦', 'JOAQUIN': '👦',
+            'JOAQUÍN': '👦', 'JUAN': '👦', 'JULIAN': '👦', 'JULIÁN': '👦', 'LAUTARO': '👦', 'LEON': '👦',
+            'LEÓN': '👦', 'LEONARDO': '👦', 'LORENZO': '👦', 'LUCAS': '👦', 'MANUEL': '👦', 'MATEO': '👦',
+            'MATIAS': '👦', 'MATÍAS': '👦', 'MAXIMO': '👦', 'MÁXIMO': '👦', 'MILO': '👦', 'NAHUEL': '👦',
+            'NICOLAS': '👦', 'NICOLÁS': '👦', 'OLIVER': '👦', 'PEDRO': '👦', 'RAMIRO': '👦', 'RENZO': '👦',
+            'SANTINO': '👦', 'SANTIAGO': '👦', 'SIMON': '👦', 'SIMÓN': '👦', 'THIAGO': '👦', 'TOMAS': '👦',
+            'TOMÁS': '👦', 'VALENTIN': '👦', 'VALENTÍN': '👦', 'BENICIO': '👦',
 
-            // ALIMENTOS Y BEBIDAS
-            'CARNE': '🥩', 'POLLO': '🍗', 'AGUA': '💧', 'CAFE': '☕', 'CAFÉ': '☕', 'LECHE': '🥛',
-            'MATE': '🧉', 'PAN': '🍞', 'MANZANA': '🍎', 'BANANA': '🍌', 'JUGO': '🧃', 'COMIDA': '🍲',
-            'GALLETA': '🍪', 'GALLETITA': '🍪', 'CHOCOLATE': '🍫', 'QUESO': '🧀', 'HUEVO': '🥚', 'FRUTA': '🍓',
-            'HELADO': '🍦', 'PIZZA': '🍕', 'ARROZ': '🍚', 'FIDEOS': '🍝', 'TORTA': '🎂',
-            'ASADO': '🍖', 'YERBA': '🌿', 'AZUCAR': '🧂', 'AZÚCAR': '🧂', 'MERIENDA': '🧃', 'DESAYUNO': '☕',
-
-            // PERSONAS Y FAMILIA
-            'ABUELA': '👵', 'ABUELO': '👴', 'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦',
-            'BEBE': '👶', 'BEBÉ': '👶', 'NENE': '👦', 'NENA': '👧', 'NIÑO': '👦', 'NIÑA': '👧',
-            'AMIGO': '🤝', 'AMIGOS': '👥', 'MAESTRA': '👩‍🏫', 'MAESTRO': '👨‍🏫', 'PROFESORA': '👩‍🏫', 'PROFESOR': '👨‍🏫',
-            'HERMANO': '👦', 'HERMANA': '👧', 'DOCTOR': '👨‍⚕️', 'DOCTORA': '👩‍⚕️', 'POLICIA': '👮‍♂️', 'BOMBERO': '👨‍🚒',
-            'COMPAÑERO': '🧑‍🤝‍🧑', 'COMPAÑEROS': '🧑‍🤝‍🧑', 'GENTE': '👥', 'PERSONA': '🧍',
-
-            // ENTORNO, LUGARES Y OBJETOS
-            'CASA': '🏠', 'ESCUELA': '🏫', 'COLEGIO': '🏫', 'PATIO': '🏡', 'PUERTA': '🚪', 'VENTANA': '🪟',
-            'MESA': '🪵', 'SILLA': '🪑', 'CAMA': '🛏️', 'LIBRO': '📖', 'CUADERNO': '📓', 'LAPIZ': '✏️', 
-            'LÁPIZ': '✏️', 'MOCHILA': '🎒', 'AUTO': '🚗', 'COCHE': '🚗', 'COLECTIVO': '🚌', 'BICICLETA': '🚲',
-            'TREN': '🚂', 'AVION': '✈️', 'AVIÓN': '✈️', 'PELOTA': '⚽', 'COMPU': '💻', 'TELE': '📺',
-            'RELOJ': '⏰', 'TELEFONO': '📱', 'TELÉFONO': '📱', 'TIJERA': '✂️', 'PAPEL': '📄', 'ROPA': '👕',
-            'BAÑO': '🚽', 'COCINA': '🍳', 'PLATO': '🍽️', 'VASO': '🥛', 'CUCHARA': '🥄', 'ARMARIO': '🗄️',
-            'JARDIN': '🌳', 'JARDÍN': '🌳', 'PARQUE': '🛝', 'CALLE': '🛣️', 'HOSPITAL': '🏥', 'FARMACIA': '💊',
-
-            // EMOCIONES Y ESTADOS
-            'FELIZ': '😊', 'CONTENTO': '😊', 'CONTENTA': '😊', 'ALEGRE': '😁', 'TRISTE': '😢', 
-            'ENOJADO': '😡', 'ENOJADA': '😡', 'CANSADO': '🥱', 'CANSADA': '🥱', 'ENFERMO': '🤒', 'ENFERMA': '🤒', 
-            'ASUSTADO': '😨', 'MIEDO': '😱', 'NERVIOSO': '🫨', 'TRANQUILO': '😌', 'SORPRENDIDO': '😲',
-
-            // ADJETIVOS
-            'GRANDE': '🔲', 'GRANDES': '🔲', 'CHICO': '▪️', 'CHICA': '▪️', 'PEQUEÑO': '▫️', 'PEQUEÑA': '▫️',
-            'ALTO': '📶', 'BAJO': '📉', 'CALIENTE': '♨️', 'FRIO': '❄️', 'FRÍO': '❄️', 'LIMPIO': '✨', 'SUCIO': '🟤',
-            'NUEVO': '🆕', 'VIEJO': '📦', 'RAPIDO': '⚡', 'RÁPIDO': '⚡', 'LENTO': '🐢', 'BUENO': '👍', 'MALO': '👎',
-            'BONITO': '🌸', 'FEO': '👺', 'FRESCO': '🍃', 'DULCE': '🍬', 'SALADO': '🧂', 'PESADO': '🏋️‍♂️'
+            // ADJETIVOS Y DESCRIPTORES
+            'LINDO': '✨', 'FEO': '👹', 'ALTO': '📏', 'BAJO': '📉', 'FUERTE': '💪', 'DEBIL': '🍃',
+            'DÉBIL': '🍃', 'GRANDE': '🐘', 'PEQUEÑO': '🐭', 'FLACO': '🥖', 'GORDO': '🐻', 'JOVEN': '👶',
+            'VIEJO': '🧓', 'NUEVO': '🆕', 'ANTIGUO': '🏺', 'LIMPIO': '💎', 'SUCIO': '🐷', 'ELEGANTE': '🤵',
+            'PROLIJO': '🧼', 'DESPROLIJO': '🌪️', 'PELADO': '💈', 'ALEGRE': '😊', 'TRISTE': '😢', 'INTELIGENTE': '🧠',
+            'VALIENTE': '🦁', 'MIEDOSO': '🐰', 'BUENO': '😇', 'MALO': '😈', 'PEREZOSO': '😴', 'TRABAJADOR': '🐝',
+            'TRANQUILO': '🧘', 'NERVIOSO': '⚡', 'TIMIDO': '🤫', 'TÍMIDO': '🤫', 'SOCIABLE': '🗣️', 'SABIO': '🦉',
+            'ENOJADO': '😡', 'CARIÑOSO': '❤️', 'AMABLE': '🤝', 'DIVERTIDO': '🎭', 'ABURRIDO': '🥱', 'ASTUTO': '🦊',
+            'CALIENTE': '🔥', 'FRIO': '❄️', 'FRÍO': '❄️', 'CALIDO': '☀️', 'CÁLIDO': '☀️', 'HELADO': '🧊',
+            'SECO': '🥖', 'MOJADO': '🌧️', 'LLENO': '🔋', 'VACIO': '🪹', 'VACÍO': '🪹', 'SUAVE': '🧼',
+            'ASPERO': '🪨', 'ÁSPERO': '🪨', 'DURO': '💎', 'BLANDO': '🪵', 'PESADO': '🏋️', 'LIVIANO': '🪶',
+            'BRILLANTE': '☀️', 'OSCURO': '🌑', 'PELIGROSO': '☣️', 'SEGURO': '🛡️', 'BORRACHO': '🥴', 'SOBRIO': '🧘',
+            'ROJO': '🔴', 'AZUL': '🔵', 'VERDE': '🟢', 'AMARILLO': '🟡', 'NEGRO': '⚫', 'BLANCO': '⚪',
+            'NARANJA': '🟠', 'VIOLETA': '🟣', 'MARRON': '🟤', 'MARRÓN': '🟤', 'REDONDO': '🏐', 'CUADRADO': '📦',
+            'TRIANGULAR': '📐', 'RECTO': '📏', 'CURVO': '🌀', 'AFILADO': '🔪', 'RAPIDO': '🐆', 'RÁPIDO': '🐆',
+            'LENTO': '🐢', 'CERCANO': '📍', 'LEJANO': '🌌', 'TEMPRANO': '⏰', 'TARDIO': '🌙', 'TARDÍO': '🌙',
+            'BREVE': '⏳', 'ETERNO': '♾️', 'FRECUENTE': '📈', 'RARO': '📉', 'DULCE': '🍯', 'ACIDO': '🍋',
+            'ÁCIDO': '🍋', 'SALADO': '🧂', 'AMARGO': '☕', 'PICANTE': '🌶️', 'RICO': '😋', 'EXCELENTE': '🥇',
+            'PESIMO': '👎', 'PÉSIMO': '👎', 'JUSTO': '⚖️', 'CARO': '💵', 'BARATO': '🏷️', 'FACIL': '🧩',
+            'FÁCIL': '🧩', 'DIFICIL': '🤯', 'DIFÍCIL': '🤯', 'VERDADERO': '✅', 'FALSO': '❌', 'RUIDOSO': '📢',
+            'SILENCIOSO': '🤫', 'ANCHO': '🗺️', 'ESTRECHO': '📏'
         };
 
         function processText() {
@@ -215,15 +224,15 @@
                 const iconBox = document.createElement('div');
                 iconBox.className = "text-4xl emoji-render flex items-center justify-center h-16 w-16 bg-indigo-50 rounded-xl mb-1";
 
-                // Artículos, preposiciones, pronombres y conectores
-                if (['LA', 'EL', 'LOS', 'LAS', 'UN', 'UNA', 'UNOS', 'UNAS', 'DE', 'DEL', 'EN', 'Y', 'A', 'CON', 'PARA', 'ES', 'SON', 'ME', 'TE', 'LE', 'QUE', 'POR', 'ESTA', 'ESTÁ', 'ESTE', 'MI', 'TU', 'SU'].includes(cleanWord)) {
+                // Conectores, artículos y pronombres comunes
+                if (['LA', 'EL', 'LOS', 'LAS', 'UN', 'UNA', 'UNOS', 'UNAS', 'DE', 'DEL', 'EN', 'Y', 'A', 'CON', 'PARA', 'ES', 'SON', 'ME', 'TE', 'LE', 'QUE', 'POR', 'ESTA', 'ESTÁ', 'ESTE', 'MI', 'TU', 'SU', 'AQUEL', 'AQUELLA'].includes(cleanWord)) {
                     iconBox.innerText = '🔹';
                 } else {
                     let symbol = visualMap[cleanWord];
                     if (symbol) {
                         iconBox.innerText = symbol;
                     } else {
-                        iconBox.innerText = '🧩'; // Comodín claro si falta alguna palabra
+                        iconBox.innerText = '🧩'; // Comodín en caso de que falte alguna palabra nueva
                     }
                 }
 
@@ -263,7 +272,7 @@
             }
         }
 
-        // SÍNTESIS DE VOZ: FORZADO ESTRICTO EN ESPAÑOL ARGENTINO (es-AR)
+        // Síntesis de voz con filtro estricto en acento argentino (es-AR)
         function speakText() {
             const text = document.getElementById('uppercaseOutput').innerText;
             if (!text || text === "-") return;
@@ -272,7 +281,6 @@
             const utterance = new SpeechSynthesisUtterance(text);
             const voices = window.speechSynthesis.getVoices();
 
-            // Búsqueda inteligente de la voz en español de Argentina o latina
             let targetVoice = voices.find(v => v.lang === 'es-AR' || v.lang.includes('es_AR') || v.name.includes('Argentina'));
             
             if (!targetVoice) {
@@ -284,7 +292,7 @@
             }
             
             utterance.lang = 'es-AR';
-            utterance.rate = 0.85; // Velocidad pausada ideal para apoyo pedagógico y estimulación
+            utterance.rate = 0.85; 
             utterance.pitch = 1.0;
             
             window.speechSynthesis.speak(utterance);
