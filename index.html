@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PictoScan - Traductor Inclusivo Ampliado</title>
+    <title>PictoScan - Traductor Visual Masivo</title>
     <!-- Tailwind CSS CDN Estable -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Tesseract.js para OCR -->
@@ -11,6 +11,10 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
         body { font-family: 'Montserrat', sans-serif; }
+        /* Forzar renderizado correcto de Emojis a color en todos los sistemas */
+        .emoji-render {
+            font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800 flex flex-col justify-between">
@@ -19,13 +23,13 @@
     <header class="bg-indigo-600 text-white shadow-md py-4 px-6">
         <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
             <div class="flex items-center gap-3">
-                <span class="text-3xl">🧩</span>
+                <span class="text-3xl emoji-render">🧩</span>
                 <div>
                     <h1 class="text-2xl font-extrabold tracking-tight">PictoScan</h1>
                     <p class="text-indigo-100 text-xs sm:text-sm">Traductor visual ampliado, mayúsculas y voz argentina</p>
                 </div>
             </div>
-            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Ampliada v4.0</span>
+            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Masiva v5.0</span>
         </div>
     </header>
 
@@ -35,13 +39,13 @@
         <!-- Panel de Entrada -->
         <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col gap-4">
             <h2 class="text-lg font-bold text-slate-700 flex items-center gap-2">
-                <span>📸</span> 1. Ingresá el texto a procesar
+                <span class="emoji-render">📸</span> 1. Ingresá el texto a procesar
             </h2>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <!-- Botón de Cámara / Archivo -->
                 <label class="border-2 border-dashed border-indigo-300 hover:border-indigo-500 bg-indigo-50/50 hover:bg-indigo-50 transition rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer text-center group">
-                    <span class="text-3xl mb-2 group-hover:scale-110 transition">📷</span>
+                    <span class="text-3xl mb-2 group-hover:scale-110 transition emoji-render">📷</span>
                     <span class="font-semibold text-indigo-700 text-sm">Sacar foto o subir imagen</span>
                     <span class="text-xs text-slate-500 mt-1">Lee imprenta minúscula y manuscrita</span>
                     <input type="file" id="imageInput" accept="image/*" class="hidden">
@@ -71,10 +75,10 @@
         <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col gap-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                 <h2 class="text-lg font-bold text-slate-700 flex items-center gap-2">
-                    <span>🖼️</span> 2. Traducción a Apoyo Visual
+                    <span class="emoji-render">🖼️</span> 2. Traducción a Apoyo Visual
                 </h2>
                 <button id="speakBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition shadow-sm cursor-pointer">
-                    <span>🔊</span> Escuchar (Voz Argentina)
+                    <span class="emoji-render">🔊</span> Escuchar (Voz Argentina)
                 </button>
             </div>
 
@@ -102,51 +106,72 @@
 
     <!-- Lógica de la Aplicación -->
     <script>
-        // DICCIONARIO AMPLIADO DE SUSTANTIVOS, VERBOS, ADJETIVOS Y EXpresiones
+        // DICCIONARIO MASIVO AMPLIADO (Sustantivos, Verbos, Adjetivos, Emociones, Lugares)
         const visualMap = {
-            // Animales
+            // ANIMALES
             'PERRO': '🐕', 'PERROS': '🐕', 'GATO': '🐈', 'GATOS': '🐈', 'OSO': '🐻', 'OSOS': '🐻',
-            'LEON': '🦁', 'ELEFANTE': '🐘', 'MONO': '🐒', 'VACA': '🐄', 'CABALLO': '🐎', 'PEZ': '🐟',
-            'PAJARO': '🐦', 'PÁJARO': '🐦', 'TIBURON': '🦈', 'MARIPOSA': '🦋', 'PATO': '🦆', 'CONEJO': '🐇',
-            'GALLINA': '🐔', 'TIGRE': '🐅', 'JIRAFA': '🦒', 'OVEJA': '🐑', 'CERDO': '🐖', 'RATON': '🐁',
+            'LEON': '🦁', 'LEÓN': '🦁', 'ELEFANTE': '🐘', 'MONO': '🐒', 'VACA': '🐄', 'CABALLO': '🐎', 
+            'PEZ': '🐟', 'PAJARO': '🐦', 'PÁJARO': '🐦', 'TIBURON': '🦈', 'TIBURÓN': '🦈', 'MARIPOSA': '🦋', 
+            'PATO': '🦆', 'CONEJO': '🐇', 'GALLINA': '🐔', 'TIGRE': '🐅', 'JIRAFA': '🦒', 'OVEJA': '🐑', 
+            'CERDO': '🐖', 'RATON': '🐁', 'RATÓN': '🐁', 'LORO': '🦜', 'TORTUGA': '🐢', 'SERPIENTE': '🐍',
 
-            // Alimentos y Bebidas
+            // ALIMENTOS Y BEBIDAS
             'CARNE': '🥩', 'POLLO': '🍗', 'AGUA': '💧', 'CAFE': '☕', 'CAFÉ': '☕', 'LECHE': '🥛',
             'MATE': '🧉', 'PAN': '🍞', 'MANZANA': '🍎', 'BANANA': '🍌', 'JUGO': '🧃', 'COMIDA': '🍲',
             'GALLETA': '🍪', 'GALLETITA': '🍪', 'CHOCOLATE': '🍫', 'QUESO': '🧀', 'HUEVO': '🥚', 'FRUTA': '🍓',
             'HELADO': '🍦', 'NARANJA': '🍊', 'PIZZA': '🍕', 'ARROZ': '🍚', 'FIDEOS': '🍝', 'TORTA': '🎂',
+            'ASADO': '🍖', 'YERBA': '🌿', 'AZUCAR': '🧂', 'AZÚCAR': '🧂', 'MERIENDA': '🧃', 'DESAYUNO': '☕',
 
-            // Verbos y Acciones
-            'SALTA': '🦘', 'SALTAN': '🦘', 'SALTAR': '🦘', 'COME': '🍽️', 'COMEN': '🍽️', 'COMER': '🍽️',
-            'CORRE': '🏃‍♂️', 'CORREN': '🏃‍♂️', 'CORRER': '🏃‍♂️', 'BEBE': '🥤', 'BEBEN': '🥤', 'BEBER': '🥤',
-            'GUSTA': '❤️', 'GUSTAN': '❤️', 'JUEGA': '⚽', 'JUEGAN': '⚽', 'JUGAR': '⚽', 'DUERME': '😴', 
-            'DORMIR': '😴', 'LEE': '📖', 'LEER': '📖', 'ESCRIBE': '✏️', 'ESCRIBIR': '✏️', 'CANTA': '🎤', 
-            'CANTAR': '🎤', 'ESTUDIA': '📚', 'ESTUDIAR': '📚', 'TRABAJA': '💻', 'TRABAJAR': '💻', 
-            'AYUDA': '🤝', 'AYUDAR': '🤝', 'CAMINA': '🚶‍♂️', 'CAMINAR': '🚶‍♂️', 'HABLA': '🗣️', 'HABLAR': '🗣️',
-            'ESCUCHA': '👂', 'ESCUCHAR': '👂', 'MIRA': '👀', 'MIRAR': '👀', 'LLORA': '😢', 'LLORAR': '😢',
-            'RIBUJA': '🎨', 'DIBUJAR': '🎨', 'PINTA': '🖌️', 'PINTAR': '🖌️', 'COCINA': '🍳', 'COCINAR': '🍳',
+            // VERBOS Y ACCIONES (Conjugaciones comunes)
+            'SALTA': '🦘', 'SALTAN': '🦘', 'SALTAR': '🦘', 'SALTANDO': '🦘', 
+            'COME': '🍽️', 'COMEN': '🍽️', 'COMER': '🍽️', 'COMIENDO': '🍽️', 'COMO': '🍽️',
+            'CORRE': '🏃‍♂️', 'CORREN': '🏃‍♂️', 'CORRER': '🏃‍♂️', 'CORRIENDO': '🏃‍♂️',
+            'BEBE': '🥤', 'BEBEN': '🥤', 'BEBER': '🥤', 'TOMA': '🥤', 'TOMAN': '🥤', 'TOMAR': '🥤',
+            'GUSTA': '❤️', 'GUSTAN': '❤️', 'ENCANTA': '💖',
+            'JUEGA': '⚽', 'JUEGAN': '⚽', 'JUGAR': '⚽', 'JUGANDO': '⚽', 
+            'DUERME': '😴', 'DUERMEN': '😴', 'DORMIR': '😴', 
+            'LEE': '📖', 'LEEN': '📖', 'LEER': '📖', 'LEYENDO': '📖', 
+            'ESCRIBE': '✏️', 'ESCRIBEN': '✏️', 'ESCRIBIR': '✏️', 
+            'CANTA': '🎤', 'CANTAN': '🎤', 'CANTAR': '🎤', 
+            'ESTUDIA': '📚', 'ESTUDIAN': '📚', 'ESTUDIAR': '📚', 
+            'TRABAJA': '💻', 'TRABAJAN': '💻', 'TRABAJAR': '💻', 
+            'AYUDA': '🤝', 'AYUDAN': '🤝', 'AYUDAR': '🤝', 
+            'CAMINA': '🚶‍♂️', 'CAMINAN': '🚶‍♂️', 'CAMINAR': '🚶‍♂️', 
+            'HABLA': '🗣️', 'HABLAN': '🗣️', 'HABLAR': '🗣️', 
+            'ESCUCHA': '👂', 'ESCUCHAN': '👂', 'ESCUCHAR': '👂', 
+            'MIRA': '👀', 'MIRAN': '👀', 'MIRAR': '👀', 
+            'LLORA': '😢', 'LLORAN': '😢', 'LLORAR': '😢', 
+            'DIBUJA': '🎨', 'DIBUJAN': '🎨', 'DIBUJAR': '🎨', 
+            'PINTA': '🖌️', 'PINTAN': '🖌️', 'PINTAR': '🖌️', 
+            'COCINA': '🍳', 'COCINAN': '🍳', 'COCINAR': '🍳',
+            'CANJEAN': '🔄', 'BUSCA': '🔍', 'BUSCAR': '🔍', 'VA': '🚀', 'VAN': '🚀', 'IR': '🚀',
 
-            // Personas y Familia
+            // PERSONAS Y FAMILIA
             'ABUELA': '👵', 'ABUELO': '👴', 'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦',
             'BEBE': '👶', 'BEBÉ': '👶', 'NENE': '👦', 'NENA': '👧', 'NIÑO': '👦', 'NIÑA': '👧',
             'AMIGO': '🤝', 'AMIGOS': '👥', 'MAESTRA': '👩‍🏫', 'MAESTRO': '👨‍🏫', 'PROFESORA': '👩‍🏫', 'PROFESOR': '👨‍🏫',
             'HERMANO': '👦', 'HERMANA': '👧', 'DOCTOR': '👨‍⚕️', 'DOCTORA': '👩‍⚕️', 'POLICIA': '👮‍♂️', 'BOMBERO': '👨‍🚒',
+            'FAMILIA': ' család', 'COMPAÑERO': '🧑‍🤝‍🧑', 'COMPAÑEROS': '🧑‍🤝‍🧑', 'GENTE': '👥', 'PERSONA': '🧍',
 
-            // Entorno, Lugares y Objetos
+            // ENTORNO, LUGARES Y OBJETOS ESCOLARES / HOGAR
             'CASA': '🏠', 'ESCUELA': '🏫', 'COLEGIO': '🏫', 'PATIO': '🏡', 'PUERTA': '🚪', 'VENTANA': '🪟',
             'MESA': '🪵', 'SILLA': '🪑', 'CAMA': '🛏️', 'LIBRO': '📖', 'CUADERNO': '📓', 'LAPIZ': '✏️', 
             'LÁPIZ': '✏️', 'MOCHILA': '🎒', 'AUTO': '🚗', 'COCHE': '🚗', 'COLECTIVO': '🚌', 'BICICLETA': '🚲',
             'TREN': '🚂', 'AVION': '✈️', 'AVIÓN': '✈️', 'PELOTA': '⚽', 'COMPU': '💻', 'TELE': '📺',
             'RELOJ': '⏰', 'TELEFONO': '📱', 'TELÉFONO': '📱', 'TIJERA': '✂️', 'PAPEL': '📄', 'ROPA': '👕',
+            'BAÑO': '🚽', 'COCINA': '🍳', 'PLATO': '🍽️', 'VASO': '🥛', 'CUCHARA': '🥄', 'ARMARIO': '🗄️',
+            'JARDIN': '🌳', 'JARDÍN': '🌳', 'PARQUE': '🛝', 'CALLE': '🛣️', 'HOSPITAL': '🏥', 'FARMACIA': '💊',
 
-            // Emociones y Estados
-            'FELIZ': '😊', 'CONTENTO': '😊', 'CONTENTA': '😊', 'TRISTE': '😢', 'ENOJADO': '😡', 'ENOJADA': '😡',
-            'CANSADO': '🥱', 'CANSADA': '🥱', 'ENFERMO': '🤒', 'ENFERMA': '🤒', 'ASUSTADO': '😨', 'MIEDO': '😱',
+            // EMOCIONES Y ESTADOS
+            'FELIZ': '😊', 'CONTENTO': '😊', 'CONTENTA': '😊', 'ALEGRE': '😁', 'TRISTE': '😢', 
+            'ENOJADO': '😡', 'ENOJADA': '😡', 'CANSADO': '🥱', 'CANSADA': '🥱', 'ENFERMO': '🤒', 'ENFERMA': '🤒', 
+            'ASUSTADO': '😨', 'MIEDO': '😱', 'NERVIOSO': '🫨', 'TRANQUILO': '😌', 'SORPRENDIDO': '😲',
 
-            // Adjetivos
+            // ADJETIVOS Y CUALIDADES
             'GRANDE': '🔲', 'GRANDES': '🔲', 'CHICO': '▪️', 'CHICA': '▪️', 'PEQUEÑO': '▫️', 'PEQUEÑA': '▫️',
             'ALTO': '📶', 'BAJO': '📉', 'CALIENTE': '♨️', 'FRIO': '❄️', 'FRÍO': '❄️', 'LIMPIO': '✨', 'SUCIO': '🟤',
-            'NUEVO': '🆕', 'VIEJO': '📦', 'RAPIDO': '⚡', 'RÁPIDO': '⚡', 'LENTO': '🐢', 'BUENO': '👍', 'MALO': '👎'
+            'NUEVO': '🆕', 'VIEJO': '📦', 'RAPIDO': '⚡', 'RÁPIDO': '⚡', 'LENTO': '🐢', 'BUENO': '👍', 'MALO': '👎',
+            'BONITO': '🌸', 'FEO': '👺', 'FRESCO': '🍃', 'DULCE': '🍬', 'SALADO': '🧂', 'PESADO': '🏋️‍♂️'
         };
 
         function processText() {
@@ -177,17 +202,17 @@
                 card.className = "flex flex-col items-center justify-between bg-white border border-slate-200 rounded-xl p-3 shadow-xs w-28 h-32";
 
                 const iconBox = document.createElement('div');
-                iconBox.className = "text-4xl flex items-center justify-center h-16 w-16 bg-indigo-50 rounded-xl mb-1";
+                iconBox.className = "text-4xl emoji-render flex items-center justify-center h-16 w-16 bg-indigo-50 rounded-xl mb-1";
 
-                // Artículos, preposiciones y pronombres
-                if (['LA', 'EL', 'LOS', 'LAS', 'UN', 'UNA', 'UNOS', 'UNAS', 'DE', 'DEL', 'EN', 'Y', 'A', 'CON', 'PARA', 'ES', 'SON', 'ME', 'TE', 'LE', 'QUE', 'POR', 'ESTA', 'ESTÁ', 'ESTE'].includes(cleanWord)) {
+                // Artículos, preposiciones, pronombres y conectores
+                if (['LA', 'EL', 'LOS', 'LAS', 'UN', 'UNA', 'UNOS', 'UNAS', 'DE', 'DEL', 'EN', 'Y', 'A', 'CON', 'PARA', 'ES', 'SON', 'ME', 'TE', 'LE', 'QUE', 'POR', 'ESTA', 'ESTÁ', 'ESTE', 'MI', 'TU', 'SU'].includes(cleanWord)) {
                     iconBox.innerText = '🔹';
                 } else {
                     let symbol = visualMap[cleanWord];
                     if (symbol) {
                         iconBox.innerText = symbol;
                     } else {
-                        iconBox.innerText = '🧩'; // Comodín claro si falta alguna palabra poco frecuente
+                        iconBox.innerText = '🧩'; // Comodín claro si falta alguna palabra
                     }
                 }
 
@@ -236,7 +261,7 @@
             const utterance = new SpeechSynthesisUtterance(text);
             const voices = window.speechSynthesis.getVoices();
 
-            // Búsqueda inteligente priorizando la voz nativa de Argentina o latinoamericana
+            // Búsqueda inteligente de la voz en español de Argentina o latina
             let targetVoice = voices.find(v => v.lang === 'es-AR' || v.lang.includes('es_AR') || v.name.includes('Argentina'));
             
             if (!targetVoice) {
@@ -248,7 +273,7 @@
             }
             
             utterance.lang = 'es-AR';
-            utterance.rate = 0.85; // Velocidad pausada, excelente para estimulación y lectura
+            utterance.rate = 0.85; // Velocidad pausada ideal para apoyo pedagógico y estimulación
             utterance.pitch = 1.0;
             
             window.speechSynthesis.speak(utterance);
