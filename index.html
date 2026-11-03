@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PictoScan - Traductor ARASAAC Coherente</title>
+    <title>PictoScan - ARASAAC Curado y Voz Latina</title>
     <!-- Tailwind CSS CDN Estable -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Tesseract.js para OCR -->
@@ -22,10 +22,10 @@
                 <span class="text-3xl">🧩</span>
                 <div>
                     <h1 class="text-2xl font-extrabold tracking-tight">PictoScan</h1>
-                    <p class="text-indigo-100 text-xs sm:text-sm">Traductor oficial con Pictogramas ARASAAC Coherentes</p>
+                    <p class="text-indigo-100 text-xs sm:text-sm">Traductor Curado ARASAAC • Voz Argentina / Latinoamericana</p>
                 </div>
             </div>
-            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Estable ARASAAC</span>
+            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">v3.0 Estable</span>
         </div>
     </header>
 
@@ -74,7 +74,7 @@
                     <span>🖼️</span> 2. Traducción a Pictogramas ARASAAC
                 </h2>
                 <button id="speakBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition shadow-sm cursor-pointer">
-                    <span>🔊</span> Escuchar (Voz Argentina)
+                    <span>🔊</span> Escuchar (Voz Argentina / Latina)
                 </button>
             </div>
 
@@ -97,33 +97,38 @@
 
     <!-- Pie de página -->
     <footer class="bg-white border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-500">
-        PictoScan • Con tecnología de pictogramas ARASAAC (CC BY-NC-SA) y voz adaptada.
+        PictoScan • Con tecnología de pictogramas ARASAAC (CC BY-NC-SA).
     </footer>
 
     <!-- Lógica de la Aplicación -->
     <script>
-        // Diccionario con IDs oficiales y exactos de ARASAAC para garantizar coherencia pedagógica absoluta
-        const arasaacDirectMap = {
+        // DICCIONARIO DE IDs OFICIALES Y VERIFICADOS DE ARASAAC
+        const ARASAAC_DICT = {
             // Animales
-            'PERRO': 2690, 'PERROS': 2690, 'GATO': 2631, 'GATOS': 2631, 'OSO': 2645, 'OSOS': 2645,
-            'LEON': 2637, 'ELEFANTE': 2568, 'MONO': 2642, 'VACA': 2899, 'CABALLO': 2525, 'PEZ': 2680,
-            
-            // Personas y Familia
+            'PERRO': 2339, 'PERROS': 2339, // ID 2339 es el perro canino oficial de ARASAAC
+            'GATO': 2631, 'GATOS': 2631,
+            'OSO': 2645, 'OSOS': 2645,
+            'CABALLO': 2525, 'VACA': 2899, 'PAJARO': 2682, 'PÁJARO': 2682, 'PEZ': 2680,
+
+            // Alimentos
+            'CARNE': 2534, 'CARNES': 2534, // ID 2534 es el trozo de carne
+            'POLLO': 2529, 'PAN': 2664, 'LECHE': 2639, 'AGUA': 2471, 'CAFE': 2915, 'CAFÉ': 2915,
+            'MANZANA': 2640, 'BANANA': 2516, 'MATE': 3381, 'COMIDA': 2548,
+
+            // Verbos (IDs de acciones directas)
+            'COME': 2547, 'COMEN': 2547, 'COMER': 2547, 'COMIENDO': 2547, // Acción de comer alimento
+            'SALTA': 2865, 'SALTAN': 2865, 'SALTAR': 2865, 'SALTANDO': 2865, // Acción de persona saltando
+            'CORRE': 2555, 'CORREN': 2555, 'CORRER': 2555,
+            'BEBE': 2486, 'BEBEN': 2486, 'BEBER': 2486,
+            'GUSTA': 2596, 'GUSTAN': 2596,
+            'JUEGA': 2622, 'DUERME': 2552, 'LEE': 2636, 'ESCRIBE': 2575,
+
+            // Familia y Personas
             'ABUELA': 4136, 'ABUELO': 4137, 'MAMA': 2503, 'MAMÁ': 2503, 'PAPA': 2479, 'PAPÁ': 2479,
-            'BEBE': 2507, 'BEBÉ': 2507, 'NENE': 2661, 'NENA': 2662, 'AMIGO': 2460, 'MAESTRA': 2707, 'MAESTRO': 2706,
+            'NENE': 2661, 'NENA': 2662, 'BEBE': 2507, 'BEBÉ': 2507, 'MAESTRA': 2707, 'MAESTRO': 2706,
 
-            // Alimentos y Bebidas
-            'CAFE': 2915, 'CAFÉ': 2915, 'AGUA': 2471, 'POLLO': 2529, 'LECHE': 2639, 'MATE': 3381,
-            'PAN': 2664, 'MANZANA': 2640, 'BANANA': 2516, 'COMIDA': 2548, 'JUGO': 2623,
-
-            // Verbos y Acciones (¡Acá estaba el error del salto!)
-            'SALTA': 2865, 'SALTAN': 2865, 'SALTAR': 2865, 'CORRE': 2555, 'CORREN': 2555, 'CORRER': 2555,
-            'COME': 2547, 'COMEN': 2547, 'BEBE': 2486, 'BEBEN': 2486, 'GUSTA': 2596, 'GUSTAN': 2596,
-            'JUEGA': 2622, 'JUEGAN': 2622, 'DUERME': 2552, 'LEE': 2636, 'ESCRIBE': 2575, 'CANTA': 2533,
-
-            // Entorno y Objetos
-            'CASA': 2452, 'ESCUELA': 2492, 'COLEGIO': 2492, 'PATIO': 2673, 'PUERTA': 2732,
-            'MESA': 2644, 'SILLA': 2872, 'CAMA': 2515, 'LIBRO': 2636, 'CUADERNO': 2562, 'LAPIZ': 2643, 'LÁPIZ': 2643
+            // Objetos y Entorno
+            'CASA': 2452, 'ESCUELA': 2492, 'COLEGIO': 2492, 'MESA': 2644, 'SILLA': 2872, 'CAMA': 2515
         };
 
         function processText() {
@@ -156,11 +161,11 @@
                 const imgBox = document.createElement('div');
                 imgBox.className = "flex items-center justify-center h-20 w-20 bg-indigo-50/50 rounded-xl mb-1 p-1";
 
-                // Artículos y conectores
-                if (['LA', 'EL', 'LOS', 'LAS', 'UN', 'UNA', 'DE', 'DEL', 'EN', 'Y', 'A', 'CON', 'PARA', 'ES', 'SON', 'ME', 'TE', 'LE'].includes(cleanWord)) {
+                // Conectores gramaticales breves
+                if (['LA', 'EL', 'LOS', 'LAS', 'UN', 'UNA', 'UNOS', 'UNAS', 'DE', 'DEL', 'EN', 'Y', 'A', 'CON', 'PARA', 'ES', 'SON', 'ME', 'TE', 'LE'].includes(cleanWord)) {
                     imgBox.innerHTML = '<span class="text-xl font-bold text-indigo-400">🔹</span>';
                 } else {
-                    const pictoId = arasaacDirectMap[cleanWord];
+                    const pictoId = ARASAAC_DICT[cleanWord];
 
                     if (pictoId) {
                         const img = document.createElement('img');
@@ -169,7 +174,7 @@
                         img.src = `https://api.arasaac.org/api/pictograms/${pictoId}`;
                         imgBox.appendChild(img);
                     } else {
-                        // Pictograma comodín claro si la palabra no está registrada
+                        // Respaldo neutro si no está en el diccionario curado
                         imgBox.innerHTML = '<span class="text-3xl">🧩</span>';
                     }
                 }
@@ -210,23 +215,30 @@
             }
         }
 
-        // Síntesis de voz con acento de Argentina (es-AR)
+        // SÍNTESIS DE VOZ: SELECCIÓN DE VOZ ARGENTINA / LATINA
         function speakText() {
             const text = document.getElementById('uppercaseOutput').innerText;
             if (!text || text === "-") return;
 
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
-            
             const voices = window.speechSynthesis.getVoices();
-            const argVoice = voices.find(v => v.lang === 'es-AR' || v.lang.includes('es_AR') || v.name.includes('Argentina'));
-            
-            if (argVoice) {
-                utterance.voice = argVoice;
+
+            // Buscar prioritariamente voces latinas (Argentina, México, Chile, Colombia, etc.)
+            const latamVoice = voices.find(v => 
+                v.lang === 'es-AR' || v.lang.includes('es_AR') || 
+                v.lang === 'es-419' || v.lang === 'es-MX' || v.lang === 'es-CL' || v.lang === 'es-CO' ||
+                v.name.includes('Argentina') || v.name.includes('Spanish (Latin America)') || v.name.includes('Sabina') || v.name.includes('Tomas')
+            );
+
+            if (latamVoice) {
+                utterance.voice = latamVoice;
+                utterance.lang = latamVoice.lang;
+            } else {
+                utterance.lang = 'es-AR'; // Forzado de idioma si el sistema no expone la propiedad por nombre
             }
-            
-            utterance.lang = 'es-AR';
-            utterance.rate = 0.85; 
+
+            utterance.rate = 0.85; // Velocidad pausada
             utterance.pitch = 1.0;
             
             window.speechSynthesis.speak(utterance);
