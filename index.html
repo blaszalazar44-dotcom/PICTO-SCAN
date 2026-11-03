@@ -28,7 +28,7 @@
                     <p class="text-indigo-100 text-xs sm:text-sm">Traductor visual unificado, mayúsculas y voz argentina</p>
                 </div>
             </div>
-            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Maestra Unificada v8.0</span>
+            <span class="bg-indigo-700 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">Versión Maestra v9.0</span>
         </div>
     </header>
 
@@ -103,11 +103,32 @@
         PictoScan • Diseñado para la inclusión educativa y el apoyo visual accesible.
     </footer>
 
-    <!-- Lógica de la Aplicación con Diccionario Combinado y Ampliado -->
+    <!-- Lógica de la Aplicación -->
     <script>
         const visualMap = {
             // ==========================================
-            // 1. VERBOS Y ACCIONES (Tu lista + previos)
+            // 1. GRUPO FAMILIAR Y VÍNCULOS (Ampliados)
+            // ==========================================
+            'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'MADRE': '👩‍👦', 'MAMITAS': '👩‍👦',
+            'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦', 'PADRE': '👨‍👦', 'PAPIS': '👨‍👧‍👦',
+            'ABUELA': '👵', 'ABUELO': '👴', 'ABUELOS': '👴👵',
+            'HIJO': '👦', 'HIJA': '👧', 'HIJOS': '👧👦',
+            'HERMANO': '👦', 'HERMANA': '👧', 'HERMANOS': '👧👦',
+            'BEBE': '👶', 'BEBÉ': '👶', 'HERMANITO': '👶', 'HERMANITA': '👶',
+            'TIA': '👩', 'TÍA': '👩', 'TIO': '👨', 'TÍO': '👨', 'TIOS': '👨‍👩‍👧',
+            'PRIMA': '👧', 'PRIMO': '👦', 'PRIMOS': '👧👦',
+            'SOBRINA': '👧', 'SOBRINO': '👦',
+            'NIETO': '👦', 'NIETA': '👧', 'NIETOS': '👧👦',
+            'MADRASTRA': '👩‍👦', 'PADRASTRO': '👨‍👦',
+            'HERMASTRO': '👦', 'HERMASTRA': '👧',
+            'ESPOSO': '🤵', 'ESPOSA': '👰', 'MARIDO': '🤵',
+            'FAMILIA': '👨‍👩‍👧‍👦', 'FAMILIAR': '🧑‍🧑‍🧒‍🧒', 'PARENTELA': '👥',
+            'TUTOR': '🧑‍💼', 'TUTORA': '👩‍💼', 'CUIDADOR': '🧑‍⚕️', 'CUIDADORA': '👩‍⚕️',
+            'ACOMPAÑANTE': '🤝', 'MAESTRA': '👩‍🏫', 'MAESTRO': '👨‍🏫', 'SEÑO': '👩‍🏫',
+            'AMIGO': '🤝', 'AMIGA': '🤝', 'AMIGOS': '👥', 'COMPAÑERO': '🧑‍🤝‍🧑', 'COMPAÑERA': '🧑‍🤝‍🧑',
+
+            // ==========================================
+            // 2. VERBOS Y ACCIONES
             // ==========================================
             'ACEPTAR': '🤝', 'ACEPAR': '🤝', 'AMAR': '❤️', 'CAMINAR': '🚶', 'CAMINA': '🚶', 'CAMINAN': '🚶', 'CAMINÓ': '🚶',
             'CANTAR': '🎤', 'CANTA': '🎤', 'CANTAN': '🎤', 'CANTÓ': '🎤', 'CERRAR': '🚪',
@@ -149,36 +170,17 @@
             'ENCANTA': '💖', 'ES': '✨', 'SON': '✨', 'ESTA': '📍', 'ESTÁ': '📍',
 
             // ==========================================
-            // 2. SUSTANTIVOS, ANIMALES Y OBJETOS
+            // 3. SUSTANTIVOS, ANIMALES Y OBJETOS
             // ==========================================
-            'BEBE': '👶', 'BEBÉ': '👶', 'NIÑO': '👦', 'NIÑA': '👧', 'HOMBRE': '👨', 'MUJER': '👩', 'ANCIANO': '🧓',
+            'NIÑO': '👦', 'NIÑA': '👧', 'HOMBRE': '👨', 'MUJER': '👩', 'ANCIANO': '🧓',
             'PROFESOR': '🧑‍🏫', 'MEDICO': '🧑‍⚕️', 'MÉDICO': '🧑‍⚕️', 'POLICIA': '👮', 'COCINERO': '🧑‍🍳', 'MECANICO': '🧑‍🔧',
             'ARTISTA': '🧑‍🎨', 'BOMBERO': '🧑‍🚒', 'PROGRAMADOR': '🧑‍💻', 'PILOTO': '👨‍✈️', 
             'PERRO': '🐶', 'PERROS': '🐶', 'GATO': '🐱', 'GATOS': '🐱',
-            'PAJARO': '🐦', 'PÁJARO': '🐦', 'PEZ': '🐟', 'CABALLO': '🐎', 'LEON': '🦁', 'LEÓN': '🦁', 
+            'PAJARO': '🐦', 'PÁJARO': '🐦', 'PEZ': '🐟', 'CABALLO': '🐴', 'LEON': '🦁', 'LEÓN': '🦁', 
             'ELEFANTE': '🐘', 'OSO': '🐻', 'OSOS': '🐻', 'MONO': '🐒', 'TORTUGA': '🐢', 'PATO': '🦆', 
             'ABEJA': '🐝', 'MARIPOSA': '🦋', 'TIBURON': '🦈', 'TIBURÓN': '🦈', 'CONEJO': '🐇', 'GALLINA': '🐔', 
             'TIGRE': '🐅', 'JIRAFA': '🦒', 'OVEJA': '🐑', 'CERDO': '🐖', 'RATON': '🐁', 'RATÓN': '🐁', 
-            'LORO': '🦜', 'SERPIENTE': '🐍', // ==========================================
-            // 5. GRUPO FAMILIAR Y VÍNCULOS AMPLIADOS
-            // ==========================================
-            'MAMA': '👩‍👦', 'MAMÁ': '👩‍👦', 'MADRE': '👩‍👦', 'MAMITAS': '👩‍👦',
-            'PAPA': '👨‍👦', 'PAPÁ': '👨‍👦', 'PADRE': '👨‍👦', 'PAPIS': '👨‍👧‍👦',
-            'ABUELA': '👵', 'ABUELO': '👴', 'ABUELOS': '👴👵',
-            'HIJO': '👦', 'HIJA': '👧', 'HIJOS': '👧👦',
-            'HERMANO': '👦', 'HERMANA': '👧', 'HERMANOS': '👧👦',
-            'BEBE': '👶', 'BEBÉ': '👶', 'HERMANITO': '👶', 'HERMANITA': '👶',
-            'TIA': '👩', 'TÍA': '👩', 'TIO': '👨', 'TÍO': '👨', 'TIOS': '👨‍👩‍👧',
-            'PRIMA': '👧', 'PRIMO': '👦', 'PRIMOS': '👧👦',
-            'SOBRINA': '👧', 'SOBRINO': '👦',
-            'NIETO': '👦', 'NIETA': '👧', 'NIETOS': '👧👦',
-            'MADRASTRA': '👩‍👦', 'PADRASTRO': '👨‍👦',
-            'HERMASTRO': '👦', 'HERMASTRA': '👧',
-            'ESPOSO': '🤵', 'ESPOSA': '👰', 'MARIDO': '🤵', 'MUJER': '👩',
-            'FAMILIA': '👨‍👩‍👧‍👦', 'FAMILIAR': '🧑‍🧑‍🧒‍🧒', 'PARENTELA': '👥',
-            'TUTOR': '🧑‍💼', 'TUTORA': '👩‍💼', 'CUIDADOR': '🧑‍⚕️', 'CUIDADORA': '👩‍⚕️',
-            'ACOMPAÑANTE': '🤝', 'MAESTRA': '👩‍🏫', 'MAESTRO': '👨‍🏫', 'SEÑO': '👩‍🏫',
-            'AMIGO': '🤝', 'AMIGA': '🤝', 'AMIGOS': '👥', 'COMPAÑERO': '🧑‍🤝‍🧑', 'COMPAÑERA': '🧑‍🤝‍🧑'
+            'LORO': '🦜', 'SERPIENTE': '🐍',
             
             // Alimentos y bebidas
             'PAN': '🍞', 'MANZANA': '🍎', 'BANANA': '🍌', 'HUEVO': '🥚', 'QUESO': '🧀', 'CARNE': '🥩', 
@@ -207,10 +209,10 @@
             'CALENDARIO': '📅', 'DINERO': '💵', 'HORA': '⏰', 'DIA': '☀️', 'DÍA': '☀️', 'NOCHE': '🌙',
             'MUSICA': '🎶', 'MÚSICA': '🎶', 'PELOTA': '⚽', 'AUTO': '🚗', 'COCHE': '🚗', 'BICICLETA': '🚲', 
             'COLECTIVO': '🚌', 'TREN': '🚂', 'AVION': '✈️', 'AVIÓN': '✈️', 'TIJERA': '✂️', 'PAPEL': '📄',
-            'IDEA': '🧠', 'AMOR': '❤️', 'FAMILIA': '👨‍👩‍👧‍👦', 'COMPAÑERO': '🧑‍🤝‍🧑', 'COMPAÑEROS': '🧑‍🤝‍🧑', 'GENTE': '👥', 'PERSONA': '🧍',
+            'IDEA': '🧠', 'AMOR': '❤️', 'GENTE': '👥', 'PERSONA': '🧍',
 
             // ==========================================
-            // 3. NOMBRES PROPIOS (Mujeres y Hombres)
+            // 4. NOMBRES PROPIOS (Mujeres y Hombres)
             // ==========================================
             'AGUSTINA': '👧', 'ALMA': '👧', 'AMPARO': '👧', 'ANA': '👧', 'ANTONELLA': '👧', 'CAMILA': '👧',
             'CATALINA': '👧', 'CLARA': '👧', 'DELFINA': '👧', 'ELENA': '👧', 'EMMA': '👧', 'EMILIA': '👧',
@@ -238,7 +240,7 @@
             'RAUL': '👦', 'RAÚL': '👦', 'EMANUEL': '👦', 'JOSE': '👦', 'JOSÉ': '👦', 'BRAIAN': '👦',
 
             // ==========================================
-            // 4. ADJETIVOS, ESTADOS Y COLORES
+            // 5. ADJETIVOS, ESTADOS Y COLORES
             // ==========================================
             'LINDO': '✨', 'FEO': '👹', 'ALTO': '📏', 'BAJO': '📉', 'FUERTE': '💪', 'DEBIL': '🍃',
             'DÉBIL': '🍃', 'GRANDE': '🐘', 'PEQUEÑO': '🐭', 'FLACO': '🥖', 'GORDO': '🐻', 'JOVEN': '👶',
